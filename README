@@ -1,3 +1,6 @@
+elly/lambdamoo: The goal here is to modernize, improve, and extend the old
+LambdaMOO project. The sourceforge project appears dead, so here goes.
+
 WARNING: If you are upgrading an existing LambdaMOO database from an earlier
 version of the server, you should read the relevant notes in ChangeLog.txt
 regarding DB changes you may need to make *before* doing the upgrade.  Such
