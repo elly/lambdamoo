@@ -17,20 +17,7 @@
 
 #include "options.h"
 
-#  if NETWORK_PROTOCOL == NP_TCP
-#    if NETWORK_STYLE == NS_BSD
-#      include "net_bsd_tcp.c"
-#    endif
-#  endif
-
-#  if NETWORK_PROTOCOL == NP_LOCAL
-#    if NETWORK_STYLE == NS_BSD
-#      include "net_bsd_lcl.c"
-#    endif
-#    if NETWORK_STYLE == NS_SYSV
-#      include "net_sysv_lcl.c"
-#    endif
-#  endif
+#include "net_bsd_tcp.c"
 
 char rcsid_net_proto[] = "$Id: net_proto.c,v 1.2 1998/12/14 13:18:33 nop Exp $";
 

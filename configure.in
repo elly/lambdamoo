@@ -492,15 +492,8 @@ define(MOO_ADD_NET_CONFIG,[
 NETWORK_CONFIGURATIONS="NP_SINGLE"
 
 AC_HEADER_CHECK(sys/socket.h, [
-	MOO_ADD_NET_CONFIG(NS_BSD/NP_LOCAL)
 	AC_PROGRAM_CHECK(have_telnet, telnet, yes, no)
         test x$have_telnet = xyes && MOO_ADD_NET_CONFIG(NS_BSD/NP_TCP)])
-AC_PROGRAM_EGREP(yes-there-are-FIFOs, [#include <sys/stat.h>
-#if defined(S_IFIFO) && !defined(NeXT) && \
-    (SELECT_WORKS_ON_FIFOS || POLL_WORKS_ON_FIFOS || FSTAT_WORKS_ON_FIFOS)
-	yes-there-are-FIFOs
-#endif
-], MOO_ADD_NET_CONFIG(NS_SYSV/NP_LOCAL))
 
 echo "----------------------------------------------------------------------"
 echo "| The following networking configurations will probably work on your"

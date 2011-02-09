@@ -38,8 +38,8 @@ CSRCS = ast.c code_gen.c db_file.c db_io.c db_objects.c db_properties.c \
 	sym_table.c tasks.c timers.c unparse.c utils.c verbs.c version.c
 
 OPT_NET_SRCS = net_single.c net_multi.c \
-	net_mp_selct.c net_mp_poll.c net_mp_fake.c \
-	net_bsd_tcp.c net_bsd_lcl.c net_sysv_lcl.c
+	net_mp_selct.c net_mp_poll.c \
+	net_bsd_tcp.c
 
 OPT_NET_OBJS = $(OPT_NET_SRCS:.c=.o)
 
@@ -299,7 +299,7 @@ parser.o:	my-ctype.h my-math.h my-stdlib.h my-string.h \
 
 # Must do these specially, since they depend upon C preprocessor options.
 network.o: 	net_single.o net_multi.o
-net_proto.o:	net_bsd_tcp.o net_bsd_lcl.o net_sysv_lcl.o
+net_proto.o:	net_bsd_tcp.o
 net_mplex.o:	net_mp_selct.o net_mp_poll.o net_mp_fake.o
 
 $(OPT_NET_OBJS):

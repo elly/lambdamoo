@@ -34,11 +34,6 @@ People compiling on any of these machines should only need to do the following:
      these files, so just ignore such warnings.
 
 That should do it, you'll now have a working LambdaMOO server.
-	[EXCEPTION: If you've defined NETWORK_PROTOCOL to be NP_LOCAL in
-	`options.h', then you will also need a specialized client program
-	for connecting to the server.  Type either `make client_bsd' or
-	`make client_sysv', depending on how you defined NETWORK_STYLE, to
-	create the appropriate client program.]
 
 If you're not on one of these configurations, you may still get lucky.  You
 will need the following things:
@@ -190,25 +185,3 @@ within the server will remain stable.  Thus, any code you add to the server may
 well be horribly broken by a future release.  Your best bet for avoiding this
 cruel fate is to send that code to me and convince me to add it to the
 distribution; that way, I'll fix up your code for each new release.
-
-------------------------------------------------------------------------------
-
-	    Machines On Which Version 1.8.0 of LambdaMOO Was Tested
-	    -------------------------------------------------------
-
-    Hardware	    Operating System(s)	  Networking Options    Compiler
-    --------	    -------------------	  ------------------    --------
-    Sun 4/SPARC	    SunOS 4.1.3, 5.5	  SU, BT, BL, VT, VL    GCC
-    SGI Iris	    IRIX 5.3		  SU, BT, BL, VT, VL	Vendor's
-    DEC Alpha	    DEC OSF/1 V3.2	  SU, BT, BL,     VL	Vendor's
-    Intel x86	    Linux 1.3.30	  SU, BT, BL,     VL	GCC
-
-Key to `Networking Options' codes:
-
-    Code	NETWORK_PROTOCOL    NETWORK_STYLE
-    ----	----------------    -------------
-     SU		   NP_SINGLE	        -----
-     BT		   NP_TCP		NS_BSD
-     BL		   NP_LOCAL		NS_BSD
-     VT		   NP_TCP		NS_SYSV
-     VL		   NP_LOCAL		NS_SYSV
