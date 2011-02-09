@@ -17,30 +17,7 @@
 
 #include "config.h"
 
-#if HAVE_UNISTD_H  &&  !NDECL_FORK
-
 #include <unistd.h>
-
-#else
-
-#include "my-types.h"
-
-extern unsigned alarm(unsigned);
-extern int chmod(const char *, mode_t);
-extern int close(int);
-extern int dup(int);
-extern void _exit(int);
-extern pid_t fork(void);
-extern pid_t getpid(void);
-extern int link(const char *, const char *);
-extern int pause(void);
-extern int pipe(int *fds);
-extern int read(int, void *, unsigned);
-extern unsigned sleep(unsigned);
-extern int unlink(const char *);
-extern int write(int, const void *, unsigned);
-
-#endif
 
 /* 
  * $Log: my-unistd.h,v $

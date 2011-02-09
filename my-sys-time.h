@@ -20,24 +20,7 @@
 
 #include <sys/time.h>
 
-#if NEED_SELECT_H
-#  include "my-types.h"
-#  include <sys/select.h>
-#endif
-
-#if NDECL_GETITIMER
-extern int getitimer(int, struct itimerval *);
-#endif
-
-#if NDECL_SETITIMER
-extern int setitimer(int, struct itimerval *, struct itimerval *);
-#endif
-
-#if NDECL_SELECT  &&  MPLEX_STYLE == MP_SELECT
-#include "my-types.h"
-
-extern int select(int, fd_set *, fd_set *, fd_set *, struct timeval *);
-#endif
+#include <sys/select.h>
 
 /* 
  * $Log: my-sys-time.h,v $

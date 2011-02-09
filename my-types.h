@@ -25,19 +25,7 @@
    other systems, we'll have to put this into autoconf.     --Jay */
 
 #include <sys/time.h>
-
 #include <sys/types.h>
-
-#if NEED_BSDTYPES_H
-#include <sys/bsdtypes.h>
-#endif
-
-#ifndef FD_ZERO
-#define	NFDBITS		(sizeof(fd_set)*8)
-#define	FD_ZERO(p)	bzero((char *)(p), sizeof(*(p)))
-#define	FD_SET(n, p)	((p)->fds_bits[0] |= (1L<<((n)%NFDBITS)))
-#define	FD_ISSET(n, p)	((p)->fds_bits[0] &  (1L<<((n)%NFDBITS)))
-#endif				/* FD_ZERO */
 
 #endif				/* !My_Types_h */
 

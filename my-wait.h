@@ -18,12 +18,6 @@
 #include "config.h"
 #include <sys/wait.h>
 
-#if NDECL_WAITPID
-#include "my-types.h"
-
-extern pid_t waitpid(pid_t, int *, int);
-#endif
-
 /* 
  * $Log: my-wait.h,v $
  * Revision 1.3  1998/12/14 13:18:24  nop

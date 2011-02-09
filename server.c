@@ -286,19 +286,7 @@ child_completed_signal(int sig)
     /* (Void *) casts to avoid warnings on systems that mis-declare the
      * argument type.
      */
-#if HAVE_WAITPID
     while (waitpid(-1, (void *) &status, WNOHANG) > 0);
-#else
-#if HAVE_WAIT3
-    while (wait3((void *) &status, WNOHANG, 0) >= 0);
-#else
-#if HAVE_WAIT2
-    while (wait2((void *) &status, WNOHANG) >= 0);
-#else
-    wait((void *) &status);
-#endif
-#endif
-#endif
 
     signal(sig, child_completed_signal);
 

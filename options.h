@@ -334,8 +334,7 @@
  *
  * Revision 1.10  1992/10/23  22:21:10  pavel
  * Fixed MPLEX_STYLE-defaulting code to avoid assuming that select() always
- * works on FIFOs by conditionalizing on SELECT_WORKS_ON_FIFOS rather than
- * HAVE_SELECT.
+ * works on FIFOs by conditionalizing on SELECT_WORKS_ON_FIFOS.
  *
  * Revision 1.9  1992/10/21  03:02:35  pavel
  * Converted to use new automatic configuration system.

@@ -23,21 +23,6 @@
 #include "my-types.h"
 #include <netinet/in.h>
 
-#if HAVE_MACHINE_ENDIAN_H
-
-#  include <machine/endian.h>
-
-#else
-
-#  if !defined(htonl)  &&  NDECL_HTONL
-extern unsigned short htons();
-extern unsigned32 htonl();
-extern unsigned short ntohs();
-extern unsigned32 ntohl();
-#  endif
-
-#endif
-
 #endif
 
 /* 

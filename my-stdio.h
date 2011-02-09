@@ -22,46 +22,6 @@
 
 #include <stdio.h>
 
-#if NDECL_FCLOSE
-#include "my-types.h"
-
-extern int fclose(FILE *);
-extern int fflush(FILE *);
-extern size_t fwrite(const void *, size_t, size_t, FILE *);
-extern int fgetc(FILE *);
-extern int fprintf(FILE *, const char *,...);
-extern int fscanf(FILE *, const char *,...);
-extern int sscanf(const char *, const char *,...);
-extern int printf(const char *,...);
-extern int ungetc(int, FILE *);
-#endif
-
-#if NDECL_PERROR
-extern void perror(const char *);
-#endif
-
-#if NDECL_REMOVE
-extern int remove(const char *);
-extern int rename(const char *, const char *);
-#endif
-
-#if NDECL_VFPRINTF
-#include "my-stdarg.h"
-
-extern int vfprintf(FILE *, const char *, va_list);
-extern int vfscanf(FILE *, const char *, va_list);
-#endif
-
-#if !HAVE_REMOVE
-#  include "my-unistd.h"
-#  define remove(x)	unlink(x)
-#endif
-
-#if !HAVE_RENAME
-#  include "my-unistd.h"
-#  define rename(old, new)	(link(old, new) && unlink(old))
-#endif
-
 #endif				/* !My_Stdio_H */
 
 /* 

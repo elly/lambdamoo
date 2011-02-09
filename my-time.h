@@ -20,34 +20,7 @@
 
 #include "config.h"
 
-#if TIME_H_NEEDS_HELP
-/* Some systems' time.h does not include time_t or clock_t */
-#include "my-types.h"
-#endif
-
 #include <time.h>
-
-#if NDECL_TIME
-#include "my-types.h"
-
-extern time_t time(time_t *);
-#endif
-
-#if defined(MACH) && defined(CMU)
-/* These clowns blew the declaration of strftime() in their <time.h> */
-#undef HAVE_STRFTIME
-#endif
-
-#if HAVE_STRFTIME && NDECL_STRFTIME
-#include "my-types.h"
-
-extern size_t strftime(char *s, size_t smax, const char *fmt,
-		       const struct tm *tp);
-#endif
-
-#if HAVE_TZNAME && NDECL_TZNAME
-extern char *tzname;
-#endif
 
 #endif				/* !My_Time_H */
 

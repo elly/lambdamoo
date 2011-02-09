@@ -19,10 +19,6 @@
 
 #include <sys/ioctl.h>
 
-#if NDECL_IOCTL
-extern int ioctl(int, int,...);
-#endif
-
 /* 
  * $Log: my-ioctl.h,v $
  * Revision 1.3  1998/12/14 13:18:11  nop

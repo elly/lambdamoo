@@ -21,11 +21,6 @@
 
 #include <ctype.h>
 
-#if NDECL_TOLOWER
-extern int tolower(int);
-extern int toupper(int);
-#endif
-
 #endif				/* !My_Ctype_H */
 
 /* 

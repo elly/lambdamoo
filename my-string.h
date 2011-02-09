@@ -20,68 +20,7 @@
 
 #include "config.h"
 
-#if USE_OWN_STRING_H
-
-#include "my-types.h"
-
-extern void bzero(char *, int);
-extern void *memset(void *, int, size_t);
-extern char *strcpy(char *, const char *);
-extern char *strncpy(char *, const char *, size_t);
-extern char *strcat(char *, const char *);
-extern int strcmp(const char *, const char *);
-extern int strncmp(const char *, const char *, size_t);
-extern char *strchr(const char *, int);
-extern char *strerror(int);
-
-/* We don't need to declare these because we're only using our own string.h
- * due to GCC complaining about conflicting built-in declarations for them.
- */
-
-#if 0
-extern void *memcpy(void *, const void *, size_t);
-extern int memcmp(const void *, const void *, size_t);
-extern size_t strlen(const char *);
-#endif
-
-#else
-
-#  include <string.h>
-
-#  if NEED_MEMORY_H
-#    include <memory.h>
-#  else
-#    if NDECL_MEMCPY
-#      include "my-types.h"
-extern void *memcpy(void *, const void *, size_t);
-extern int memcmp(const void *, const void *, size_t);
-#    endif
-#  endif
-
-#endif
-
-#if HAVE_STRERROR
-# if NDECL_STRERROR
-extern char *strerror(int);
-# endif
-#else
-extern const char *sys_errlist[];
-#  define strerror(error_code)	sys_errlist[error_code]
-#endif
-
-#if NDECL_BZERO && !defined(bzero)
-#  if BZERO_IN_STDLIB_H
-#    include "my-stdlib.h"
-#  else
-extern void bzero(char *, int);
-#  endif
-#endif
-
-#if NDECL_MEMSET
-#include "my-types.h"
-
-extern void *memset(void *, int, size_t);
-#endif
+#include <string.h>
 
 #endif				/* !My_String_H */
 

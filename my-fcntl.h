@@ -19,17 +19,7 @@
 
 #include <fcntl.h>
 
-#if NDECL_FCNTL
-extern int fcntl(int, int,...);
-extern int open(const char *, int,...);
-#endif
-
-#if POSIX_NONBLOCKING_WORKS
-/* Prefer POSIX-style nonblocking, if available. */
 #define NONBLOCK_FLAG O_NONBLOCK
-#else
-#define NONBLOCK_FLAG O_NDELAY
-#endif
 
 /* 
  * $Log: my-fcntl.h,v $

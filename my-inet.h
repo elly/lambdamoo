@@ -17,11 +17,6 @@
 
 #include "config.h"
 
-#if ARPA_INET_H_NEEDS_HELP
-/* Some systems don't #include everything they depend on in their headers. */
-#include "my-in.h"
-#endif
-
 #include <arpa/inet.h>
 
 /* 

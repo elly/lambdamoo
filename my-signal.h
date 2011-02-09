@@ -17,36 +17,9 @@
 
 #include "config.h"
 
-#if SIGNAL_H_NEEDS_HELP
-/* Some systems' headers don't include all of the headers they need. */
-#include <sys/types.h>
-#endif
-
 #include <signal.h>
 
-#if NDECL_KILL
-#include "my-types.h"
-
-extern int kill(pid_t, int);
-#endif
-
-#if NDECL_SIGEMPTYSET && HAVE_SIGEMPTYSET
-extern int sigemptyset(sigset_t *);
-extern int sigaddset(sigset_t *, int);
-#endif
-
-#if NDECL_SIGPROCMASK && HAVE_SIGPROCMASK
-extern int sigprocmask(int, sigset_t *, sigset_t *);
-#endif
-
-#if NDECL_SIGRELSE && HAVE_SIGRELSE
 extern int sigrelse(int);
-#endif
-
-#ifndef SIGCHLD
-#define SIGCHLD SIGCLD
-#endif
-
 /* 
  * $Log: my-signal.h,v $
  * Revision 1.3  1998/12/14 13:18:13  nop

@@ -182,7 +182,7 @@ to_float(Var v, double *dp)
 }
 #endif
 
-#if defined(HAVE_MATHERR) && defined(DOMAIN) && defined(SING) && defined(OVERFLOW) && defined(UNDERFLOW)
+#if defined(DOMAIN) && defined(SING) && defined(OVERFLOW) && defined(UNDERFLOW)
 /* Required in order to properly handle FP exceptions on SVID3 systems */
 int
 matherr(struct exception *x)
@@ -596,23 +596,7 @@ bf_ctime(Var arglist, Byte next, void *vdata, Objid progr)
     }
 
     {				/* Format the time, including a timezone name */
-#if HAVE_STRFTIME
 	strftime(buffer, 50, "%a %b %d %H:%M:%S %Y %Z", localtime(&c));
-#else
-#  if HAVE_TM_ZONE
-	struct tm *t = localtime(&c);
-	char *tzname = t->tm_zone;
-#  else
-#    if !HAVE_TZNAME
-	const char *tzname = "XXX";
-#    endif
-#  endif
-
-	strcpy(buffer, ctime(&c));
-	buffer[24] = ' ';
-	strncpy(buffer + 25, tzname, 3);
-	buffer[28] = '\0';
-#endif
     }
 
     if (buffer[8] == '0')

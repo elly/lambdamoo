@@ -17,24 +17,6 @@
 
 #include "config.h"
 
-#include <tiuser.h>
-
-#if NDECL_T_OPEN
-extern int t_accept(int, int, struct t_call *);
-extern void *t_alloc(int, int, int);
-extern int t_bind(int, struct t_bind *, struct t_bind *);
-extern int t_close(int);
-extern int t_connect(int, struct t_call *, struct t_call *);
-extern int t_listen(int, struct t_call *);
-extern int t_open(const char *, int, struct t_info *);
-
-extern int t_errno;
-#endif
-
-#if NDECL_T_ERRLIST
-extern char *t_errlist[];
-#endif
-
 /* $Log: my-tiuser.h,v $
 /* Revision 1.2  1997/03/03 04:18:58  nop
 /* GNU Indent normalization
