@@ -1,0 +1,5 @@
+.cvsignore
+*.o
+config.h
+config.status
+y.*
