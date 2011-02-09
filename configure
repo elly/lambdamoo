@@ -2628,23 +2628,6 @@ if egrep "yes-there-are-FIFOs" conftest.out >/dev/null 2>&1; then
 fi
 rm -f conftest*
 
-cat > conftest.c <<EOF
-#include "confdefs.h"
-
-#if HAVE_TIUSER_H && HAVE_T_OPEN && HAVE_POLL
-yes
-#endif
-
-EOF
-eval "$CPP conftest.c > conftest.out 2>&1"
-if egrep "yes" conftest.out >/dev/null 2>&1; then
-  rm -rf conftest*
-  test -r /dev/tcp && 
-    NETWORK_CONFIGURATIONS="$NETWORK_CONFIGURATIONS NS_SYSV/NP_TCP"
-
-fi
-rm -f conftest*
-
 
 echo "----------------------------------------------------------------------"
 echo "| The following networking configurations will probably work on your"

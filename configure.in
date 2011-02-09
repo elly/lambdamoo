@@ -501,11 +501,6 @@ AC_PROGRAM_EGREP(yes-there-are-FIFOs, [#include <sys/stat.h>
 	yes-there-are-FIFOs
 #endif
 ], MOO_ADD_NET_CONFIG(NS_SYSV/NP_LOCAL))
-AC_PROGRAM_EGREP(yes, [
-#if HAVE_TIUSER_H && HAVE_T_OPEN && HAVE_POLL
-yes
-#endif
-], test -r /dev/tcp && MOO_ADD_NET_CONFIG(NS_SYSV/NP_TCP))
 
 echo "----------------------------------------------------------------------"
 echo "| The following networking configurations will probably work on your"
