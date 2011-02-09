@@ -1,3 +1,4 @@
+# Generated automatically from Makefile.in by configure.
 # Copyright (c) 1992, 1995, 1996 Xerox Corporation.  All rights reserved.
 # Portions of this code were written by Stephen White, aka ghond.
 # Use and copying of this software and preparation of derivative works based
@@ -13,9 +14,9 @@
 #   Palo Alto, CA 94304
 #   Pavel@Xerox.Com
 
-CC = @CC@
-LIBRARIES = @LIBS@
-YACC = @YACC@
+CC = gcc -g 
+LIBRARIES =  -lm -lcrypt
+YACC = bison -y
 
 CFLAGS = -O
 # If you're using GCC, you may prefer:
@@ -93,22 +94,6 @@ client_sysv: client_sysv.o
 # This rule gets around some "make"s' desire to `derive' it from `restart.sh'.
 restart:
 	touch restart
-
-configure: configure.in
-	# autoconf
-	@echo "Not running autoconf; you must do this by hand."
-	touch configure
-
-config.status: configure
-	env CC= YACC= ./configure --no-create
-
-Makefile: Makefile.in config.status
-	@echo "[ $@ : $? ]"
-	./config.status
-
-config.h: config.h.in config.status
-	@echo "[ $@ : $? ]"
-	./config.status
 
 y.tab.h: parser.o
 	touch y.tab.h
