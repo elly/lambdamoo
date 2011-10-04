@@ -44,6 +44,13 @@ void lmdb_free(struct lmdb *lmdb) {
 	myfree(lmdb, M_INTERNAL);
 }
 
+void lmdb_stats(struct lmdb *db, struct lmdb_stats *stats) {
+	stats->dbver = db->dbver;
+	stats->nobjs = db->nobjs;
+	stats->nprogs = db->nprogs;
+	stats->nusers = db->nusers;
+}
+
 static int rdint(FILE *f, int *rv) {
 	return fscanf(f, "%d\n", rv) != 1;
 }
@@ -292,6 +299,22 @@ struct Verbdef *lmdb_verbdefbyname(struct Object *obj, const char *name) {
 	return d;
 }
 
+const char *lmdb_verbdefname(struct Verbdef *vdef) {
+	return vdef->name;
+}
+
+int lmdb_verbdefsize(struct Verbdef *vdef) {
+	return vdef->program ? vdef->program->main_vector.size : 0;
+}
+
+struct Propdef *lmdb_propdefbyid(struct Object *obj, int id) {
+	return &obj->propdefs.l[id];
+}
+
+const char *lmdb_propdefname(struct Propdef *pdef) {
+	return pdef->name;
+}
+
 int rdverb(struct lmdb *lmdb, FILE *f) {
 	int oid, vnum;
 	Object *obj;
@@ -317,7 +340,6 @@ int rdverb(struct lmdb *lmdb, FILE *f) {
 	st.prev = '\n';
 	p = parse_program(current_version, pc, &st);
 	d->program = p;
-	printf("#%d:%s: program (%d bytes bytecode)\n", oid, d->name, p->main_vector.size);
 	return 0;
 }
 
@@ -329,29 +351,31 @@ struct Object *lmdb_objbyid(struct lmdb *lmdb, int id) {
 	return NULL;
 }
 
+Objid lmdb_objid(struct Object *obj) {
+	return obj->id;
+}
+
+const char *lmdb_objname(struct Object *obj) {
+	return obj->name;
+}
+
 int lmdb_read(struct lmdb *lmdb, FILE *f) {
 	int dummy;
 	int i;
 	if (fscanf(f, "** LambdaMOO Database, Format Version %u **\n", &lmdb->dbver) != 1)
 		return 1;
-	printf("dbver: %u\n", lmdb->dbver);
 	if (fscanf(f, "%d\n%d\n%d\n%d\n", &lmdb->nobjs, &lmdb->nprogs, &dummy, &lmdb->nusers) != 4)
 		return 1;
-	printf("db: %d objs %d progs %d users\n", lmdb->nobjs, lmdb->nprogs,
-	       lmdb->nusers);
 	lmdb->users = mymalloc(lmdb->nusers * sizeof(*lmdb->users), M_INTERNAL);
 	for (i = 0; i < lmdb->nusers; i++) {
 		if (rdobjid(f, &lmdb->users[i]))
 			return 1;
-		printf("user: %d\n", lmdb->users[i]);
 	}
 	lmdb->objs = mymalloc(lmdb->nobjs * sizeof(*lmdb->objs), M_INTERNAL);
 	lmdb->lastobjid = -1;
 	for (i = 0; i < lmdb->nobjs; i++) {
 		if (rdobj(lmdb, f, &lmdb->objs[i]))
 			return 1;
-		if (lmdb->objs[i])
-			printf("#%d %s\n", lmdb->objs[i]->id, lmdb->objs[i]->name);
 	}
 	for (i = 0; i < lmdb->nprogs; i++) {
 		if (rdverb(lmdb, f))
