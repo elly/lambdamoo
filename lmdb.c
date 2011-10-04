@@ -232,6 +232,21 @@ static int _getc(void *data) {
 	return c;
 }
 
+struct Verbdef *lmdb_verbdefbyid(struct Object *obj, int idx) {
+	struct Verbdef *d;
+	for (d = obj->verbdefs; d && idx; d = d->next, idx--)
+		;
+	return d;
+}
+
+struct Verbdef *lmdb_verbdefbyname(struct Object *obj, const char *name) {
+	struct Verbdef *d;
+	for (d = obj->verbdefs; d; d = d->next)
+		if (!strcmp(d->name, name))
+			break;
+	return d;
+}
+
 int rdverb(struct lmdb *lmdb, FILE *f) {
 	int oid, vnum;
 	Object *obj;
@@ -248,8 +263,7 @@ int rdverb(struct lmdb *lmdb, FILE *f) {
 	obj = lmdb_objbyid(lmdb, oid);
 	if (!obj)
 		return 1;
-	for (d = obj->verbdefs; d && vnum; d = d->next, vnum--)
-		;
+	d = lmdb_verbdefbyid(obj, vnum);
 	if (!d)
 		return 1;
 	st.fh = f;

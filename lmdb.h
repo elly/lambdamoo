@@ -15,4 +15,7 @@ int lmdb_write(struct lmdb *lmdb, FILE *f);
 
 struct Object *lmdb_objbyid(struct lmdb *lmdb, int id);
 
+struct Verbdef *lmdb_verbdefbyid(struct Object *obj, int idx);
+struct Verbdef *lmdb_verbdefbyname(struct Object *obj, const char *name);
+
 #endif /* !LMDB_H */
