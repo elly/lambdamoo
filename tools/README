@@ -1,0 +1,9 @@
+My grand plan here is to write tools that make it easier for lambdamoo
+administrators to manage large databases. To that end, I'm writing:
+
+lmc:   LambdaMOO compiler. Will compile an as-yet unspecified source language into
+       a LambdaMOO database.
+lmld:  LambdaMOO linker. Will support merging LambdaMOO databases, to allow
+       incremental compilation and live updates.
+lmdis: LambdaMOO disassembler. Will dump databases, either in human-readable
+       form or in source form, suitable for feeding to lmc.

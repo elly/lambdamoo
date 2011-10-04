@@ -6,8 +6,9 @@
 #include "lmdb.h"
 
 static void usage(const char *progn) {
-	printf("Usage: %s [-a] [objid|verbid|propid]...\n", progn);
+	printf("Usage: %s [-a] [-s] [objid|verbid|propid]...\n", progn);
 	printf("  -a:        print overall info\n");
+	printf("  -s:        dump entire db in source form\n");
 	printf("  -x:        list entries\n");
 }
 
