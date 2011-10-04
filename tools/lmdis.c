@@ -4,6 +4,10 @@
 #include <unistd.h>
 
 #include "lmdb.h"
+#include "program.h"
+#include "unparse.h"
+
+static int srcmode = 0;
 
 static void usage(const char *progn) {
 	printf("Usage: %s [-a] [-s] [objid|verbid|propid]...\n", progn);
@@ -47,8 +51,30 @@ static void dumpents(struct lmdb *db) {
 	}
 }
 
+static void _dumpverbrec(void *unused, const char *msg) {
+	printf("%s%s\n", srcmode ? "" : "\t", msg);
+}
+
 static void dumpverb(struct lmdb *db, int oid, const char *name) {
-	
+	struct Object *obj = lmdb_objbyid(db, oid);
+	struct Verbdef *vdef;
+
+	if (!obj) {
+		fprintf(stderr, "dumpverb: no object #%d\n", oid);
+		return;
+	}
+
+	vdef = lmdb_verbdefbyname(obj, name);
+	if (!vdef) {
+		fprintf(stderr, "dumpverb: no vdef #%d:%s\n", oid, name);
+		return;
+	}
+
+	printf("#%d:%s #%d %s %s\n", oid, name, lmdb_verbdefowner(vdef),
+	       lmdb_verbdefperms(vdef), lmdb_verbdefprep(vdef));
+	unparse_program(lmdb_verbdefprog(vdef), _dumpverbrec, NULL, 0, 1, MAIN_VECTOR);
+	if (srcmode)
+		printf(".\n");
 }
 
 static void dumpprop(struct lmdb *db, int oid, const char *name) {
@@ -76,10 +102,13 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	while ((opt = getopt(argc, argv, "ahx")) != -1) {
+	while ((opt = getopt(argc, argv, "ahsx")) != -1) {
 		switch (opt) {
 			case 'a':
 				dumpdb(db);
+				break;
+			case 's':
+				srcmode = 1;
 				break;
 			case 'x':
 				dumpents(db);

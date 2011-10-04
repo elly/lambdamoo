@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "db.h"
 #include "db_private.h"
 #include "list.h"
 #include "lmdb.h"
@@ -303,8 +304,34 @@ const char *lmdb_verbdefname(struct Verbdef *vdef) {
 	return vdef->name;
 }
 
+Program *lmdb_verbdefprog(struct Verbdef *vdef) {
+	return vdef->program;
+}
+
 int lmdb_verbdefsize(struct Verbdef *vdef) {
 	return vdef->program ? vdef->program->main_vector.size : 0;
+}
+
+Objid lmdb_verbdefowner(struct Verbdef *vdef) {
+	return vdef->owner;
+}
+
+const char *lmdb_verbdefperms(struct Verbdef *vdef) {
+	static char perms[5];
+	perms[0] = 0;
+	if (vdef->perms & VF_READ)
+		strcat(perms, "r");
+	if (vdef->perms & VF_WRITE)
+		strcat(perms, "w");
+	if (vdef->perms & VF_EXEC)
+		strcat(perms, "x");
+	if (vdef->perms & VF_DEBUG)
+		strcat(perms, "d");
+	return perms;
+}
+
+const char *lmdb_verbdefprep(struct Verbdef *vdef) {
+	return db_unparse_prep(vdef->prep);
 }
 
 struct Propdef *lmdb_propdefbyid(struct Object *obj, int id) {

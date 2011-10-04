@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 
+#include "program.h"
 #include "structures.h"
 
 struct lmdb;
@@ -30,12 +31,13 @@ const char *lmdb_objname(struct Object *obj);
 struct Verbdef *lmdb_verbdefbyid(struct Object *obj, int idx);
 struct Verbdef *lmdb_verbdefbyname(struct Object *obj, const char *name);
 const char *lmdb_verbdefname(struct Verbdef *vdef);
+const char *lmdb_verbdefperms(struct Verbdef *vdef);
+const char *lmdb_verbdefprep(struct Verbdef *vdef);
+Program *lmdb_verbdefprog(struct Verbdef *vdef);
 int lmdb_verbdefsize(struct Verbdef *vdef);
 
 struct Propdef *lmdb_propdefbyid(struct Object *obj, int idx);
 const char *lmdb_propdefname(struct Propdef *pdef);
-
-struct Prop
 
 const char *lmdb_lasterror(struct lmdb *lmdb);
 
