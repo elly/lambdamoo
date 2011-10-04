@@ -18,7 +18,7 @@ CC = gcc -g
 LIBRARIES =  -lm -lcrypt
 YACC = bison -y
 
-CFLAGS = -O
+CFLAGS = -O -I.
 # If you're using GCC, you may prefer:
 # CFLAGS = -O2 -finline-functions
 #
@@ -35,8 +35,9 @@ CSRCS = ast.c code_gen.c db_file.c db_io.c db_objects.c db_properties.c \
 	exceptions.c execute.c extensions.c functions.c keywords.c list.c \
 	log.c match.c md5.c name_lookup.c network.c net_mplex.c \
 	net_proto.c numbers.c objects.c parse_cmd.c pattern.c program.c \
-	property.c quota.c ref_count.c regexpr.c server.c storage.c streams.c str_intern.c \
-	sym_table.c tasks.c timers.c unparse.c utils.c verbs.c version.c
+	property.c quota.c ref_count.c regexpr.c storage.c streams.c str_intern.c \
+	sym_table.c tasks.c timers.c unparse.c utils.c verbs.c version.c \
+	lmdb.c
 
 OPT_NET_SRCS = net_single.c net_multi.c \
 	net_mp_selct.c net_mp_poll.c \
@@ -64,7 +65,7 @@ SYSHDRS = my-ctype.h my-fcntl.h my-in.h my-inet.h my-ioctl.h my-math.h \
 
 CLIENT_SRCS = client_bsd.c client_sysv.c
 
-ALL_CSRCS = $(CSRCS) $(OPT_CSRCS) $(CLIENT_SRCS)
+ALL_CSRCS = $(CSRCS) $(OPT_CSRCS)
 
 SRCS = $(ALL_CSRCS) keywords.gperf $(YSRCS) $(HDRS) $(SYSHDRS)
 
@@ -79,17 +80,19 @@ YOBJS = $(YSRCS:.y=.o)
 
 OBJS = $(COBJS) $(YOBJS)
 
-moo:	$(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBRARIES) -o $@
+all: moo tools/lmdis
+
+moo:	lambdamoo.o server.c
+	$(CC) $(CFLAGS) $^ $(LIBRARIES) -o $@ -DSERVER_MAIN
+
+lambdamoo.o : $(OBJS)
+	$(LD) -r $(LDFLAGS) $(OBJS) -o $@
 
 pure_moo: moo
 	purify $(CC) $(CFLAGS) $(OBJS) $(LIBRARIES) -o $@
 
-client_bsd: client_bsd.o
-	$(CC) $(CFLAGS) client_bsd.o $(LIBRARIES) -o $@
-
-client_sysv: client_sysv.o
-	$(CC) $(CFLAGS) client_sysv.o $(LIBRARIES) -o $@
+tools/lmdis: tools/lmdis.c lambdamoo.o server.c
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBRARIES)
 
 # This rule gets around some "make"s' desire to `derive' it from `restart.sh'.
 restart:
@@ -285,7 +288,7 @@ parser.o:	my-ctype.h my-math.h my-stdlib.h my-string.h \
 # Must do these specially, since they depend upon C preprocessor options.
 network.o: 	net_single.o net_multi.o
 net_proto.o:	net_bsd_tcp.o
-net_mplex.o:	net_mp_selct.o net_mp_poll.o net_mp_fake.o
+net_mplex.o:	net_mp_selct.o net_mp_poll.o
 
 $(OPT_NET_OBJS):
 	touch $@

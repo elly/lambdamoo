@@ -1154,6 +1154,7 @@ read_active_connections(void)
     return 1;
 }
 
+#ifdef SERVER_MAIN
 int
 main(int argc, char **argv)
 {
@@ -1243,6 +1244,7 @@ main(int argc, char **argv)
 
     return 0;
 }
+#endif /* !SERVER_MAIN */
 
 
 /**** built in functions ****/

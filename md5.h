@@ -50,7 +50,6 @@
 #include "config.h"
 
 typedef unsigned char uint8;
-typedef unsigned32 uint32;
 
 /* MD5 context. */
 typedef struct {

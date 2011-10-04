@@ -35,6 +35,8 @@ typedef enum Memory_Type {
     M_REF_ENTRY, M_REF_TABLE, M_VC_ENTRY, M_VC_TABLE, M_STRING_PTRS,
     M_INTERN_POINTER, M_INTERN_ENTRY, M_INTERN_HUNK,
 
+    M_INTERNAL,
+
     Sizeof_Memory_Type
 
 } Memory_Type;
