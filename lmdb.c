@@ -1,5 +1,7 @@
 /* lmdb.c - lambdamoo database */
 
+#include <stdarg.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "db_private.h"
@@ -9,6 +11,7 @@
 #include "storage.h"
 
 struct lmdb {
+	char errmsg[1024];
 	unsigned int dbver;
 	int nobjs;
 	int nprogs;
@@ -20,8 +23,20 @@ struct lmdb {
 	Object **objs;
 };
 
+static void _lmdberr(struct lmdb *db, const char *fmt, ...) {
+	va_list ap;
+	va_start(ap, fmt);
+	vsnprintf(db->errmsg, sizeof(db->errmsg), fmt, ap);
+	va_end(ap);
+}
+
+const char *lmdb_lasterror(struct lmdb *db) {
+	return db->errmsg[0] ? db->errmsg : NULL;
+}
+
 struct lmdb *lmdb_new(void) {
 	struct lmdb *db = mymalloc(sizeof(*db), M_INTERNAL);
+	db->errmsg[0] = 0;
 	return db;
 }
 
@@ -129,41 +144,67 @@ int rdobj(struct lmdb *lmdb, FILE *f, Object **obj) {
 	Verbdef **pv;
 	int i;
 	char buf[32];
-	if (fscanf(f, "#%d", &oid) != 1)
+	if (fscanf(f, "#%d", &oid) != 1) {
+		_lmdberr(lmdb, "Needed objid");
 		return 1;
-	if (!fgets(buf, sizeof(buf), f))
+	}
+	if (!fgets(buf, sizeof(buf), f)) {
+		_lmdberr(lmdb, "Unexpected eof");
 		return 1;
+	}
 	if (!strcmp(buf, " recycled\n")) {
 		*obj = NULL;
 		printf("skip recycled: %d\n", oid);
 		return 0;
-	} else if (strcmp(buf, "\n"))
+	} else if (strcmp(buf, "\n")) {
+		_lmdberr(lmdb, "#%d: trailing garbage", oid);
 		return 1;
+	}
 	o = mymalloc(sizeof(*o), M_INTERNAL);
 	*obj = o;
 
 	o->id = oid;
-	if (rdstr(f, &o->name))
+	if (rdstr(f, &o->name)) {
+		_lmdberr(lmdb, "#%d: need name", oid);
 		return 1;
+	}
 	rdstr(f, NULL);
-	if (rdint(f, &o->flags))
+	if (rdint(f, &o->flags)) {
+		_lmdberr(lmdb, "#%d: need flags", oid);
 		return 1;
-	if (rdobjid(f, &o->owner))
+	}
+	if (rdobjid(f, &o->owner)) {
+		_lmdberr(lmdb, "#%d: need owner", oid);
 		return 1;
-	if (rdobjid(f, &o->location))
+	}
+	if (rdobjid(f, &o->location)) {
+		_lmdberr(lmdb, "#%d: need location", oid);
 		return 1;
-	if (rdobjid(f, &o->contents))
+	}
+	if (rdobjid(f, &o->contents)) {
+		_lmdberr(lmdb, "#%d: need contents", oid);
 		return 1;
-	if (rdobjid(f, &o->next))
+	}
+	if (rdobjid(f, &o->next)) {
+		_lmdberr(lmdb, "#%d: need next", oid);
 		return 1;
-	if (rdobjid(f, &o->parent))
+	}
+	if (rdobjid(f, &o->parent)) {
+		_lmdberr(lmdb, "#%d: need parent", oid);
 		return 1;
-	if (rdobjid(f, &o->child))
+	}
+	if (rdobjid(f, &o->child)) {
+		_lmdberr(lmdb, "#%d: need child", oid);
 		return 1;
-	if (rdobjid(f, &o->sibling))
+	}
+	if (rdobjid(f, &o->sibling)) {
+		_lmdberr(lmdb, "#%d: need sibling", oid);
 		return 1;
-	if (rdint(f, &nverbs))
+	}
+	if (rdint(f, &nverbs)) {
+		_lmdberr(lmdb, "#%d: need nverbs", oid);
 		return 1;
+	}
 	pv = &o->verbdefs;
 	for (i = 0; i < nverbs; i++) {
 		Verbdef *v = mymalloc(sizeof(*v), M_INTERNAL);
@@ -173,8 +214,10 @@ int rdobj(struct lmdb *lmdb, FILE *f, Object **obj) {
 		pv = &v->next;
 	}
 
-	if (rdint(f, &npropdefs))
+	if (rdint(f, &npropdefs)) {
+		_lmdberr(lmdb, "#%d: need npropdefs", oid);
 		return 1;
+	}
 	o->propdefs.cur_length = npropdefs;
 	o->propdefs.max_length = npropdefs;
 	o->propdefs.l = NULL;
@@ -185,8 +228,10 @@ int rdobj(struct lmdb *lmdb, FILE *f, Object **obj) {
 				return 1;
 	}
 
-	if (rdint(f, &nprops))
+	if (rdint(f, &nprops)) {
+		_lmdberr(lmdb, "#%d: need nprops", oid);
 		return 1;
+	}
 	if (nprops)
 		o->propval = mymalloc(nprops * sizeof(*o->propval), M_INTERNAL);
 	else

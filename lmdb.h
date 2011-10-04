@@ -18,4 +18,6 @@ struct Object *lmdb_objbyid(struct lmdb *lmdb, int id);
 struct Verbdef *lmdb_verbdefbyid(struct Object *obj, int idx);
 struct Verbdef *lmdb_verbdefbyname(struct Object *obj, const char *name);
 
+const char *lmdb_lasterror(struct lmdb *lmdb);
+
 #endif /* !LMDB_H */

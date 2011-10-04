@@ -4,7 +4,13 @@
 
 #include "lmdb.h"
 
-int main(void) {
+int main(int argc, char *argv[]) {
 	struct lmdb *db = lmdb_new();
-	return lmdb_read(db, stdin);
+	int r = lmdb_read(db, stdin);
+	if (r) {
+		fprintf(stderr, "%s\n", lmdb_lasterror(db));
+		return 1;
+	}
+
+	return 0;
 }
