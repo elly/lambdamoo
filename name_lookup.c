@@ -23,7 +23,7 @@
 
 #include "options.h"
 
-#if NETWORK_PROTOCOL == NP_TCP	/* Skip almost entire file otherwise... */
+#ifdef USE_NETPROTO_TCP	/* Skip almost entire file otherwise... */
 
 #include "my-signal.h"
 #include "my-stdlib.h"
@@ -381,7 +381,7 @@ lookup_addr_from_name(const char *name, unsigned timeout)
     return addr == 0xffffffff ? 0 : addr;
 }
 
-#endif				/* NETWORK_PROTOCOL == NP_TCP */
+#endif				/* USE_NETPROTO_TCP */
 
 char rcsid_name_lookup[] = "$Id: name_lookup.c,v 1.3 1998/12/14 13:18:25 nop Exp $";
 

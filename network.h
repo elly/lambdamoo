@@ -38,6 +38,34 @@ typedef struct {		/* Network's handle on a listening point */
 
 #include "server.h"		/* Include this *after* defining the types */
 
+struct netproto {
+	const char *name;
+	int (*init)(int argc, char **argv, Var *desc);
+	const char *(*protocol_name)(void);
+	const char *(*usage_string)(void);
+	enum error (*make_listener)(server_listener sl, Var desc,
+	                            network_listener *nl, Var *canon,
+	                            const char **name);
+	int (*listen)(network_listener nl);
+	int (*send_line)(network_handle nh, const char *line, int flush_ok);
+	int (*send_bytes)(network_handle nh, const char *buffer, int buflen,
+	                  int flush_ok);
+	int (*buffered_output_length)(network_handle nh);
+	const char *(*connection_name)(network_handle nh);
+	void (*set_connection_binary)(network_handle nh, int binary);
+	Var (*connection_options)(network_handle nh, Var list);
+	int (*connection_option)(network_handle nh, const char *opt, Var *value);
+	int (*set_connection_option)(network_handle nh, const char *opt, Var value);
+	void (*close)(network_handle nh);
+	void (*close_listener)(network_listener nl);
+	void (*shutdown)(void);
+	void (*suspend_input)(network_handle nh);
+	void (*resume_input)(network_handle nh);
+	int (*process_io)(int timeout);
+};
+
+extern void network_useproto(const char *name);
+
 extern const char *network_protocol_name(void);
 				/* Returns a string naming the networking
 				 * protocol in use.

@@ -98,7 +98,8 @@
  * server listens when no port argument is given on the command line.
  */
 
-#define NETWORK_PROTOCOL 	NP_TCP
+#define USE_NETPROTO_SINGLE
+// #define USE_NETPROTO_TCP
 
 #define DEFAULT_PORT 		7777
 #define DEFAULT_CONNECT_FILE	"/tmp/.MOO-server"

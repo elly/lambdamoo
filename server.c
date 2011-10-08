@@ -1182,6 +1182,14 @@ main(int argc, char **argv)
 	    } else
 		argc = 0;	/* Provoke usage message below */
 	    break;
+	case 'n':
+		if (argc > 1) {
+			network_useproto(argv[1]);
+			argc--;
+			argv++;
+		} else
+			argc = 0;
+		break;
 	default:
 	    argc = 0;		/* Provoke usage message below */
 	}
@@ -1203,8 +1211,8 @@ main(int argc, char **argv)
 
     if (!db_initialize(&argc, &argv)
 	|| !network_initialize(argc, argv, &desc)) {
-	fprintf(stderr, "Usage: %s [-e] [-l log-file] %s %s\n",
-		this_program, db_usage_string(), network_usage_string());
+	fprintf(stderr, "Usage: %s [-e] [-l log-file] [-n netproto] %s [net args...]\n",
+		this_program, db_usage_string());
 	exit(1);
     }
     oklog("STARTING: Version %s of the LambdaMOO server\n", server_version);

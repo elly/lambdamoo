@@ -28,6 +28,8 @@
 #include "structures.h"
 #include "utils.h"
 
+#ifdef USE_NETPROTO_SINGLE
+
 static enum {
     STATE_OPEN, STATE_CLOSED
 } state = STATE_CLOSED;
@@ -35,20 +37,20 @@ static int listening = 0;
 static server_listener slistener;
 static int binary = 0;
 
-const char *
-network_protocol_name(void)
+static const char *
+single_protocol_name(void)
 {
     return "single-user";
 }
 
-const char *
-network_usage_string(void)
+static const char *
+single_usage_string(void)
 {
     return "";
 }
 
-int
-network_initialize(int argc, char **argv, Var * desc)
+static int
+single_initialize(int argc, char **argv, Var * desc)
 {
     *desc = zero;
     if (argc != 0)
@@ -57,8 +59,8 @@ network_initialize(int argc, char **argv, Var * desc)
 	return 1;
 }
 
-enum error
-network_make_listener(server_listener sl, Var desc, network_listener * nl,
+static enum error
+single_make_listener(server_listener sl, Var desc, network_listener * nl,
 		      Var * canon, const char **name)
 {
     if (listening)
@@ -72,14 +74,14 @@ network_make_listener(server_listener sl, Var desc, network_listener * nl,
     return E_NONE;
 }
 
-int
-network_listen(network_listener nl)
+static int
+single_listen(network_listener nl)
 {
     return 1;
 }
 
-int
-network_send_line(network_handle nh, const char *line, int flush_ok)
+static int
+single_send_line(network_handle nh, const char *line, int flush_ok)
 {
     printf("%s\n", line);
     fflush(stdout);
@@ -87,8 +89,8 @@ network_send_line(network_handle nh, const char *line, int flush_ok)
     return 1;
 }
 
-int
-network_send_bytes(network_handle nh, const char *buffer, int buflen,
+static int
+single_send_bytes(network_handle nh, const char *buffer, int buflen,
 		   int flush_ok)
 {
     /* Cast to (void *) to discard `const' on some systems */
@@ -98,56 +100,56 @@ network_send_bytes(network_handle nh, const char *buffer, int buflen,
     return 1;
 }
 
-int
-network_buffered_output_length(network_handle nh)
+static int
+single_buffered_output_length(network_handle nh)
 {
     return 0;
 }
 
-const char *
-network_connection_name(network_handle nh)
+static const char *
+single_connection_name(network_handle nh)
 {
     return "standard input";
 }
 
-void
-network_set_connection_binary(network_handle nh, int do_binary)
+static void
+single_set_connection_binary(network_handle nh, int do_binary)
 {
     binary = do_binary;
 }
 
-Var
-network_connection_options(network_handle nh, Var list)
+static Var
+single_connection_options(network_handle nh, Var list)
 {
     return list;
 }
 
-int
-network_connection_option(network_handle nh, const char *option, Var * value)
+static int
+single_connection_option(network_handle nh, const char *option, Var * value)
 {
     return 0;
 }
 
-int
-network_set_connection_option(network_handle nh, const char *option, Var value)
+static int
+single_set_connection_option(network_handle nh, const char *option, Var value)
 {
     return 0;
 }
 
-void
-network_close(network_handle nh)
+static void
+single_close(network_handle nh)
 {
     state = STATE_CLOSED;
 }
 
-void
-network_close_listener(network_listener nl)
+static void
+single_close_listener(network_listener nl)
 {
     listening = 0;
 }
 
-void
-network_shutdown(void)
+static void
+single_shutdown(void)
 {
     int flags;
 
@@ -158,20 +160,20 @@ network_shutdown(void)
 
 static int input_suspended = 0;
 
-void
-network_suspend_input(network_handle nh)
+static void
+single_suspend_input(network_handle nh)
 {
     input_suspended = 1;
 }
 
-void
-network_resume_input(network_handle nh)
+static void
+single_resume_input(network_handle nh)
 {
     input_suspended = 0;
 }
 
-int
-network_process_io(int timeout)
+static int
+single_process_io(int timeout)
 {
     network_handle nh;
     static server_handle sh;
@@ -235,7 +237,32 @@ network_process_io(int timeout)
     return got_some;
 }
 
+struct netproto netproto_single = {
+	.name = "single",
+	.init = single_initialize,
+	.protocol_name = single_protocol_name,
+	.usage_string = single_usage_string,
+	.make_listener = single_make_listener,
+	.listen = single_listen,
+	.send_line = single_send_line,
+	.send_bytes = single_send_bytes,
+	.buffered_output_length = single_buffered_output_length,
+	.connection_name = single_connection_name,
+	.set_connection_binary = single_set_connection_binary,
+	.connection_options = single_connection_options,
+	.connection_option = single_connection_option,
+	.set_connection_option = single_set_connection_option,
+	.close = single_close,
+	.close_listener = single_close_listener,
+	.shutdown = single_shutdown,
+	.suspend_input = single_suspend_input,
+	.resume_input = single_resume_input,
+	.process_io = single_process_io,
+};
+
 char rcsid_net_single[] = "$Id: net_single.c,v 1.2 1997/03/03 04:19:07 nop Exp $";
+
+#endif /* USE_NET_SINGLE */
 
 /* $Log: net_single.c,v $
 /* Revision 1.2  1997/03/03 04:19:07  nop

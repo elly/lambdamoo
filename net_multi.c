@@ -41,6 +41,8 @@
 #include "timers.h"
 #include "utils.h"
 
+#ifdef USE_NETPROTO_TCP
+
 static struct proto proto;
 static int eol_length;		/* == strlen(proto.eol_out_string) */
 
@@ -472,20 +474,20 @@ enqueue_output(network_handle nh, const char *line, int line_length,
  * External entry points *
  *************************/
 
-const char *
-network_protocol_name(void)
+static const char *
+multi_protocol_name(void)
 {
     return proto_name();
 }
 
-const char *
-network_usage_string(void)
+static const char *
+multi_usage_string(void)
 {
     return proto_usage_string();
 }
 
-int
-network_initialize(int argc, char **argv, Var * desc)
+static int
+multi_initialize(int argc, char **argv, Var * desc)
 {
     if (!proto_initialize(&proto, desc, argc, argv))
 	return 0;
@@ -499,8 +501,8 @@ network_initialize(int argc, char **argv, Var * desc)
     return 1;
 }
 
-enum error
-network_make_listener(server_listener sl, Var desc,
+static enum error
+multi_make_listener(server_listener sl, Var desc,
 		   network_listener * nl, Var * canon, const char **name)
 {
     int fd;
@@ -521,53 +523,53 @@ network_make_listener(server_listener sl, Var desc,
     return e;
 }
 
-int
-network_listen(network_listener nl)
+static int
+multi_listen(network_listener nl)
 {
     nlistener *l = nl.ptr;
 
     return proto_listen(l->fd);
 }
 
-int
-network_send_line(network_handle nh, const char *line, int flush_ok)
+static int
+multi_send_line(network_handle nh, const char *line, int flush_ok)
 {
     return enqueue_output(nh, line, strlen(line), 1, flush_ok);
 }
 
-int
-network_send_bytes(network_handle nh, const char *buffer, int buflen,
+static int
+multi_send_bytes(network_handle nh, const char *buffer, int buflen,
 		   int flush_ok)
 {
     return enqueue_output(nh, buffer, buflen, 0, flush_ok);
 }
 
-int
-network_buffered_output_length(network_handle nh)
+static int
+multi_buffered_output_length(network_handle nh)
 {
     nhandle *h = nh.ptr;
 
     return h->output_length;
 }
 
-void
-network_suspend_input(network_handle nh)
+static void
+multi_suspend_input(network_handle nh)
 {
     nhandle *h = nh.ptr;
 
     h->input_suspended = 1;
 }
 
-void
-network_resume_input(network_handle nh)
+static void
+multi_resume_input(network_handle nh)
 {
     nhandle *h = nh.ptr;
 
     h->input_suspended = 0;
 }
 
-int
-network_process_io(int timeout)
+static int
+multi_process_io(int timeout)
 {
     nhandle *h, *hnext;
     nlistener *l;
@@ -602,26 +604,26 @@ network_process_io(int timeout)
     }
 }
 
-const char *
-network_connection_name(network_handle nh)
+static const char *
+multi_connection_name(network_handle nh)
 {
     nhandle *h = (nhandle *) nh.ptr;
 
     return h->name;
 }
 
-void
-network_set_connection_binary(network_handle nh, int do_binary)
+static void
+multi_set_connection_binary(network_handle nh, int do_binary)
 {
     nhandle *h = nh.ptr;
 
     h->binary = do_binary;
 }
 
-Var
-network_connection_options(network_handle nh, Var list)
+static Var
+multi_connection_options(network_handle nh, Var list)
 {
-#if NETWORK_PROTOCOL == NP_TCP
+#ifdef USE_NETPROTO_TCP
     nhandle *h = nh.ptr;
     Var pair;
 
@@ -636,10 +638,10 @@ network_connection_options(network_handle nh, Var list)
     return list;
 }
 
-int
-network_connection_option(network_handle nh, const char *option, Var * value)
+static int
+multi_connection_option(network_handle nh, const char *option, Var * value)
 {
-#if NETWORK_PROTOCOL == NP_TCP
+#ifdef USE_NETPROTO_TCP
     nhandle *h = nh.ptr;
 
     if (!mystrcasecmp(option, "client-echo")) {
@@ -652,10 +654,10 @@ network_connection_option(network_handle nh, const char *option, Var * value)
     return 0;
 }
 
-int
-network_set_connection_option(network_handle nh, const char *option, Var value)
+static int
+multi_set_connection_option(network_handle nh, const char *option, Var value)
 {
-#if NETWORK_PROTOCOL == NP_TCP
+#ifdef USE_NETPROTO_TCP
     nhandle *h = nh.ptr;
 
     /* These values taken from RFC 854 and RFC 857. */
@@ -685,8 +687,8 @@ network_set_connection_option(network_handle nh, const char *option, Var value)
 
 #ifdef OUTBOUND_NETWORK
 
-enum error
-network_open_connection(Var arglist)
+static enum error
+multi_open_connection(Var arglist)
 {
     int rfd, wfd;
     const char *local_name, *remote_name;
@@ -701,20 +703,20 @@ network_open_connection(Var arglist)
 }
 #endif
 
-void
-network_close(network_handle h)
+static void
+multi_close(network_handle h)
 {
     close_nhandle(h.ptr);
 }
 
-void
-network_close_listener(network_listener nl)
+static void
+multi_close_listener(network_listener nl)
 {
     close_nlistener(nl.ptr);
 }
 
-void
-network_shutdown(void)
+static void
+multi_shutdown(void)
 {
     while (all_nhandles)
 	close_nhandle(all_nhandles);
@@ -722,7 +724,33 @@ network_shutdown(void)
 	close_nlistener(all_nlisteners);
 }
 
+struct netproto netproto_multi = {
+	.name = "multi",
+	.init = multi_initialize,
+	.protocol_name = multi_protocol_name,
+	.usage_string = multi_usage_string,
+	.make_listener = multi_make_listener,
+	.listen = multi_listen,
+	.send_line = multi_send_line,
+	.send_bytes = multi_send_bytes,
+	.buffered_output_length = multi_buffered_output_length,
+	.connection_name = multi_connection_name,
+	.set_connection_binary = multi_set_connection_binary,
+	.connection_options = multi_connection_options,
+	.connection_option = multi_connection_option,
+	.set_connection_option = multi_set_connection_option,
+	.close = multi_close,
+	.close_listener = multi_close_listener,
+	.shutdown = multi_shutdown,
+	.suspend_input = multi_suspend_input,
+	.resume_input = multi_resume_input,
+	.process_io = multi_process_io,
+};
+
+
 char rcsid_net_multi[] = "$Id: net_multi.c,v 1.3 1998/12/14 13:18:31 nop Exp $";
+
+#endif /* USE_NETPROTO_TCP */
 
 /* 
  * $Log: net_multi.c,v $

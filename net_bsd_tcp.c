@@ -41,6 +41,8 @@
 #include "timers.h"
 #include "utils.h"
 
+#ifdef USE_NETPROTO_TCP
+
 const char *
 proto_name(void)
 {
@@ -278,6 +280,8 @@ proto_open_connection(Var arglist, int *read_fd, int *write_fd,
 #endif				/* OUTBOUND_NETWORK */
 
 char rcsid_net_bsd_tcp[] = "$Id: net_bsd_tcp.c,v 1.3 1998/12/14 13:18:27 nop Exp $";
+
+#endif /* USE_NETPROTO_TCP */
 
 /* 
  * $Log: net_bsd_tcp.c,v $
