@@ -81,9 +81,7 @@ typedef struct nhandle {
     int output_length;
     int output_lines_flushed;
     int outbound, binary;
-#if NETWORK_PROTOCOL == NP_TCP
     int client_echo;
-#endif
 } nhandle;
 
 static nhandle *all_nhandles = 0;

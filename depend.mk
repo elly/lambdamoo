@@ -66,7 +66,10 @@ match.o: match.c my-stdlib.h config.h my-string.h db.h program.h \
  structures.h my-stdio.h version.h exceptions.h match.h parse_cmd.h \
  storage.h ref_count.h unparse.h utils.h execute.h opcode.h options.h
 md5.o: md5.c my-string.h config.h md5.h
-name_lookup.o: name_lookup.c options.h config.h
+name_lookup.o: name_lookup.c options.h config.h my-signal.h my-stdlib.h \
+ my-unistd.h my-inet.h my-in.h my-types.h my-socket.h my-wait.h \
+ my-string.h log.h my-stdio.h structures.h server.h network.h storage.h \
+ ref_count.h timers.h my-time.h
 network.o: network.c network.h config.h options.h structures.h my-stdio.h \
  server.h
 numbers.o: numbers.c my-math.h my-stdlib.h config.h my-string.h my-time.h \

@@ -23,7 +23,7 @@
 extern struct netproto netproto_single;
 #endif
 #ifdef USE_NETPROTO_TCP
-extern struct netproto netproto_tcp;
+extern struct netproto netproto_multi;
 #endif
 
 static struct netproto *netprotos[] = {
@@ -31,7 +31,7 @@ static struct netproto *netprotos[] = {
 	&netproto_single,
 #endif
 #ifdef USE_NETPROTO_TCP
-	&netproto_tcp,
+	&netproto_multi,
 #endif
 	NULL,
 };

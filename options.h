@@ -99,7 +99,7 @@
  */
 
 #define USE_NETPROTO_SINGLE
-// #define USE_NETPROTO_TCP
+#define USE_NETPROTO_TCP
 
 #define DEFAULT_PORT 		7777
 #define DEFAULT_CONNECT_FILE	"/tmp/.MOO-server"
