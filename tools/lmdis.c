@@ -39,12 +39,12 @@ static void dumpents(struct lmdb *db) {
 			vdef = lmdb_verbdefbyid(obj, vid);
 		}
 		pid = 0;
-		pdef = lmdb_propdefbyid(obj, pid);
+		pdef = lmdb_propdefbyid(db, obj, pid);
 		while (pdef) {
 			printf("\t#%d.%s\n", lmdb_objid(obj),
 			       lmdb_propdefname(pdef));
 			pid++;
-			pdef = lmdb_propdefbyid(obj, pid);
+			pdef = lmdb_propdefbyid(db, obj, pid);
 		}
 		oid++;
 		obj = lmdb_objbyid(db, oid);
@@ -83,12 +83,23 @@ static void dumpprop(struct lmdb *db, int oid, const char *name) {
 
 static void dumpobj(struct lmdb *db, int oid) {
 	struct Object *obj = lmdb_objbyid(db, oid);
+	struct Verbdef *v;
+	struct Propdef *p;
+	struct Pval *a;
+	int i;
 	if (!obj) {
 		fprintf(stderr, "Unknown object: %d\n", oid);
 		return;
 	}
 
 	printf("Object #%d: %s\n", lmdb_objid(obj), lmdb_objname(obj));
+	for (i = 0, v = lmdb_verbdefbyid(obj, i); v; i++, v = lmdb_verbdefbyid(obj, i))
+		printf("\tVerb: %s\n", lmdb_verbdefname(v));
+	for (i = 0, p = lmdb_propdefbyid(db, obj, i); p; i++, p = lmdb_propdefbyid(db, obj, i)) {
+		printf("\tPropdef: %s%s\n", lmdb_propdefname(p), lmdb_propdefislocal(db, obj, i) ? "" : " [inherited]");
+		a = lmdb_propbyname(db, obj, lmdb_propdefname(p));
+		printf("\t  = %s\n", lmdb_proptostr(a));
+	}
 }
 
 int main(int argc, char *argv[]) {

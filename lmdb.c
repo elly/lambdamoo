@@ -334,12 +334,66 @@ const char *lmdb_verbdefprep(struct Verbdef *vdef) {
 	return db_unparse_prep(vdef->prep);
 }
 
-struct Propdef *lmdb_propdefbyid(struct Object *obj, int id) {
+struct Propdef *lmdb_propdefbyid(struct lmdb *db, struct Object *obj, int id) {
+	if (id >= obj->propdefs.cur_length) {
+		struct Object *parent = lmdb_objbyid(db, obj->parent);
+		if (!parent)
+			return NULL;
+		return lmdb_propdefbyid(db, parent, id - obj->propdefs.cur_length);
+	}
 	return &obj->propdefs.l[id];
+}
+
+struct Propdef *lmdb_propdefbyname(struct lmdb *db, struct Object *obj, const char *name) {
+	int i;
+	struct Propdef *p;
+	for (i = 0, p = lmdb_propdefbyid(db, obj, i);
+	     p;
+	     i++, p = lmdb_propdefbyid(db, obj, i))
+		if (!strcmp(obj->propdefs.l[i].name, name))
+			return &obj->propdefs.l[i];
+	return NULL;
 }
 
 const char *lmdb_propdefname(struct Propdef *pdef) {
 	return pdef->name;
+}
+
+int lmdb_propdefislocal(struct lmdb *db, struct Object *obj, int idx) {
+	return idx < obj->propdefs.cur_length;
+}
+
+static int _nprops(struct lmdb *db, Objid id) {
+	int n;
+	struct Object *obj;
+	for (obj = lmdb_objbyid(db, id); obj; obj = lmdb_objbyid(db, obj->parent))
+		n += obj->propdefs.cur_length;
+	return n;
+}
+
+struct Pval *lmdb_propbyid(struct lmdb *db, struct Object *obj, int id) {
+	if (id > _nprops(db, obj->id))
+		return NULL;
+	return &obj->propval[id];
+}
+
+struct Pval *lmdb_propbyname(struct lmdb *db, struct Object *obj, const char *name) {
+	int i = 0;
+	struct Propdef *d = lmdb_propdefbyid(db, obj, i);
+	/* Hey kid, wanna see an O(n^3) property lookup algorithm? */
+	while (d) {
+		if (!strcmp(d->name, name))
+			return &obj->propval[i];
+		i++;
+		d = lmdb_propdefbyid(db, obj, i);
+	}
+	return NULL;
+}
+
+const char *lmdb_proptostr(struct Pval *pv) {
+	static char buf[32];
+	snprintf(buf, sizeof(buf), "%p", pv);
+	return buf;
 }
 
 int rdverb(struct lmdb *lmdb, FILE *f) {

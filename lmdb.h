@@ -36,8 +36,14 @@ const char *lmdb_verbdefprep(struct Verbdef *vdef);
 Program *lmdb_verbdefprog(struct Verbdef *vdef);
 int lmdb_verbdefsize(struct Verbdef *vdef);
 
-struct Propdef *lmdb_propdefbyid(struct Object *obj, int idx);
+struct Propdef *lmdb_propdefbyid(struct lmdb *db, struct Object *obj, int idx);
+struct Propdef *lmdb_propdefbyname(struct lmdb *db, struct Object *obj, const char *name);
+int lmdb_propdefislocal(struct lmdb *db, struct Object *obj, int idx);
 const char *lmdb_propdefname(struct Propdef *pdef);
+
+struct Pval *lmdb_propbyid(struct lmdb *db, struct Object *obj, int idx);
+struct Pval *lmdb_propbyname(struct lmdb *db, struct Object *obj, const char *name);
+const char *lmdb_proptostr(struct Pval *pv);
 
 const char *lmdb_lasterror(struct lmdb *lmdb);
 
