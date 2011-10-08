@@ -1,0 +1,12 @@
+#!/bin/sh
+
+usage() {
+	echo "Usage: $0 <test db> <test dir>"
+}
+
+(cat $2/test.in ; echo "; shutdown()") | ./moo -n single $1 /dev/null 2>$2/run.err | grep '=>' | head -n -1 > $2/run.out
+if ! diff -u $2/test.out $2/run.out; then
+	echo "$2: failed"
+else
+	echo "$2: ok"
+fi
