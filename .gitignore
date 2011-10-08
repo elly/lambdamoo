@@ -3,3 +3,5 @@
 config.h
 config.status
 y.*
+run.err
+run.out
