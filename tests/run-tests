@@ -1,0 +1,6 @@
+#!/bin/sh
+
+for x in */*/test.in; do
+	d=$(dirname "$x")
+	./run-test "$d"
+done
