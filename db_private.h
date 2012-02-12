@@ -27,12 +27,12 @@
 typedef struct Verbdef Verbdef;
 
 struct Verbdef {
-    const char *name;
-    Program *program;
-    Objid owner;
-    short perms;
-    short prep;
-    Verbdef *next;
+	const char *name;
+	Program *program;
+	Objid owner;
+	short perms;
+	int prep;
+	Verbdef *next;
 };
 
 typedef struct Proplist Proplist;

@@ -31,7 +31,7 @@
 #include "utils.h"
 
 char **
-parse_into_words(char *input, int *nwords)
+parse_into_words(char *input, unsigned int *nwords)
 {
     static char **words = 0;
     static int max_words = 0;

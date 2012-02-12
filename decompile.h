@@ -19,7 +19,7 @@
 #include "program.h"
 
 extern Stmt *decompile_program(Program * program, int vector);
-extern int find_line_number(Program * program, int vector, int pc);
+extern int find_line_number(Program * program, unsigned int vector, unsigned int pc);
 
 /* 
  * $Log: decompile.h,v $

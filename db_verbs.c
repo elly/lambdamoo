@@ -19,6 +19,7 @@
  * Routines for manipulating verbs on DB objects
  *****************************************************************************/
 
+#include <assert.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
@@ -65,7 +66,7 @@ static const char *prep_list[] =
 #define NPREPS Arraysize(prep_list)
 
 typedef struct pt_entry {
-    int nwords;
+    unsigned int nwords;
     char *words[MAXPPHRASE];
     struct pt_entry *next;
 } pt_entry;
@@ -75,8 +76,8 @@ struct pt_entry *prep_table[NPREPS];
 void
 dbpriv_build_prep_table(void)
 {
-    int i, j;
-    int nwords;
+    unsigned int i, j;
+    unsigned int nwords;
     char **words;
     char cprep[100];
     const char *p;
@@ -114,10 +115,10 @@ dbpriv_build_prep_table(void)
 }
 
 db_prep_spec
-db_find_prep(int argc, char *argv[], int *first, int *last)
+db_find_prep(unsigned int argc, char *argv[], int *first, int *last)
 {
     pt_entry *alias;
-    int i, j, k;
+    unsigned int i, j, k;
     int exact_match = (first == 0 || last == 0);
 
     for (i = 0; i < argc; i++) {
@@ -148,31 +149,32 @@ db_find_prep(int argc, char *argv[], int *first, int *last)
 db_prep_spec
 db_match_prep(const char *prepname)
 {
-    db_prep_spec prep;
-    int argc;
-    char *ptr;
-    char **argv;
-    char *s, first;
+	db_prep_spec prep;
+	unsigned int argc;
+	char *ptr;
+	char **argv;
+	char *s;
+	char first;
 
-    s = str_dup(prepname);
-    first = s[0];
-    if (first == '#')
-	first = (++s)[0];
-    prep = strtol(s, &ptr, 10);
-    if (*ptr == '\0') {
+	s = str_dup(prepname);
+	first = s[0];
+	if (first == '#')
+		first = (++s)[0];
+	prep = strtol(s, &ptr, 10);
+	if (*ptr == '\0') {
+		free_str(s);
+		if (!isdigit(first) || prep >= (int)NPREPS)
+			return PREP_NONE;
+		else
+			return prep;
+	}
+	if ((ptr = strchr(s, '/')) != '\0')
+		*ptr = '\0';
+
+	argv = parse_into_words(s, &argc);
+	prep = db_find_prep(argc, argv, 0, 0);
 	free_str(s);
-	if (!isdigit(first) || prep >= NPREPS)
-	    return PREP_NONE;
-	else
-	    return prep;
-    }
-    if ((ptr = strchr(s, '/')) != '\0')
-	*ptr = '\0';
-
-    argv = parse_into_words(s, &argc);
-    prep = db_find_prep(argc, argv, 0, 0);
-    free_str(s);
-    return prep;
+	return prep;
 }
 
 const char *
@@ -292,7 +294,7 @@ db_delete_verb(db_verb_handle vh)
 
 db_verb_handle
 db_find_command_verb(Objid oid, const char *verb,
-		     db_arg_spec dobj, unsigned prep, db_arg_spec iobj)
+		     db_arg_spec dobj, db_prep_spec prep, db_arg_spec iobj)
 {
     Object *o;
     Verbdef *v;

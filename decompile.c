@@ -21,6 +21,7 @@
 #include "opcode.h"
 #include "program.h"
 #include "storage.h"
+#include "util.h"
 #include "utils.h"
 
 static Program *program;
@@ -82,7 +83,7 @@ do {				\
 #define READ_LITERAL()	program->literals[READ_BYTES(bc.numbytes_literal)]
 #define READ_FORK()	program->fork_vectors[READ_BYTES(bc.numbytes_fork)]
 #define READ_ID()	READ_BYTES(bc.numbytes_var_name)
-#define READ_STACK()	READ_BYTES(bc.numbytes_stack)
+#define READ_STACK()	unused(READ_BYTES(bc.numbytes_stack))
 
 #define READ_JUMP(is_hot)	read_jump(bc.numbytes_label, &ptr, &is_hot)
 
@@ -289,7 +290,7 @@ decompile(Bytecodes bc, Byte * start, Byte * end, Stmt ** stmt_sink,
 		Expr *time = pop_expr();
 
 		fbc = READ_FORK();
-		id = (op == OP_FORK ? -1 : READ_ID());
+		id = (op == OP_FORK ? -1 : ui2si(READ_ID()));
 		s = alloc_stmt(STMT_FORK);
 		s->s.fork.id = id;
 		s->s.fork.time = time;
@@ -817,7 +818,7 @@ program_to_tree(Program * prog, int vector, int pc_vector, int pc)
 {
     Stmt *result;
     Bytecodes bc;
-    int i, sum;
+    unsigned int i, sum;
 
     program = prog;
     bc = (pc_vector == MAIN_VECTOR
@@ -826,13 +827,13 @@ program_to_tree(Program * prog, int vector, int pc_vector, int pc)
 
     if (pc < 0)
 	hot_byte = 0;
-    else if (pc < bc.size)
+    else if (si2ui(pc) < bc.size)
 	hot_byte = bc.vector + pc;
     else
 	panic("Illegal PC in FIND_LINE_NUMBER!");
 
     hot_node = 0;
-    hot_position = (pc == bc.size - 1 ? DONE : TOP);
+    hot_position = (si2ui(pc) == bc.size - 1 ? DONE : TOP);
 
     sum = program->main_vector.max_stack;
     for (i = 0; i < program->fork_vectors_size; i++)
@@ -968,7 +969,7 @@ find_hot_node(Stmt * stmt)
 }
 
 int
-find_line_number(Program * prog, int vector, int pc)
+find_line_number(Program * prog, unsigned int vector, unsigned int pc)
 {
     Stmt *tree;
 

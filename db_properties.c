@@ -123,7 +123,7 @@ db_add_propdef(Objid oid, const char *pname, Var value, Objid owner,
 {
     Object *o;
     Pval pval;
-    int i;
+    unsigned int i;
     db_prop_handle h;
 
     h = db_find_property(oid, pname, 0);
@@ -233,9 +233,9 @@ db_delete_propdef(Objid oid, const char *pname)
 {
     Proplist *props = &dbpriv_find_object(oid)->propdefs;
     int hash = str_hash(pname);
-    int count = props->cur_length;
-    int max = props->max_length;
-    int i, j;
+    unsigned int count = props->cur_length;
+    unsigned int max = props->max_length;
+    unsigned int i, j;
 
     for (i = 0; i < count; i++) {
 	Propdef p;
@@ -430,7 +430,7 @@ db_find_property(Objid oid, const char *name, Var * value)
     for (o = dbpriv_find_object(oid); o; o = dbpriv_find_object(o->parent)) {
 	Proplist *props = &(o->propdefs);
 	Propdef *defs = props->l;
-	int length = props->cur_length;
+	unsigned int length = props->cur_length;
 
 	for (i = 0; i < length; i++, n++) {
 	    if (defs[i].hash == hash
@@ -631,22 +631,19 @@ fix_props(Objid oid, int parent_local, int old, int new, int common)
 int
 dbpriv_check_properties_for_chparent(Objid oid, Objid new_parent)
 {
-    Object *o;
-    int i;
+	Object *o;
+	unsigned int i;
 
-    for (o = dbpriv_find_object(new_parent);
-	 o;
-	 o = dbpriv_find_object(o->parent)) {
-	Proplist *props = &o->propdefs;
+	for (o = dbpriv_find_object(new_parent); o; o = dbpriv_find_object(o->parent)) {
+		Proplist *props = &o->propdefs;
 
-	for (i = 0; i < props->cur_length; i++)
-	    if (property_defined_at_or_below(props->l[i].name,
-					     props->l[i].hash,
-					     oid))
-		return 0;
-    }
+		for (i = 0; i < props->cur_length; i++)
+			if (property_defined_at_or_below(props->l[i].name,
+			    props->l[i].hash, oid))
+				return 0;
+	}
 
-    return 1;
+	return 1;
 }
 
 void
