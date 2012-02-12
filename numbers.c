@@ -21,7 +21,7 @@
 #include "my-math.h"
 #include "my-stdlib.h"
 #include "my-string.h"
-#include "my-time.h"
+#include <time.h>
 
 #include "config.h"
 #include "functions.h"

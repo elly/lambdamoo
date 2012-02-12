@@ -21,7 +21,7 @@
 
 #include <ctype.h>
 #include <float.h>
-#include "my-stdarg.h"
+#include <stdarg.h>
 #include "my-stdio.h"
 #include "my-stdlib.h"
 
