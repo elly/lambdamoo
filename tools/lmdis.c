@@ -6,6 +6,7 @@
 #include "lmdb.h"
 #include "program.h"
 #include "unparse.h"
+#include "util.h"
 
 static int srcmode = 0;
 
@@ -51,7 +52,8 @@ static void dumpents(struct lmdb *db) {
 	}
 }
 
-static void _dumpverbrec(void *unused, const char *msg) {
+static void _dumpverbrec(void *arg, const char *msg) {
+	unused(arg);
 	printf("%s%s\n", srcmode ? "" : "\t", msg);
 }
 
@@ -78,7 +80,9 @@ static void dumpverb(struct lmdb *db, int oid, const char *name) {
 }
 
 static void dumpprop(struct lmdb *db, int oid, const char *name) {
-	
+	unused(db);
+	unused(oid);
+	unused(name);
 }
 
 static void dumpobj(struct lmdb *db, int oid) {

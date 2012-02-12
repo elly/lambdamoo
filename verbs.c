@@ -31,6 +31,7 @@
 #include "storage.h"
 #include "unparse.h"
 #include "utils.h"
+#include "util.h"
 #include "verbs.h"
 
 struct verb_data {
@@ -54,6 +55,9 @@ static package
 bf_verbs(Var arglist, Byte next, void *vdata, Objid progr)
 {				/* (object) */
     Objid oid = arglist.v.list[1].v.obj;
+
+    unused(next);
+    unused(vdata);
 
     free_var(arglist);
 
@@ -183,6 +187,9 @@ bf_add_verb(Var arglist, Byte next, void *vdata, Objid progr)
     db_prep_spec prep;
     enum error e;
 
+    unused(next);
+    unused(vdata);
+
     if ((e = validate_verb_info(info, &owner, &flags, &names)) != E_NONE);	/* Already failed */
     else if ((e = validate_verb_args(args, &dobj, &prep, &iobj)) != E_NONE)
 	free_str(names);
@@ -236,6 +243,9 @@ bf_delete_verb(Var arglist, Byte next, void *vdata, Objid progr)
     db_verb_handle h;
     enum error e;
 
+    unused(next);
+    unused(vdata);
+
     if ((e = validate_verb_descriptor(desc)) != E_NONE);	/* Do nothing; e is already set. */
     else if (!valid(oid))
 	e = E_INVARG;
@@ -266,6 +276,9 @@ bf_verb_info(Var arglist, Byte next, void *vdata, Objid progr)
     unsigned flags;
     char *s;
     enum error e;
+
+    unused(next);
+    unused(vdata);
 
     if ((e = validate_verb_descriptor(desc)) != E_NONE
 	|| (e = E_INVARG, !valid(oid))) {
@@ -312,6 +325,9 @@ bf_set_verb_info(Var arglist, Byte next, void *vdata, Objid progr)
     const char *new_names;
     enum error e;
     db_verb_handle h;
+
+    unused(next);
+    unused(vdata);
 
     if ((e = validate_verb_descriptor(desc)) != E_NONE);	/* Do nothing; e is already set. */
     else if (!valid(oid))
@@ -368,6 +384,9 @@ bf_verb_args(Var arglist, Byte next, void *vdata, Objid progr)
     Var r;
     enum error e;
 
+    unused(next);
+    unused(vdata);
+
     if ((e = validate_verb_descriptor(desc)) != E_NONE
 	|| (e = E_INVARG, !valid(oid))) {
 	free_var(arglist);
@@ -403,6 +422,9 @@ bf_set_verb_args(Var arglist, Byte next, void *vdata, Objid progr)
     db_verb_handle h;
     db_arg_spec dobj, iobj;
     db_prep_spec prep;
+
+    unused(next);
+    unused(vdata);
 
     if ((e = validate_verb_descriptor(desc)) != E_NONE);	/* Do nothing; e is already set. */
     else if (!valid(oid))
@@ -450,6 +472,9 @@ bf_verb_code(Var arglist, Byte next, void *vdata, Objid progr)
     Var code;
     enum error e;
 
+    unused(next);
+    unused(vdata);
+
     if ((e = validate_verb_descriptor(desc)) != E_NONE
 	|| (e = E_INVARG, !valid(oid))) {
 	free_var(arglist);
@@ -481,6 +506,9 @@ bf_set_verb_code(Var arglist, Byte next, void *vdata, Objid progr)
     db_verb_handle h;
     Var errors;
     enum error e;
+
+    unused(next);
+    unused(vdata);
 
     for (i = 1; i <= code.v.list[0].v.num; i++)
 	if (code.v.list[i].type != TYPE_STR) {
@@ -515,6 +543,7 @@ static package
 bf_eval(Var arglist, Byte next, void *data, Objid progr)
 {
     package p;
+    unused(data);
     if (next == 1) {
 
 	if (!is_programmer(progr)) {
