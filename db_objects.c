@@ -19,6 +19,9 @@
  * Routines for manipulating DB objects
  *****************************************************************************/
 
+#include <assert.h>
+#include <string.h>
+
 #include "config.h"
 #include "db.h"
 #include "db_private.h"
@@ -132,50 +135,49 @@ db_create_object(void)
 void
 db_destroy_object(Objid oid)
 {
-    Object *o = dbpriv_find_object(oid);
-    Verbdef *v, *w;
-    int i;
+	Object *o = dbpriv_find_object(oid);
+	Verbdef *v, *w;
+	unsigned int i;
 
-    db_priv_affected_callable_verb_lookup();
+	db_priv_affected_callable_verb_lookup();
 
-    if (!o)
-	panic("DB_DESTROY_OBJECT: Invalid object!");
+	assert(o);
+	assert(o->location == NOTHING);
+	assert(o->contents == NOTHING);
+	assert(o->parent == NOTHING);
+	assert(o->child == NOTHING);
 
-    if (o->location != NOTHING || o->contents != NOTHING
-	|| o->parent != NOTHING || o->child != NOTHING)
-	panic("DB_DESTROY_OBJECT: Not a barren orphan!");
+	if (is_user(oid)) {
+		Var t;
 
-    if (is_user(oid)) {
-	Var t;
+		t.type = TYPE_OBJ;
+		t.v.obj = oid;
+		all_users = setremove(all_users, t);
+	}
+	free_str(o->name);
 
-	t.type = TYPE_OBJ;
-	t.v.obj = oid;
-	all_users = setremove(all_users, t);
-    }
-    free_str(o->name);
+	for (i = 0; i < o->propdefs.cur_length; i++) {
+		/* As an orphan, the only properties on this object are the ones
+		 * defined on it directly, so these two arrays must be the same length.
+		 */
+		free_str(o->propdefs.l[i].name);
+		free_var(o->propval[i].var);
+	}
+	if (o->propval)
+		myfree(o->propval, M_PVAL);
+	if (o->propdefs.l)
+		myfree(o->propdefs.l, M_PROPDEF);
 
-    for (i = 0; i < o->propdefs.cur_length; i++) {
-	/* As an orphan, the only properties on this object are the ones
-	 * defined on it directly, so these two arrays must be the same length.
-	 */
-	free_str(o->propdefs.l[i].name);
-	free_var(o->propval[i].var);
-    }
-    if (o->propval)
-	myfree(o->propval, M_PVAL);
-    if (o->propdefs.l)
-	myfree(o->propdefs.l, M_PROPDEF);
+	for (v = o->verbdefs; v; v = w) {
+		if (v->program)
+			free_program(v->program);
+		free_str(v->name);
+		w = v->next;
+		myfree(v, M_VERBDEF);
+	}
 
-    for (v = o->verbdefs; v; v = w) {
-	if (v->program)
-	    free_program(v->program);
-	free_str(v->name);
-	w = v->next;
-	myfree(v, M_VERBDEF);
-    }
-
-    myfree(objects[oid], M_OBJECT);
-    objects[oid] = 0;
+	myfree(objects[oid], M_OBJECT);
+	objects[oid] = 0;
 }
 
 Objid
@@ -281,33 +283,33 @@ db_renumber_object(Objid old)
     return old;
 }
 
-int
+unsigned int
 db_object_bytes(Objid oid)
 {
-    Object *o = objects[oid];
-    int i, len, count;
-    Verbdef *v;
+	Object *o = objects[oid];
+	unsigned int i, len, count;
+	Verbdef *v;
 
-    count = sizeof(Object) + sizeof(Object *);
-    count += strlen(o->name) + 1;
+	count = sizeof(Object) + sizeof(Object *);
+	count += strlen(o->name) + 1;
 
-    for (v = o->verbdefs; v; v = v->next) {
-	count += sizeof(Verbdef);
-	count += strlen(v->name) + 1;
-	if (v->program)
-	    count += program_bytes(v->program);
-    }
+	for (v = o->verbdefs; v; v = v->next) {
+		count += sizeof(Verbdef);
+		count += strlen(v->name) + 1;
+		if (v->program)
+			count += program_bytes(v->program);
+	}
 
-    count += sizeof(Propdef) * o->propdefs.cur_length;
-    for (i = 0; i < o->propdefs.cur_length; i++)
-	count += strlen(o->propdefs.l[i].name) + 1;
+	count += sizeof(Propdef) * o->propdefs.cur_length;
+	for (i = 0; i < o->propdefs.cur_length; i++)
+		count += strlen(o->propdefs.l[i].name) + 1;
 
-    len = dbpriv_count_properties(oid);
-    count += (sizeof(Pval) - sizeof(Var)) * len;
-    for (i = 0; i < len; i++)
-	count += value_bytes(o->propval[i].var);
+	len = dbpriv_count_properties(oid);
+	count += (sizeof(Pval) - sizeof(Var)) * len;
+	for (i = 0; i < len; i++)
+		count += value_bytes(o->propval[i].var);
 
-    return count;
+	return count;
 }
 
 

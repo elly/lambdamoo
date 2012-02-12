@@ -222,6 +222,15 @@ panic(const char *message)
     abort_server();
 }
 
+void panicf(const char *fmt, ...) {
+	char buf[1024];
+	va_list ap;
+	va_start(ap, fmt);
+	vsnprintf(buf, sizeof(buf), fmt, ap);
+	va_end(ap);
+	panic(buf);
+}
+
 enum Fork_Result
 fork_server(const char *subtask_name)
 {

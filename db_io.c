@@ -24,6 +24,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "db_io.h"
 #include "db_private.h"
@@ -37,6 +38,7 @@
 #include "structures.h"
 #include "str_intern.h"
 #include "unparse.h"
+#include "util.h"
 #include "version.h"
 
 
@@ -53,7 +55,8 @@ dbpriv_set_dbio_input(FILE * f)
 void
 dbio_read_line(char *s, int n)
 {
-    fgets(s, n, input);
+	if (!fgets(s, n, input))
+		memset(s, 0, n);
 }
 
 int
@@ -130,31 +133,49 @@ dbio_scanf(const char *format,...)
 int
 dbio_read_num(void)
 {
-    char s[20];
-    char *p;
-    int i;
+	char s[20];
+	char *p;
+	int i = 0;
 
-    fgets(s, 20, input);
-    i = strtol(s, &p, 10);
-    if (isspace(*s) || *p != '\n')
-	errlog("DBIO_READ_NUM: Bad number: \"%s\" at file pos. %ld\n",
-	       s, ftell(input));
-    return i;
+	if (!fgets(s, 20, input))
+		return i;
+	i = strtol(s, &p, 10);
+	if (isspace(*s) || *p != '\n')
+		fatal("bad int: \"%s\" at %ld\n", s, ftell(input));
+	return i;
+}
+
+unsigned int
+dbio_read_unum(void)
+{
+	char s[20];
+	char *p;
+	unsigned int i = 0;
+
+	if (!fgets(s, 20, input))
+		return i;
+
+	i = strtoul(s, &p, 10);
+	if (isspace(*s) || *p != '\n')
+		fatal("bad uint \"%s\" at %ld\n", s, ftell(input));
+	return i;
 }
 
 double
 dbio_read_float(void)
 {
-    char s[40];
-    char *p;
-    double d;
+	char s[40];
+	char *p;
+	double d = 0.0;
 
-    fgets(s, 40, input);
-    d = strtod(s, &p);
-    if (isspace(*s) || *p != '\n')
-	errlog("DBIO_READ_FLOAT: Bad number: \"%s\" at file pos. %ld\n",
-	       s, ftell(input));
-    return d;
+	if (!fgets(s, 40, input))
+		return d;
+
+	d = strtod(s, &p);
+	if (isspace(*s) || *p != '\n')
+		errlog("DBIO_READ_FLOAT: Bad number: \"%s\" at file pos. %ld\n",
+		       s, ftell(input));
+	return d;
 }
 
 Objid
@@ -166,29 +187,31 @@ dbio_read_objid(void)
 const char *
 dbio_read_string(void)
 {
-    static Stream *str = 0;
-    static char buffer[1024];
-    int len, used_stream = 0;
+	static Stream *str = NULL;
+	static char buffer[1024];
+	int len, used_stream = 0;
 
-    if (str == 0)
-	str = new_stream(1024);
+	if (!str)
+		str = new_stream(1024);
 
-  try_again:
-    fgets(buffer, sizeof(buffer), input);
-    len = strlen(buffer);
-    if (len == sizeof(buffer) - 1 && buffer[len - 1] != '\n') {
-	stream_add_string(str, buffer);
-	used_stream = 1;
-	goto try_again;
-    }
-    if (buffer[len - 1] == '\n')
-	buffer[len - 1] = '\0';
+try_again:
+	if (!fgets(buffer, sizeof(buffer), input))
+		return buffer;
 
-    if (used_stream) {
-	stream_add_string(str, buffer);
-	return reset_stream(str);
-    } else
-	return buffer;
+	len = strlen(buffer);
+	if (len == sizeof(buffer) - 1 && buffer[len - 1] != '\n') {
+		stream_add_string(str, buffer);
+		used_stream = 1;
+		goto try_again;
+	}
+	if (buffer[len - 1] == '\n')
+		buffer[len - 1] = '\0';
+
+	if (used_stream) {
+		stream_add_string(str, buffer);
+		return reset_stream(str);
+	} else
+		return buffer;
 }
 
 const char *
@@ -399,7 +422,8 @@ dbio_write_var(Var v)
 static void
 receiver(void *data, const char *line)
 {
-    dbio_printf("%s\n", line);
+	unused(data);
+	dbio_printf("%s\n", line);
 }
 
 void

@@ -155,6 +155,9 @@ extern void ES_RaiseException(Exception * exception, int value);
 /*      2) An unhandled exception is RAISEd.                             */
 
 extern void panic(const char *message);
+extern void panicf(const char *fmt, ...);
+
+#define fatal(fmt, ...) panicf("%s:%d: " fmt, __FILE__, __LINE__, __VA_ARGS__)
 
 #endif				/* !Exceptions_H */
 

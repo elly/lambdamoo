@@ -401,7 +401,7 @@ db_find_property(Objid oid, const char *name, Var * value)
 	}
     };
     static int ptable_init = 0;
-    int i, n;
+    unsigned int i, n;
     db_prop_handle h;
     int hash = str_hash(name);
     Object *o;

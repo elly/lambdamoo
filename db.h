@@ -105,12 +105,12 @@ extern Objid db_renumber_object(Objid);
 
 extern int valid(Objid);
 
-extern int db_object_bytes(Objid);
-				/* Returns the number of bytes of memory
-				 * currently required in order to represent the
-				 * given object and all of its verbs and
-				 * properties.
-				 */
+/* Returns the number of bytes of memory
+ * currently required in order to represent the
+ * given object and all of its verbs and
+ * properties.
+ */
+extern unsigned int db_object_bytes(Objid);
 
 /**** object attributes ****/
 

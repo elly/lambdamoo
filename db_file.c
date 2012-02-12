@@ -22,6 +22,7 @@
 #include <sys/stat.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "config.h"
 #include "db.h"
@@ -107,9 +108,9 @@ read_object(void)
     Objid oid;
     Object *o;
     char s[20];
-    int i;
+    unsigned int i;
     Verbdef *v, **prevv;
-    int nprops;
+    unsigned int nprops;
 
     if (dbio_scanf("#%d", &oid) != 1 || oid != db_last_used_objid() + 1)
 	return 0;
@@ -155,7 +156,7 @@ read_object(void)
 	for (i = 0; i < o->propdefs.cur_length; i++)
 	    o->propdefs.l[i] = read_propdef();
     }
-    nprops = dbio_read_num();
+    nprops = dbio_read_unum();
     if (nprops)
 	o->propval = mymalloc(nprops * sizeof(Pval), M_PVAL);
     else
@@ -173,8 +174,8 @@ write_object(Objid oid)
 {
     Object *o;
     Verbdef *v;
-    int i;
-    int nverbdefs, nprops;
+    unsigned int i;
+    unsigned int nverbdefs, nprops;
 
     if (!valid(oid)) {
 	dbio_printf("#%d recycled\n", oid);
