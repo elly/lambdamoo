@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "my-ctype.h"
+#include <ctype.h>
 #include "my-string.h"
 
 #include "bf_register.h"

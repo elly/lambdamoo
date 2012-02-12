@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "my-ctype.h"
+#include <ctype.h>
 #include "my-stdio.h"
 #include "my-string.h"
 

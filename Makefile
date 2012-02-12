@@ -48,7 +48,7 @@ HDRS =  ast.h bf_register.h code_gen.h db.h db_io.h db_private.h decompile.h \
 	sym_table.h tasks.h timers.h tokens.h unparse.h utils.h verbs.h \
 	version.h
 
-SYSHDRS = my-ctype.h my-fcntl.h my-in.h my-inet.h my-ioctl.h my-math.h \
+SYSHDRS = my-fcntl.h my-in.h my-inet.h my-ioctl.h my-math.h \
 	my-poll.h my-signal.h my-socket.h my-stat.h my-stdarg.h my-stdio.h \
 	my-stdlib.h my-string.h my-stropts.h my-sys-time.h my-time.h \
 	my-tiuser.h my-types.h my-unistd.h my-wait.h
@@ -93,7 +93,6 @@ y.tab.h: parser.o
 
 keywords.c: keywords.gperf
 	pgperf -aCIptT -k1,3,$$ keywords.gperf \
-		| sed -e 's/#include <ctype.h>/#include "my-ctype.h"/' \
 		> keywords.c
 
 dist.tar.Z:	$(DISTFILES)
@@ -266,7 +265,7 @@ depend: ${ALL_CSRCS}
 include depend.mk
 	
 # Have to do this one manually, since 'make depend' can't hack yacc files.
-parser.o:	my-ctype.h my-math.h my-stdlib.h my-string.h \
+parser.o:	my-math.h my-stdlib.h my-string.h \
 		ast.h code_gen.h config.h functions.h \
 		keywords.h list.h log.h numbers.h opcode.h parser.h program.h \
 		storage.h streams.h structures.h sym_table.h utils.h version.h

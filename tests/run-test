@@ -4,7 +4,9 @@ usage() {
 	echo "Usage: $0 <test dir>"
 }
 
-(cat $1/test.in | grep -v '^#' | sed 's/^/; /'; echo "; shutdown()") | ./moo -n single Test.db /dev/null 2>$1/run.err | grep '=>' | sed 's/^=> //' | head -n -1 > $1/run.out
+(cat $1/test.in | grep -v '^#' | sed 's/^/; /'; echo "; shutdown()") \
+	| ./moo -n single Test.db /dev/null 2>$1/run.err \
+	| grep '=>' | sed 's/^=> //' | head -n -1 > $1/run.out
 if ! diff -u $1/test.out $1/run.out; then
 	echo "$1: failed"
 else

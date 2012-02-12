@@ -1,7 +1,7 @@
 /* C code produced by gperf version 2.1p1 (K&R C version, modified by Pavel) */
 /* Command-line: pgperf -aCIptT -k1,3,$ keywords.gperf  */
 
-#include "my-ctype.h"
+#include <ctype.h>
 
 	/* -*- C -*- */
 
