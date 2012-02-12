@@ -1,8 +1,34 @@
-/* C code produced by gperf version 2.1p1 (K&R C version, modified by Pavel) */
-/* Command-line: pgperf -aCIptT -k1,3,$ keywords.gperf  */
+/* C code produced by gperf version 3.0.3 */
+/* Command-line: gperf -aCIptT -k'1,3,$' keywords.gperf  */
 
-#include <ctype.h>
+#if !((' ' == 32) && ('!' == 33) && ('"' == 34) && ('#' == 35) \
+      && ('%' == 37) && ('&' == 38) && ('\'' == 39) && ('(' == 40) \
+      && (')' == 41) && ('*' == 42) && ('+' == 43) && (',' == 44) \
+      && ('-' == 45) && ('.' == 46) && ('/' == 47) && ('0' == 48) \
+      && ('1' == 49) && ('2' == 50) && ('3' == 51) && ('4' == 52) \
+      && ('5' == 53) && ('6' == 54) && ('7' == 55) && ('8' == 56) \
+      && ('9' == 57) && (':' == 58) && (';' == 59) && ('<' == 60) \
+      && ('=' == 61) && ('>' == 62) && ('?' == 63) && ('A' == 65) \
+      && ('B' == 66) && ('C' == 67) && ('D' == 68) && ('E' == 69) \
+      && ('F' == 70) && ('G' == 71) && ('H' == 72) && ('I' == 73) \
+      && ('J' == 74) && ('K' == 75) && ('L' == 76) && ('M' == 77) \
+      && ('N' == 78) && ('O' == 79) && ('P' == 80) && ('Q' == 81) \
+      && ('R' == 82) && ('S' == 83) && ('T' == 84) && ('U' == 85) \
+      && ('V' == 86) && ('W' == 87) && ('X' == 88) && ('Y' == 89) \
+      && ('Z' == 90) && ('[' == 91) && ('\\' == 92) && (']' == 93) \
+      && ('^' == 94) && ('_' == 95) && ('a' == 97) && ('b' == 98) \
+      && ('c' == 99) && ('d' == 100) && ('e' == 101) && ('f' == 102) \
+      && ('g' == 103) && ('h' == 104) && ('i' == 105) && ('j' == 106) \
+      && ('k' == 107) && ('l' == 108) && ('m' == 109) && ('n' == 110) \
+      && ('o' == 111) && ('p' == 112) && ('q' == 113) && ('r' == 114) \
+      && ('s' == 115) && ('t' == 116) && ('u' == 117) && ('v' == 118) \
+      && ('w' == 119) && ('x' == 120) && ('y' == 121) && ('z' == 122) \
+      && ('{' == 123) && ('|' == 124) && ('}' == 125) && ('~' == 126))
+/* The character set is not based on ISO-646.  */
+error "gperf generated tables don't work with this execution character set. Please report a bug to <bug-gnu-gperf@gnu.org>."
+#endif
 
+#line 1 "keywords.gperf"
 	/* -*- C -*- */
 
 /******************************************************************************
@@ -22,193 +48,190 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "my-string.h"
+#include <string.h>
 
 #include "config.h"
 #include "keywords.h"
 #include "tokens.h"
 #include "utils.h"
 
+#include <string.h>
 
+#define TOTAL_KEYWORDS 35
 #define MIN_WORD_LENGTH 2
 #define MAX_WORD_LENGTH 9
 #define MIN_HASH_VALUE 3
-#define MAX_HASH_VALUE 106
-/*
-   35 keywords
-   104 is the maximum key range
- */
+#define MAX_HASH_VALUE 51
+/* maximum key range = 49, duplicates = 0 */
 
-static int
-hash(register const char *str, register int len)
+#ifdef __GNUC__
+__inline
+#else
+#ifdef __cplusplus
+inline
+#endif
+#endif
+static unsigned int
+hash (str, len)
+     register const char *str;
+     register unsigned int len;
 {
-    static const unsigned char hash_table[] =
+  static const unsigned char asso_values[] =
     {
-	106, 106, 106, 106, 106, 106, 106, 106, 106, 106,
-	106, 106, 106, 106, 106, 106, 106, 106, 106, 106,
-	106, 106, 106, 106, 106, 106, 106, 106, 106, 106,
-	106, 106, 106, 106, 106, 106, 106, 106, 106, 106,
-	106, 106, 106, 106, 106, 106, 106, 106, 106, 106,
-	106, 106, 106, 106, 106, 106, 106, 106, 106, 106,
-	106, 106, 106, 106, 106, 106, 106, 106, 106, 106,
-	106, 106, 106, 106, 106, 106, 106, 106, 106, 106,
-	106, 106, 106, 106, 106, 106, 106, 106, 106, 106,
-	106, 106, 106, 106, 106, 106, 106, 10, 0, 45,
-	0, 0, 0, 10, 106, 45, 106, 10, 106, 35,
-	5, 106, 5, 10, 0, 25, 55, 106, 35, 5,
-	106, 10, 106, 106, 106, 106, 106, 106,
+      52, 52, 52, 52, 52, 52, 52, 52, 52, 52,
+      52, 52, 52, 52, 52, 52, 52, 52, 52, 52,
+      52, 52, 52, 52, 52, 52, 52, 52, 52, 52,
+      52, 52, 52, 52, 52, 52, 52, 52, 52, 52,
+      52, 52, 52, 52, 52, 52, 52, 52, 52, 52,
+      52, 52, 52, 52, 52, 52, 52, 52, 52, 52,
+      52, 52, 52, 52, 52, 10, 52, 10,  5,  0,
+       0, 10, 52, 30, 52, 52, 52, 20, 30, 52,
+      15, 25, 30, 35, 25, 52,  5, 52, 52, 10,
+      52, 52, 52, 52, 52, 52, 52, 52,  5, 15,
+       0,  0,  0, 52, 52, 20, 52,  0, 52, 52,
+       5, 52, 52, 52,  0, 15,  5, 52, 52,  0,
+      52,  5, 52, 52, 52, 52, 52, 52, 52, 52,
+      52, 52, 52, 52, 52, 52, 52, 52, 52, 52,
+      52, 52, 52, 52, 52, 52, 52, 52, 52, 52,
+      52, 52, 52, 52, 52, 52, 52, 52, 52, 52,
+      52, 52, 52, 52, 52, 52, 52, 52, 52, 52,
+      52, 52, 52, 52, 52, 52, 52, 52, 52, 52,
+      52, 52, 52, 52, 52, 52, 52, 52, 52, 52,
+      52, 52, 52, 52, 52, 52, 52, 52, 52, 52,
+      52, 52, 52, 52, 52, 52, 52, 52, 52, 52,
+      52, 52, 52, 52, 52, 52, 52, 52, 52, 52,
+      52, 52, 52, 52, 52, 52, 52, 52, 52, 52,
+      52, 52, 52, 52, 52, 52, 52, 52, 52, 52,
+      52, 52, 52, 52, 52, 52, 52, 52, 52, 52,
+      52, 52, 52, 52, 52, 52
     };
-    register int hval = len;
+  register int hval = len;
 
-    switch (hval) {
-    default:
-    case 3:
-	hval += hash_table[tolower((unsigned char) str[2])];
-    case 2:
-    case 1:
-	hval += hash_table[tolower((unsigned char) str[0])];
+  switch (hval)
+    {
+      default:
+        hval += asso_values[(unsigned char)str[2]];
+      /*FALLTHROUGH*/
+      case 2:
+      case 1:
+        hval += asso_values[(unsigned char)str[0]];
+        break;
     }
-    return hval + hash_table[tolower((unsigned char) str[len - 1])];
+  return hval + asso_values[(unsigned char)str[len - 1]];
 }
 
-static int
-case_strcmp(register const char *str, register const char *key)
-{
-    int ans = 0;
-
-    while (!(ans = tolower(*str) - (int) *key) && *str)
-	str++, key++;
-
-    return ans;
-}
-
+#ifdef __GNUC__
+__inline
+#ifdef __GNUC_STDC_INLINE__
+__attribute__ ((__gnu_inline__))
+#endif
+#endif
 const struct keyword *
-in_word_set(register const char *str, register int len)
+in_word_set (str, len)
+     register const char *str;
+     register unsigned int len;
 {
-
-    static const struct keyword wordlist[] =
+  static const struct keyword wordlist[] =
     {
-	{"",},
-	{"",},
-	{"",},
-	{"for", DBV_Prehistory, tFOR},
-	{"",},
-	{"endif", DBV_Prehistory, tENDIF},
-	{"endfor", DBV_Prehistory, tENDFOR},
-	{"e_range", DBV_Prehistory, tERROR, E_RANGE},
-	{"endwhile", DBV_Prehistory, tENDWHILE},
-	{"e_recmove", DBV_Prehistory, tERROR, E_RECMOVE},
-	{"",},
-	{"e_none", DBV_Prehistory, tERROR, E_NONE},
-	{"",},
-	{"e_propnf", DBV_Prehistory, tERROR, E_PROPNF},
-	{"fork", DBV_Prehistory, tFORK},
-	{"break", DBV_BreakCont, tBREAK},
-	{"endtry", DBV_Exceptions, tENDTRY},
-	{"endfork", DBV_Prehistory, tENDFORK},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"finally", DBV_Exceptions, tFINALLY},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"e_quota", DBV_Prehistory, tERROR, E_QUOTA},
-	{"",},
-	{"else", DBV_Prehistory, tELSE},
-	{"",},
-	{"elseif", DBV_Prehistory, tELSEIF},
-	{"",},
-	{"any", DBV_Exceptions, tANY},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"e_div", DBV_Prehistory, tERROR, E_DIV},
-	{"e_args", DBV_Prehistory, tERROR, E_ARGS},
-	{"e_varnf", DBV_Prehistory, tERROR, E_VARNF},
-	{"e_verbnf", DBV_Prehistory, tERROR, E_VERBNF},
-	{"",},
-	{"",},
-	{"e_perm", DBV_Prehistory, tERROR, E_PERM},
-	{"if", DBV_Prehistory, tIF},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"in", DBV_Prehistory, tIN},
-	{"e_invind", DBV_Prehistory, tERROR, E_INVIND},
-	{"",},
-	{"while", DBV_Prehistory, tWHILE},
-	{"e_nacc", DBV_Prehistory, tERROR, E_NACC},
-	{"",},
-	{"continue", DBV_BreakCont, tCONTINUE},
-	{"",},
-	{"",},
-	{"e_type", DBV_Prehistory, tERROR, E_TYPE},
-	{"e_float", DBV_Float, tERROR, E_FLOAT},
-	{"e_invarg", DBV_Prehistory, tERROR, E_INVARG},
-	{"",},
-	{"",},
-	{"return", DBV_Prehistory, tRETURN},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"try", DBV_Exceptions, tTRY},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"e_maxrec", DBV_Prehistory, tERROR, E_MAXREC},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"",},
-	{"except", DBV_Exceptions, tEXCEPT},
+      {""}, {""}, {""},
+#line 34 "keywords.gperf"
+      {"for",		DBV_Prehistory, tFOR},
+#line 37 "keywords.gperf"
+      {"fork",		DBV_Prehistory, tFORK},
+#line 33 "keywords.gperf"
+      {"endif",		DBV_Prehistory, tENDIF},
+#line 36 "keywords.gperf"
+      {"endfor",		DBV_Prehistory, tENDFOR},
+#line 38 "keywords.gperf"
+      {"endfork",	DBV_Prehistory, tENDFORK},
+#line 41 "keywords.gperf"
+      {"endwhile",	DBV_Prehistory, tENDWHILE},
+      {""},
+#line 47 "keywords.gperf"
+      {"break",		DBV_BreakCont, tBREAK},
+#line 45 "keywords.gperf"
+      {"endtry",		DBV_Exceptions, tENDTRY},
+#line 55 "keywords.gperf"
+      {"E_VARNF",	DBV_Prehistory, tERROR,	E_VARNF},
+#line 54 "keywords.gperf"
+      {"E_VERBNF",	DBV_Prehistory, tERROR,	E_VERBNF},
+      {""},
+#line 51 "keywords.gperf"
+      {"E_DIV",		DBV_Prehistory, tERROR,	E_DIV},
+#line 39 "keywords.gperf"
+      {"return",		DBV_Prehistory, tRETURN},
+#line 44 "keywords.gperf"
+      {"finally",	DBV_Exceptions, tFINALLY},
+#line 42 "keywords.gperf"
+      {"try",		DBV_Exceptions, tTRY},
+#line 31 "keywords.gperf"
+      {"else",		DBV_Prehistory, tELSE},
+      {""},
+#line 32 "keywords.gperf"
+      {"elseif",		DBV_Prehistory, tELSEIF},
+#line 30 "keywords.gperf"
+      {"if",		DBV_Prehistory, tIF},
+#line 53 "keywords.gperf"
+      {"E_PROPNF",	DBV_Prehistory, tERROR,	E_PROPNF},
+      {""},
+#line 40 "keywords.gperf"
+      {"while",		DBV_Prehistory, tWHILE},
+#line 43 "keywords.gperf"
+      {"except",		DBV_Exceptions, tEXCEPT},
+#line 35 "keywords.gperf"
+      {"in",		DBV_Prehistory, tIN},
+#line 48 "keywords.gperf"
+      {"continue",	DBV_BreakCont, tCONTINUE},
+      {""}, {""},
+#line 50 "keywords.gperf"
+      {"E_TYPE",		DBV_Prehistory, tERROR,	E_TYPE},
+#line 64 "keywords.gperf"
+      {"E_FLOAT",	DBV_Float,	tERROR,	E_FLOAT},
+#line 46 "keywords.gperf"
+      {"ANY",		DBV_Exceptions, tANY},
+      {""}, {""},
+#line 49 "keywords.gperf"
+      {"E_NONE",		DBV_Prehistory, tERROR,	E_NONE},
+#line 59 "keywords.gperf"
+      {"E_RANGE",	DBV_Prehistory, tERROR,	E_RANGE},
+#line 58 "keywords.gperf"
+      {"E_MAXREC",	DBV_Prehistory, tERROR,	E_MAXREC},
+#line 57 "keywords.gperf"
+      {"E_RECMOVE",	DBV_Prehistory, tERROR,	E_RECMOVE},
+      {""},
+#line 52 "keywords.gperf"
+      {"E_PERM",		DBV_Prehistory, tERROR,	E_PERM},
+#line 63 "keywords.gperf"
+      {"E_QUOTA",	DBV_Prehistory, tERROR,	E_QUOTA},
+#line 56 "keywords.gperf"
+      {"E_INVIND",	DBV_Prehistory, tERROR,	E_INVIND},
+      {""}, {""},
+#line 61 "keywords.gperf"
+      {"E_NACC",		DBV_Prehistory, tERROR,	E_NACC},
+      {""},
+#line 62 "keywords.gperf"
+      {"E_INVARG",	DBV_Prehistory, tERROR,	E_INVARG},
+      {""}, {""},
+#line 60 "keywords.gperf"
+      {"E_ARGS",		DBV_Prehistory, tERROR,	E_ARGS}
     };
 
-    if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH) {
-	register int key = hash(str, len);
+  if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH)
+    {
+      register int key = hash (str, len);
 
-	if (key <= MAX_HASH_VALUE && key >= MIN_HASH_VALUE) {
-	    register const char *s = wordlist[key].name;
+      if (key <= MAX_HASH_VALUE && key >= 0)
+        {
+          register const char *s = wordlist[key].name;
 
-	    if (*s == tolower(*str) && !case_strcmp(str + 1, s + 1))
-		return &wordlist[key];
-	}
+          if (*str == *s && !strcmp (str + 1, s + 1))
+            return &wordlist[key];
+        }
     }
-    return 0;
+  return 0;
 }
+#line 65 "keywords.gperf"
+
 
 const struct keyword *
 find_keyword(const char *word)
@@ -216,19 +239,12 @@ find_keyword(const char *word)
     return in_word_set(word, strlen(word));
 }
 
-char rcsid_keywords[] = "$Id: keywords.c,v 1.3 1998/12/14 13:17:55 nop Exp $";
+char rcsid_keywords[] = "$Id: keywords.gperf,v 1.1.1.1 1997/03/03 03:45:02 nop Exp $";
 
-/* 
- * $Log: keywords.c,v $
- * Revision 1.3  1998/12/14 13:17:55  nop
- * Merge UNSAFE_OPTS (ref fixups); fix Log tag placement to fit CVS whims
- *
- * Revision 1.2  1997/03/03 04:18:45  nop
- * GNU Indent normalization
- *
- * Revision 1.1.1.1  1997/03/03 03:45:00  nop
- * LambdaMOO 1.8.0p5
- *
+/* $Log: keywords.gperf,v $
+/* Revision 1.1.1.1  1997/03/03 03:45:02  nop
+/* LambdaMOO 1.8.0p5
+/*
  * Revision 2.2  1996/02/08  06:33:21  pavel
  * Added `break', `continue', and E_FLOAT.  Updated copyright notice for 1996.
  * Release 1.8.0beta1.

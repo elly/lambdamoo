@@ -26,8 +26,8 @@
 				   * setsockopt(), SOL_SOCKET, SO_REUSEADDR,
 				   * bind(), struct sockaddr, accept(),
 				   * connect() */
-#include "my-stdlib.h"		/* strtoul() */
-#include "my-string.h"		/* memcpy() */
+#include <stdlib.h>		/* strtoul() */
+#include <string.h>		/* memcpy() */
 #include <unistd.h>		/* close() */
 
 #include "config.h"

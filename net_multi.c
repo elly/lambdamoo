@@ -20,9 +20,9 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <signal.h>
-#include "my-stdio.h"
-#include "my-stdlib.h"
-#include "my-string.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 #include "config.h"

@@ -16,7 +16,7 @@
  *****************************************************************************/
 
 #include <ctype.h>
-#include "my-string.h"
+#include <string.h>
 
 #include "bf_register.h"
 #include "config.h"

@@ -17,7 +17,7 @@
 
 #include <ctype.h>
 #include <fcntl.h>
-#include "my-stdio.h"
+#include <stdio.h>
 #include <unistd.h>
 
 #include "config.h"

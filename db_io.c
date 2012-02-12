@@ -22,8 +22,8 @@
 #include <ctype.h>
 #include <float.h>
 #include <stdarg.h>
-#include "my-stdio.h"
-#include "my-stdlib.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "db_io.h"
 #include "db_private.h"

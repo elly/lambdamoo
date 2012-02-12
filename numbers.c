@@ -19,8 +19,8 @@
 #include <errno.h>
 #include <float.h>
 #include "my-math.h"
-#include "my-stdlib.h"
-#include "my-string.h"
+#include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 #include "config.h"

@@ -17,7 +17,7 @@
 
 #include "config.h"
 
-#include "my-stdlib.h"
+#include <stdlib.h>
 #define RANDOM	lrand48
 #define SRANDOM	srand48
 

@@ -20,8 +20,8 @@
  *****************************************************************************/
 
 #include <sys/stat.h>
-#include "my-stdio.h"
-#include "my-stdlib.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "config.h"
 #include "db.h"
@@ -753,7 +753,7 @@ char rcsid_db_file[] = "$Id: db_file.c,v 1.4 1998/12/14 13:17:33 nop Exp $";
  * Release 1.8.0alpha3.
  *
  * Revision 2.1  1995/12/11  07:55:01  pavel
- * Added missing #include of "my-stdlib.h".  Slightly improved clarity of the
+ * Added missing #include of <stdlib.h>.  Slightly improved clarity of the
  * progress messages during DB loading.
  *
  * Release 1.8.0alpha2.
