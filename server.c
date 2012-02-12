@@ -20,8 +20,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <sys/wait.h>
+#include <time.h>
+#include <unistd.h>
 
 #include "config.h"
 #include "db.h"
@@ -43,6 +44,7 @@
 #include "timers.h"
 #include "unparse.h"
 #include "utils.h"
+#include "util.h"
 #include "version.h"
 
 #include "execute.h"
@@ -59,7 +61,9 @@ typedef enum {
 } Checkpoint_Reason;
 static Checkpoint_Reason checkpoint_requested = CHKPT_OFF;
 
+#ifdef SERVER_MAIN
 static int checkpoint_finished = 0;	/* 1 = failure, 2 = success */
+#endif /* SERVER_MAIN */
 
 typedef struct shandle {
     struct shandle *next, **prev;
@@ -252,6 +256,7 @@ fork_server(const char *subtask_name)
 	return FORK_PARENT;
 }
 
+#ifdef SERVER_MAIN
 static void
 panic_signal(int sig)
 {
@@ -264,6 +269,7 @@ panic_signal(int sig)
 static void
 shutdown_signal(int sig)
 {
+    unused(sig);
     shutdown_message = "shutdown signal received";
 }
 
@@ -325,6 +331,8 @@ setup_signals(void)
 static void
 checkpoint_timer(Timer_ID id, Timer_Data data)
 {
+    unused(id);
+    unused(data);
     checkpoint_requested = CHKPT_TIMER;
 }
 
@@ -346,6 +354,7 @@ set_checkpoint_timer(int first_time)
 	cancel_timer(last_checkpoint_timer);
     last_checkpoint_timer = set_timer(interval, checkpoint_timer, 0);
 }
+#endif /* SERVER_MAIN */
 
 static const char *
 object_name(Objid oid)
@@ -414,6 +423,7 @@ send_message(Objid listener, network_handle nh, const char *msg_name,...)
     va_end(args);
 }
 
+#ifdef SERVER_MAIN
 static void
 main_loop(void)
 {
@@ -524,6 +534,7 @@ main_loop(void)
     oklog("SHUTDOWN: %s\n", shutdown_message);
     send_shutdown_message(shutdown_message);
 }
+#endif /* SERVER_MAIN */
 
 static shandle *
 find_shandle(Objid player)
@@ -540,6 +551,7 @@ find_shandle(Objid player)
 static char *cmdline_buffer;
 static int cmdline_buflen;
 
+#ifdef SERVER_MAIN
 static void
 init_cmdline(int argc, char *argv[])
 {
@@ -554,6 +566,7 @@ init_cmdline(int argc, char *argv[])
     cmdline_buffer = argv[0];
     cmdline_buflen = p - argv[0];
 }
+#endif /* SERVER_MAIN */
 
 static int
 server_set_connection_option(shandle * h, const char *option, Var value)
@@ -591,6 +604,13 @@ server_connection_options(shandle * h, Var list)
     return listappend(list, pair);
 }
 
+static void
+emergency_notify(Objid player, const char *line)
+{
+    printf("#%d <- %s\n", player, line);
+}
+
+#ifdef SERVER_MAIN
 static char *
 read_stdin_line()
 {
@@ -617,12 +637,6 @@ read_stdin_line()
 	line++;
 
     return line;
-}
-
-static void
-emergency_notify(Objid player, const char *line)
-{
-    printf("#%d <- %s\n", player, line);
 }
 
 static int
@@ -872,7 +886,7 @@ emergency_mode()
 	  start_ok ? "will" : "won't");
     return start_ok;
 }
-
+#endif /* SERVER_MAIN */
 
 /*
  * Exported interface
@@ -1269,6 +1283,11 @@ static package
 bf_server_version(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r.type = TYPE_STR;
     r.v.str = str_dup(server_version);
     free_var(arglist);
@@ -1280,6 +1299,8 @@ bf_renumber(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
     Objid o = arglist.v.list[1].v.obj;
+    unused(next);
+    unused(vdata);
     free_var(arglist);
 
     if (!valid(o))
@@ -1295,6 +1316,8 @@ bf_renumber(Var arglist, Byte next, void *vdata, Objid progr)
 static package
 bf_reset_max_object(Var arglist, Byte next, void *vdata, Objid progr)
 {
+    unused(next);
+    unused(vdata);
     free_var(arglist);
 
     if (!is_wizard(progr))
@@ -1308,6 +1331,11 @@ static package
 bf_memory_usage(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r = memory_usage();
     free_var(arglist);
     return make_var_pack(r);
@@ -1324,6 +1352,10 @@ bf_shutdown(Var arglist, Byte next, void *vdata, Objid progr)
     Stream *s;
     int nargs = arglist.v.list[0].v.num;
     const char *msg = (nargs >= 1 ? arglist.v.list[1].v.str : 0);
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     if (!is_wizard(progr)) {
 	free_var(arglist);
@@ -1342,6 +1374,9 @@ bf_shutdown(Var arglist, Byte next, void *vdata, Objid progr)
 static package
 bf_dump_database(Var arglist, Byte next, void *vdata, Objid progr)
 {
+    unused(next);
+    unused(vdata);
+
     free_var(arglist);
     if (!is_wizard(progr))
 	return make_error_pack(E_PERM);
@@ -1354,6 +1389,10 @@ static package
 bf_db_disk_size(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var v;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     free_var(arglist);
     v.type = TYPE_INT;
@@ -1370,6 +1409,10 @@ bf_open_network_connection(Var arglist, Byte next, void *vdata, Objid progr)
 
     Var r;
     enum error e;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     if (!is_wizard(progr)) {
         free_var(arglist);
@@ -1399,6 +1442,10 @@ bf_open_network_connection(Var arglist, Byte next, void *vdata, Objid progr)
 
     /* This function is disabled in this server. */
 
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     free_var(arglist);
     return make_error_pack(E_PERM);
 
@@ -1413,6 +1460,10 @@ bf_connected_players(Var arglist, Byte next, void *vdata, Objid progr)
     int show_all = (nargs >= 1 && is_true(arglist.v.list[1]));
     int count = 0;
     Var result;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     free_var(arglist);
     for (h = all_shandles; h; h = h->next)
@@ -1439,6 +1490,10 @@ bf_connected_seconds(Var arglist, Byte next, void *vdata, Objid progr)
     Var r;
     shandle *h = find_shandle(arglist.v.list[1].v.obj);
 
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r.type = TYPE_INT;
     if (h && h->connection_time != 0 && !h->disconnect_me)
 	r.v.num = time(0) - h->connection_time;
@@ -1456,6 +1511,10 @@ bf_idle_seconds(Var arglist, Byte next, void *vdata, Objid progr)
 {				/* (player) */
     Var r;
     shandle *h = find_shandle(arglist.v.list[1].v.obj);
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     r.type = TYPE_INT;
     if (h && !h->disconnect_me)
@@ -1476,6 +1535,9 @@ bf_connection_name(Var arglist, Byte next, void *vdata, Objid progr)
     shandle *h = find_shandle(who);
     const char *conn_name;
     Var r;
+
+    unused(next);
+    unused(vdata);
 
     if (h && !h->disconnect_me)
 	conn_name = network_connection_name(h->nhandle);
@@ -1504,6 +1566,9 @@ bf_notify(Var arglist, Byte next, void *vdata, Objid progr)
 		    : 0);
     shandle *h = find_shandle(conn);
     Var r;
+
+    unused(next);
+    unused(vdata);
 
     if (!is_wizard(progr) && progr != conn) {
 	free_var(arglist);
@@ -1536,6 +1601,9 @@ bf_boot_player(Var arglist, Byte next, void *vdata, Objid progr)
 {				/* (object) */
     Objid oid = arglist.v.list[1].v.obj;
 
+    unused(next);
+    unused(vdata);
+
     free_var(arglist);
 
     if (oid != progr && !is_wizard(progr))
@@ -1553,6 +1621,9 @@ bf_set_connection_option(Var arglist, Byte next, void *vdata, Objid progr)
     Var value = arglist.v.list[3];
     shandle *h = find_shandle(oid);
     enum error e = E_NONE;
+
+    unused(next);
+    unused(vdata);
 
     if (oid != progr && !is_wizard(progr))
 	e = E_PERM;
@@ -1577,6 +1648,9 @@ bf_connection_options(Var arglist, Byte next, void *vdata, Objid progr)
     const char *oname = (nargs >= 2 ? arglist.v.list[2].v.str : 0);
     shandle *h = find_shandle(oid);
     Var ans;
+
+    unused(next);
+    unused(vdata);
 
     if (!h || h->disconnect_me) {
 	free_var(arglist);
@@ -1625,6 +1699,9 @@ bf_listen(Var arglist, Byte next, void *vdata, Objid progr)
     enum error e;
     slistener *l = 0;
 
+    unused(next);
+    unused(vdata);
+
     if (!is_wizard(progr))
 	e = E_PERM;
     else if (!valid(oid) || find_slistener(desc))
@@ -1647,6 +1724,9 @@ bf_unlisten(Var arglist, Byte next, void *vdata, Objid progr)
     enum error e = E_NONE;
     slistener *l = 0;
 
+    unused(next);
+    unused(vdata);
+
     if (!is_wizard(progr))
 	e = E_PERM;
     else if (!(l = find_slistener(desc)))
@@ -1666,6 +1746,10 @@ bf_listeners(Var arglist, Byte next, void *vdata, Objid progr)
     int i, count = 0;
     Var list, entry;
     slistener *l;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     free_var(arglist);
     for (l = all_slisteners; l; l = l->next)
@@ -1689,6 +1773,9 @@ bf_buffered_output_length(Var arglist, Byte next, void *vdata, Objid progr)
     int nargs = arglist.v.list[0].v.num;
     Objid conn = nargs >= 1 ? arglist.v.list[1].v.obj : 0;
     Var r;
+
+    unused(next);
+    unused(vdata);
 
     free_var(arglist);
     r.type = TYPE_INT;

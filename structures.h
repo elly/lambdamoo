@@ -42,33 +42,28 @@ enum error {
     E_RECMOVE, E_MAXREC, E_RANGE, E_ARGS, E_NACC, E_INVARG, E_QUOTA, E_FLOAT
 };
 
+#define TYPE_DB_MASK		0x7f
+#define TYPE_COMPLEX_FLAG	0x80
+
 /* Do not reorder or otherwise modify this list, except to add new elements at
  * the end, since the order here defines the numeric equivalents of the type
  * values, and those equivalents are both DB-accessible knowledge and stored in
  * raw form in the DB.
  */
 typedef enum {
+    TYPE_NUMERIC = -2,
+    TYPE_ANY = -1,
     TYPE_INT, TYPE_OBJ, _TYPE_STR, TYPE_ERR, _TYPE_LIST, /* user-visible */
     TYPE_CLEAR,			/* in clear properties' value slot */
     TYPE_NONE,			/* in uninitialized MOO variables */
     TYPE_CATCH,			/* on-stack marker for an exception handler */
     TYPE_FINALLY,		/* on-stack marker for a TRY-FINALLY clause */
-    _TYPE_FLOAT			/* floating-point number; user-visible */
+    _TYPE_FLOAT,			/* floating-point number; user-visible */
+
+    TYPE_STR = _TYPE_STR | TYPE_COMPLEX_FLAG,
+    TYPE_FLOAT = _TYPE_FLOAT | TYPE_COMPLEX_FLAG,
+    TYPE_LIST = _TYPE_LIST | TYPE_COMPLEX_FLAG
 } var_type;
-
-/* Types which have external data should be marked with the TYPE_COMPLEX_FLAG
- * so that free_var/var_ref/var_dup can recognize them easily.  This flag is
- * only set in memory.  The original _TYPE values are used in the database
- * file and returned to verbs calling typeof().  This allows the inlines to
- * be extremely cheap (both in space and time) for simple types like oids
- * and ints.
- */
-#define TYPE_DB_MASK		0x7f
-#define TYPE_COMPLEX_FLAG	0x80
-
-#define TYPE_STR		(_TYPE_STR | TYPE_COMPLEX_FLAG)
-#define TYPE_FLOAT		(_TYPE_FLOAT | TYPE_COMPLEX_FLAG)
-#define TYPE_LIST		(_TYPE_LIST | TYPE_COMPLEX_FLAG)
 
 #define TYPE_ANY ((var_type) -1)	/* wildcard for use in declaring built-ins */
 #define TYPE_NUMERIC ((var_type) -2)	/* wildcard for (integer or float) */

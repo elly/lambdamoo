@@ -28,6 +28,7 @@
 #include "streams.h"
 #include "unparse.h"
 #include "utils.h"
+#include "util.h"
 #include "verbs.h"
 
 const char *mnemonics[256], *ext_mnemonics[256];
@@ -439,6 +440,8 @@ bf_disassemble(Var arglist, Byte next, void *vdata, Objid progr)
     Var r;
     int i;
     enum error e;
+    unused(next);
+    unused(vdata);
 
     if ((e = validate_verb_descriptor(desc)) != E_NONE
 	|| (e = E_INVARG, !valid(oid))) {
