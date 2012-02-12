@@ -17,9 +17,9 @@
 
 #include <ctype.h>
 #include <errno.h>
-#include "my-fcntl.h"
-#include "my-ioctl.h"
-#include "my-signal.h"
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <signal.h>
 #include "my-stdio.h"
 #include "my-stdlib.h"
 #include "my-string.h"
@@ -206,7 +206,7 @@ network_set_nonblocking(int fd)
     int flags;
 
     if ((flags = fcntl(fd, F_GETFL, 0)) < 0
-	|| fcntl(fd, F_SETFL, flags | NONBLOCK_FLAG) < 0)
+	|| fcntl(fd, F_SETFL, flags | O_NONBLOCK) < 0)
 	return 0;
     else
 	return 1;

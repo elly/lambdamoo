@@ -16,7 +16,7 @@
  *****************************************************************************/
 
 #include <ctype.h>
-#include "my-fcntl.h"
+#include <fcntl.h>
 #include "my-stdio.h"
 #include "my-unistd.h"
 
@@ -154,7 +154,7 @@ single_shutdown(void)
     int flags;
 
     if ((flags = fcntl(0, F_GETFL)) < 0
-	|| fcntl(0, F_SETFL, flags & ~NONBLOCK_FLAG) < 0)
+	|| fcntl(0, F_SETFL, flags & ~O_NONBLOCK) < 0)
 	log_perror("Setting standard input blocking again");
 }
 
@@ -189,7 +189,7 @@ single_process_io(int timeout)
 	s = new_stream(1000);
 
 	if ((flags = fcntl(0, F_GETFL)) < 0
-	    || fcntl(0, F_SETFL, flags | NONBLOCK_FLAG) < 0) {
+	    || fcntl(0, F_SETFL, flags | O_NONBLOCK) < 0) {
 	    log_perror("Setting standard input non-blocking");
 	    return 0;
 	}

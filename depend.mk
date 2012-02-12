@@ -66,8 +66,8 @@ match.o: match.c my-stdlib.h config.h my-string.h db.h program.h \
  structures.h my-stdio.h version.h exceptions.h match.h parse_cmd.h \
  storage.h ref_count.h unparse.h utils.h execute.h opcode.h options.h
 md5.o: md5.c my-string.h config.h md5.h
-name_lookup.o: name_lookup.c options.h config.h my-signal.h my-stdlib.h \
- my-unistd.h my-inet.h my-in.h my-types.h my-socket.h my-wait.h \
+name_lookup.o: name_lookup.c options.h config.h my-stdlib.h \
+ my-unistd.h my-types.h my-socket.h my-wait.h \
  my-string.h log.h my-stdio.h structures.h server.h network.h storage.h \
  ref_count.h timers.h my-time.h
 network.o: network.c network.h config.h options.h structures.h my-stdio.h \
@@ -116,7 +116,7 @@ tasks.o: tasks.c my-string.h config.h my-time.h db.h program.h \
  parse_cmd.h exceptions.h functions.h list.h log.h match.h random.h \
  my-stdlib.h server.h network.h storage.h ref_count.h streams.h tasks.h \
  utils.h verbs.h
-timers.o: timers.c my-signal.h config.h my-stdlib.h my-sys-time.h \
+timers.o: timers.c config.h my-stdlib.h my-sys-time.h \
  options.h my-time.h my-unistd.h timers.h
 unparse.o: unparse.c config.h my-stdio.h ast.h parser.h \
  program.h structures.h version.h sym_table.h decompile.h exceptions.h \
@@ -133,17 +133,17 @@ verbs.o: verbs.c my-string.h config.h db.h program.h structures.h \
 version.o: version.c config.h version.h
 lmdb.o: lmdb.c db.h config.h program.h structures.h my-stdio.h version.h \
  db_private.h exceptions.h list.h lmdb.h parser.h storage.h ref_count.h
-net_single.o: net_single.c config.h my-fcntl.h my-stdio.h \
+net_single.o: net_single.c config.h my-stdio.h \
  my-unistd.h log.h structures.h network.h options.h server.h streams.h \
  utils.h execute.h db.h program.h version.h opcode.h parse_cmd.h
-net_multi.o: net_multi.c config.h my-fcntl.h my-ioctl.h \
- my-signal.h my-stdio.h my-stdlib.h my-string.h my-unistd.h exceptions.h \
+net_multi.o: net_multi.c config.h \
+ my-stdio.h my-stdlib.h my-string.h my-unistd.h exceptions.h \
  list.h structures.h log.h net_mplex.h net_multi.h net_proto.h options.h \
  network.h server.h streams.h storage.h ref_count.h timers.h my-time.h \
  utils.h execute.h db.h program.h version.h opcode.h parse_cmd.h
-net_mp_poll.o: net_mp_poll.c my-poll.h config.h log.h my-stdio.h \
+net_mp_poll.o: net_mp_poll.c config.h log.h my-stdio.h \
  structures.h net_mplex.h storage.h ref_count.h
-net_bsd_tcp.o: net_bsd_tcp.c my-inet.h config.h my-in.h my-types.h \
+net_bsd_tcp.o: net_bsd_tcp.c config.h my-types.h \
  my-socket.h my-stdlib.h my-string.h my-unistd.h list.h structures.h \
  my-stdio.h log.h name_lookup.h net_proto.h options.h server.h network.h \
  streams.h timers.h my-time.h utils.h execute.h db.h program.h version.h \

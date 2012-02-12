@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "my-signal.h"
+#include <signal.h>
 #include "my-stdlib.h"
 #include "my-sys-time.h"
 #include "my-time.h"

@@ -48,12 +48,10 @@ HDRS =  ast.h bf_register.h code_gen.h db.h db_io.h db_private.h decompile.h \
 	sym_table.h tasks.h timers.h tokens.h unparse.h utils.h verbs.h \
 	version.h
 
-SYSHDRS = my-fcntl.h my-in.h my-inet.h my-ioctl.h my-math.h \
-	my-poll.h my-signal.h my-socket.h my-stat.h my-stdarg.h my-stdio.h \
+SYSHDRS = my-math.h \
+	my-socket.h my-stat.h my-stdarg.h my-stdio.h \
 	my-stdlib.h my-string.h my-stropts.h my-sys-time.h my-time.h \
 	my-tiuser.h my-types.h my-unistd.h my-wait.h
-
-CLIENT_SRCS = client_bsd.c client_sysv.c
 
 ALL_CSRCS = $(CSRCS) $(OPT_CSRCS)
 

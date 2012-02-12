@@ -25,11 +25,11 @@
 
 #ifdef USE_NETPROTO_TCP	/* Skip almost entire file otherwise... */
 
-#include "my-signal.h"
+#include <signal.h>
 #include "my-stdlib.h"
 #include "my-unistd.h"
-#include "my-inet.h"		/* inet_addr() */
-#include "my-in.h"		/* struct sockaddr_in, INADDR_ANY, htons(),
+#include <arpa/inet.h>		/* inet_addr() */
+#include <netinet/in.h>		/* struct sockaddr_in, INADDR_ANY, htons(),
 				   * htonl(), ntohl(), struct in_addr */
 #include <netdb.h>		/* struct hostent, gethostbyaddr() */
 #include "my-socket.h"		/* AF_INET */
