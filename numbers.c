@@ -18,7 +18,7 @@
 #include <limits.h>
 #include <errno.h>
 #include <float.h>
-#include "my-math.h"
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -30,6 +30,8 @@
 #include "storage.h"
 #include "structures.h"
 #include "utils.h"
+
+#define IS_REAL(x)	(-DBL_MAX <= (x) && (x) <= DBL_MAX)
 
 static int
 parse_number(const char *str, int *result, int try_floating_point)

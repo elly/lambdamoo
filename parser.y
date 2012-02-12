@@ -22,7 +22,8 @@
 /*************************************************************************/
 
 #include <ctype.h>
-#include "my-math.h"
+#include <float.h>
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -880,7 +881,7 @@ start_over:
 	    double	d;
 	    
 	    d = strtod(reset_stream(token_stream), 0);
-	    if (!IS_REAL(d)) {
+	    if (d < DBL_MIN || d > DBL_MAX) {
 		yyerror("Floating-point literal out of range");
 		d = 0.0;
 	    }

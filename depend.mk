@@ -69,7 +69,7 @@ name_lookup.o: name_lookup.c options.h config.h \
  ref_count.h timers.h
 network.o: network.c network.h config.h options.h structures.h \
  server.h
-numbers.o: numbers.c my-math.h config.h \
+numbers.o: numbers.c config.h \
  functions.h execute.h db.h program.h structures.h version.h \
  opcode.h options.h parse_cmd.h log.h random.h storage.h ref_count.h \
  utils.h

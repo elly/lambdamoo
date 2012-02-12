@@ -48,8 +48,6 @@ HDRS =  ast.h bf_register.h code_gen.h db.h db_io.h db_private.h decompile.h \
 	sym_table.h tasks.h timers.h tokens.h unparse.h utils.h verbs.h \
 	version.h
 
-SYSHDRS = my-math.h
-
 ALL_CSRCS = $(CSRCS) $(OPT_CSRCS)
 
 SRCS = $(ALL_CSRCS) keywords.gperf $(YSRCS) $(HDRS) $(SYSHDRS)
@@ -260,8 +258,7 @@ depend: ${ALL_CSRCS}
 include depend.mk
 	
 # Have to do this one manually, since 'make depend' can't hack yacc files.
-parser.o:	my-math.h \
-		ast.h code_gen.h config.h functions.h \
+parser.o:	ast.h code_gen.h config.h functions.h \
 		keywords.h list.h log.h numbers.h opcode.h parser.h program.h \
 		storage.h streams.h structures.h sym_table.h utils.h version.h
 
