@@ -23,6 +23,7 @@
 #include "log.h"
 #include "net_mplex.h"
 #include "storage.h"
+#include "util.h"
 
 typedef struct pollfd Port;
 
@@ -33,7 +34,7 @@ static unsigned max_fd;
 void
 mplex_clear(void)
 {
-    int i;
+    unsigned int i;
 
     max_fd = 0;
     for (i = 0; i < num_ports; i++) {
@@ -45,10 +46,10 @@ mplex_clear(void)
 static void
 add_common(int fd, unsigned dir)
 {
-    if (fd >= num_ports) {	/* Grow ports array */
+    if (si2ui(fd) >= num_ports) {	/* Grow ports array */
 	int new_num = (fd + 9) / 10 * 10 + 1;
 	Port *new_ports = mymalloc(new_num * sizeof(Port), M_NETWORK);
-	int i;
+	unsigned int i;
 
 	for (i = 0; i < num_ports; i++)
 	    new_ports[i] = ports[i];
@@ -61,7 +62,7 @@ add_common(int fd, unsigned dir)
     }
     ports[fd].fd = fd;
     ports[fd].events |= dir;
-    if (fd > max_fd)
+    if (si2ui(fd) > max_fd)
 	max_fd = fd;
 }
 
@@ -93,21 +94,21 @@ mplex_wait(unsigned timeout)
 int
 mplex_is_readable(int fd)
 {
-    return fd <= max_fd && (ports[fd].revents & (POLLIN | POLLHUP)) != 0;
+    return si2ui(fd) <= max_fd && (ports[fd].revents & (POLLIN | POLLHUP)) != 0;
 }
 
 int
 mplex_is_writable(int fd)
 {
-    return fd <= max_fd && (ports[fd].revents & POLLOUT) != 0;
+    return si2ui(fd) <= max_fd && (ports[fd].revents & POLLOUT) != 0;
 }
 
 char rcsid_net_mp_poll[] = "$Id: net_mp_poll.c,v 1.2 1997/03/03 04:19:04 nop Exp $";
 
 /* $Log: net_mp_poll.c,v $
-/* Revision 1.2  1997/03/03 04:19:04  nop
-/* GNU Indent normalization
-/*
+ * Revision 1.2  1997/03/03 04:19:04  nop
+ * GNU Indent normalization
+ *
  * Revision 1.1.1.1  1997/03/03 03:45:02  nop
  * LambdaMOO 1.8.0p5
  *
