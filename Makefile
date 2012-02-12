@@ -87,7 +87,7 @@ y.tab.h: parser.o
 	touch y.tab.h
 
 keywords.c: keywords.gperf
-	gperf -aCIptT -k1,3,$$ keywords.gperf \
+	gperf --ignore-case -aCptT -k1,3,$$ keywords.gperf \
 		> keywords.c
 
 dist.tar.Z:	$(DISTFILES)
