@@ -1223,6 +1223,23 @@ parse_list_as_program(Var code, Var *errors)
     return program;
 }
 
+static int _strgetc(void *_p) {
+	const char **p = _p;
+	if (!**p)
+		return EOF;
+	return *((*p)++);
+}
+
+Program *
+parse_str_as_program(const char *src)
+{
+	Parser_Client pc;
+	pc.error = NULL;
+	pc.warning = NULL;
+	pc.getch = _strgetc;
+	return parse_program(current_version, pc, &src);
+}
+
 char rcsid_parser[] = "$Id: parser.y,v 1.2 1998/12/14 13:18:45 nop Exp $";
 
 /* 

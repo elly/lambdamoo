@@ -30,6 +30,7 @@ typedef struct {
 
 extern Program *parse_program(DB_Version, Parser_Client, void *);
 extern Program *parse_list_as_program(Var code, Var * errors);
+extern Program *parse_str_as_program(const char *src);
 
 #endif
 

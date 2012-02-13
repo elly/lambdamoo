@@ -41,7 +41,7 @@ YSRCS = parser.y
 
 HDRS =  ast.h bf_register.h code_gen.h db.h db_io.h db_private.h decompile.h \
 	disassemble.h eval_env.h eval_vm.h exceptions.h execute.h functions.h \
-	getpagesize.h keywords.h list.h log.h match.h md5.h name_lookup.h \
+	keywords.h list.h log.h match.h md5.h name_lookup.h \
 	network.h net_mplex.h net_multi.h net_proto.h numbers.h opcode.h \
 	options.h parse_cmd.h parser.h pattern.h program.h quota.h random.h \
 	ref_count.h regexpr.h server.h storage.h streams.h structures.h  str_intern.h \
