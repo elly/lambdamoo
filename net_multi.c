@@ -377,7 +377,7 @@ make_new_connection(server_listener sl, int rfd, int wfd,
 static void
 get_pocket_descriptors()
 {
-    int i;
+    unsigned int i;
 
     if (!pocket_descriptors)
 	pocket_descriptors =
@@ -397,7 +397,8 @@ accept_new_connection(nlistener * l)
 {
     network_handle nh;
     nhandle *h;
-    int rfd, wfd, i;
+    int rfd, wfd;
+    unsigned int i;
     const char *host_name;
 
     switch (proto_accept_connection(l->fd, &rfd, &wfd, &host_name)) {

@@ -30,6 +30,7 @@
 #include "storage.h"
 #include "structures.h"
 #include "utils.h"
+#include "util.h"
 
 #define IS_REAL(x)	(-DBL_MAX <= (x) && (x) <= DBL_MAX)
 
@@ -398,6 +399,10 @@ bf_toint(Var arglist, Byte next, void *vdata, Objid progr)
     Var r;
     enum error e;
 
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r.type = TYPE_INT;
     e = become_integer(arglist.v.list[1], &(r.v.num), 1);
 
@@ -413,6 +418,10 @@ bf_tofloat(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
     enum error e;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     r = new_float(0.0);
     e = become_float(arglist.v.list[1], r.v.fnum);
@@ -431,6 +440,10 @@ bf_min(Var arglist, Byte next, void *vdata, Objid progr)
     Var r;
     int i, nargs = arglist.v.list[0].v.num;
     int bad_types = 0;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     r = arglist.v.list[1];
     if (r.type == TYPE_INT) {	/* integers */
@@ -462,6 +475,10 @@ bf_max(Var arglist, Byte next, void *vdata, Objid progr)
     int i, nargs = arglist.v.list[0].v.num;
     int bad_types = 0;
 
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r = arglist.v.list[1];
     if (r.type == TYPE_INT) {	/* integers */
 	for (i = 2; i <= nargs; i++)
@@ -490,6 +507,10 @@ bf_abs(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
 
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r = var_dup(arglist.v.list[1]);
     if (r.type == TYPE_INT) {
 	if (r.v.num < 0)
@@ -506,6 +527,9 @@ bf_abs(Var arglist, Byte next, void *vdata, Objid progr)
 		bf_ ## name(Var arglist, Byte next, void *vdata, Objid progr) \
 		{							      \
 		    double	d;					      \
+		    unused(next);					      \
+		    unused(vdata);					      \
+		    unused(progr);					      \
 									      \
 		    d = *arglist.v.list[1].v.fnum;			      \
 		    errno = 0;						      \
@@ -538,6 +562,10 @@ MATH_FUNC(floor)
 {
     double d;
 
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     d = *arglist.v.list[1].v.fnum;
     errno = 0;
     if (d < 0.0)
@@ -557,6 +585,10 @@ static package
 bf_atan(Var arglist, Byte next, void *vdata, Objid progr)
 {
     double d, dd;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     d = *arglist.v.list[1].v.fnum;
     errno = 0;
@@ -578,6 +610,11 @@ static package
 bf_time(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r.type = TYPE_INT;
     r.v.num = time(0);
     free_var(arglist);
@@ -590,6 +627,10 @@ bf_ctime(Var arglist, Byte next, void *vdata, Objid progr)
     Var r;
     time_t c;
     char buffer[50];
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     if (arglist.v.list[0].v.num == 1) {
 	c = arglist.v.list[1].v.num;
@@ -616,6 +657,10 @@ bf_random(Var arglist, Byte next, void *vdata, Objid progr)
     int nargs = arglist.v.list[0].v.num;
     int num = (nargs >= 1 ? arglist.v.list[1].v.num : 1);
 
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     free_var(arglist);
 
     if (num <= 0)
@@ -641,6 +686,10 @@ bf_floatstr(Var arglist, Byte next, void *vdata, Objid progr)
 		   && is_true(arglist.v.list[3]));
     char fmt[10], output[500];	/* enough for IEEE double */
     Var r;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     free_var(arglist);
     if (prec > DBL_DIG + 4)

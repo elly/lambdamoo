@@ -15,6 +15,8 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
+#include <string.h>
+
 #include "ast.h"
 #include "exceptions.h"
 #include "list.h"
@@ -64,7 +66,7 @@ program_ref(Program * p)
 int
 program_bytes(Program * p)
 {
-    int i, count;
+    unsigned int i, count;
 
     count = sizeof(Program);
     count += p->main_vector.size;

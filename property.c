@@ -20,6 +20,7 @@
 #include "list.h"
 #include "storage.h"
 #include "utils.h"
+#include "util.h"
 
 struct prop_data {
     Var r;
@@ -42,6 +43,9 @@ static package
 bf_properties(Var arglist, Byte next, void *vdata, Objid progr)
 {				/* (object) */
     Objid oid = arglist.v.list[1].v.obj;
+
+    unused(next);
+    unused(vdata);
 
     free_var(arglist);
 
@@ -70,6 +74,9 @@ bf_prop_info(Var arglist, Byte next, void *vdata, Objid progr)
     Var r;
     unsigned flags;
     char *s;
+
+    unused(next);
+    unused(vdata);
 
     if (!valid(oid)) {
 	free_var(arglist);
@@ -188,6 +195,9 @@ bf_set_prop_info(Var arglist, Byte next, void *vdata, Objid progr)
     Var info = arglist.v.list[3];
     enum error e = set_prop_info(oid, pname, info, progr);
 
+    unused(next);
+    unused(vdata);
+
     free_var(arglist);
     if (e == E_NONE)
 	return no_var_pack();
@@ -206,6 +216,9 @@ bf_add_prop(Var arglist, Byte next, void *vdata, Objid progr)
     unsigned flags;
     const char *new_name;
     enum error e;
+
+    unused(next);
+    unused(vdata);
 
     if ((e = validate_prop_info(info, &owner, &flags, &new_name)) != E_NONE);	/* Already failed */
     else if (new_name)
@@ -232,6 +245,9 @@ bf_delete_prop(Var arglist, Byte next, void *vdata, Objid progr)
     const char *pname = arglist.v.list[2].v.str;
     enum error e = E_NONE;
 
+    unused(next);
+    unused(vdata);
+
     if (!valid(oid))
 	e = E_INVARG;
     else if (!db_object_allows(oid, progr, FLAG_WRITE))
@@ -254,6 +270,9 @@ bf_clear_prop(Var arglist, Byte next, void *vdata, Objid progr)
     db_prop_handle h;
     Var value;
     enum error e;
+
+    unused(next);
+    unused(vdata);
 
     if (!valid(oid))
 	e = E_INVARG;
@@ -288,6 +307,9 @@ bf_is_clear_prop(Var arglist, Byte next, void *vdata, Objid progr)
     Var r;
     db_prop_handle h;
     enum error e;
+
+    unused(next);
+    unused(vdata);
 
     if (!valid(oid))
 	e = E_INVARG;

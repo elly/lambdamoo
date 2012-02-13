@@ -42,6 +42,7 @@
 #include "server.h"
 #include "storage.h"
 #include "timers.h"
+#include "util.h"
 
 /******************************************************************************
  * Utilities
@@ -152,6 +153,8 @@ struct request {
 static void
 timeout_proc(Timer_ID id, Timer_Data data)
 {
+    unused(id);
+    unused(data);
     _exit(1);
 }
 
@@ -174,7 +177,7 @@ lookup(int to_intermediary, int from_intermediary)
 	if (req.kind == REQ_ADDR_FROM_NAME) {
 	    ensure_buffer(&buffer, &buflen, req.u.length + 1);
 	    if (robust_read(from_intermediary, buffer, req.u.length)
-		!= req.u.length)
+		!= ui2si(req.u.length))
 		_exit(1);
 	    buffer[req.u.length] = 0;
 	    id = set_timer(req.timeout, timeout_proc, 0);
@@ -249,7 +252,7 @@ intermediary(int to_server, int from_server)
 	    _exit(1);
 	if (req.kind == REQ_ADDR_FROM_NAME) {
 	    ensure_buffer(&buffer, &buflen, req.u.length);
-	    if (robust_read(from_server, buffer, req.u.length) != req.u.length)
+	    if (robust_read(from_server, buffer, req.u.length) != ui2si(req.u.length))
 		_exit(1);
 	}
 	if (!lookup_pid)	/* Restart lookup if it's died */

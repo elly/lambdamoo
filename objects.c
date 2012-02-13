@@ -27,6 +27,7 @@
 #include "storage.h"
 #include "structures.h"
 #include "utils.h"
+#include "util.h"
 
 static int
 controls(Objid who, Objid what)
@@ -190,6 +191,10 @@ bf_toobj(Var arglist, Byte next, void *vdata, Objid progr)
     int i;
     enum error e;
 
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r.type = TYPE_OBJ;
     e = become_integer(arglist.v.list[1], &i, 0);
     r.v.obj = i;
@@ -205,6 +210,11 @@ static package
 bf_typeof(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r.type = TYPE_INT;
     r.v.num = (int) arglist.v.list[1].type & TYPE_DB_MASK;
     free_var(arglist);
@@ -216,6 +226,10 @@ bf_valid(Var arglist, Byte next, void *vdata, Objid progr)
 {				/* (object) */
     Var r;
 
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r.type = TYPE_INT;
     r.v.num = valid(arglist.v.list[1].v.obj);
     free_var(arglist);
@@ -226,6 +240,10 @@ static package
 bf_max_object(Var arglist, Byte next, void *vdata, Objid progr)
 {				/* () */
     Var r;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     free_var(arglist);
     r.type = TYPE_OBJ;
@@ -316,6 +334,9 @@ bf_chparent(Var arglist, Byte next, void *vdata, Objid progr)
     Objid parent = arglist.v.list[2].v.obj;
     Objid oid;
 
+    unused(next);
+    unused(vdata);
+
     free_var(arglist);
     if (!valid(what)
 	|| (!valid(parent) && parent != NOTHING))
@@ -341,6 +362,10 @@ bf_parent(Var arglist, Byte next, void *vdata, Objid progr)
 {				/* (object) */
     Var r;
     Objid obj = arglist.v.list[1].v.obj;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     free_var(arglist);
 
@@ -374,6 +399,10 @@ static package
 bf_children(Var arglist, Byte next, void *vdata, Objid progr)
 {				/* (object) */
     Objid oid = arglist.v.list[1].v.obj;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     free_var(arglist);
 
@@ -528,6 +557,9 @@ bf_recycle_read(void)
 static package
 bf_players(Var arglist, Byte next, void *vdata, Objid progr)
 {				/* () */
+    unused(next);
+    unused(vdata);
+    unused(progr);
     free_var(arglist);
     return make_var_pack(var_ref(db_all_users()));
 }
@@ -537,6 +569,10 @@ bf_is_player(Var arglist, Byte next, void *vdata, Objid progr)
 {				/* (object) */
     Var r;
     Objid oid = arglist.v.list[1].v.obj;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     free_var(arglist);
 
@@ -553,6 +589,9 @@ bf_set_player_flag(Var arglist, Byte next, void *vdata, Objid progr)
 {				/* (object, yes/no) */
     Var obj;
     char bool;
+
+    unused(next);
+    unused(vdata);
 
     obj = arglist.v.list[1];
     bool = is_true(arglist.v.list[2]);
@@ -578,6 +617,9 @@ bf_object_bytes(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Objid oid = arglist.v.list[1].v.obj;
     Var v;
+
+    unused(next);
+    unused(vdata);
 
     free_var(arglist);
 

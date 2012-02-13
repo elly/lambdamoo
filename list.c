@@ -34,6 +34,7 @@
 #include "structures.h"
 #include "unparse.h"
 #include "utils.h"
+#include "util.h"
 
 Var
 new_list(int size)
@@ -409,6 +410,11 @@ static package
 bf_length(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     switch (arglist.v.list[1].type) {
     case TYPE_LIST:
 	r.type = TYPE_INT;
@@ -433,6 +439,10 @@ bf_setadd(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
 
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r = setadd(var_ref(arglist.v.list[1]), var_ref(arglist.v.list[2]));
     free_var(arglist);
     return make_var_pack(r);
@@ -444,6 +454,10 @@ bf_setremove(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
 
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r = setremove(var_ref(arglist.v.list[1]), arglist.v.list[2]);
     free_var(arglist);
     return make_var_pack(r);
@@ -454,6 +468,11 @@ static package
 bf_listappend(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     if (arglist.v.list[0].v.num == 2)
 	r = listappend(var_ref(arglist.v.list[1]), var_ref(arglist.v.list[2]));
     else
@@ -468,6 +487,11 @@ static package
 bf_listinsert(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     if (arglist.v.list[0].v.num == 2)
 	r = listinsert(var_ref(arglist.v.list[1]), var_ref(arglist.v.list[2]), 1);
     else
@@ -481,6 +505,11 @@ static package
 bf_listdelete(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     if (arglist.v.list[2].v.num <= 0
 	|| arglist.v.list[2].v.num > arglist.v.list[1].v.list[0].v.num) {
 	free_var(arglist);
@@ -497,6 +526,11 @@ static package
 bf_listset(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     if (arglist.v.list[3].v.num <= 0
 	|| arglist.v.list[3].v.num > arglist.v.list[1].v.list[0].v.num) {
 	free_var(arglist);
@@ -514,6 +548,10 @@ bf_equal(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
 
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r.type = TYPE_INT;
     r.v.num = equality(arglist.v.list[1], arglist.v.list[2], 1);
     free_var(arglist);
@@ -524,6 +562,10 @@ static package
 bf_is_member(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     r.type = TYPE_INT;
     r.v.num = ismember(arglist.v.list[1], arglist.v.list[2], 1);
@@ -536,6 +578,10 @@ bf_strsub(Var arglist, Byte next, void *vdata, Objid progr)
 {				/* (source, what, with [, case-matters]) */
     Var r;
     int case_matters = 0;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     if (arglist.v.list[0].v.num == 4)
 	case_matters = is_true(arglist.v.list[4]);
@@ -563,6 +609,10 @@ bf_crypt(Var arglist, Byte next, void *vdata, Objid progr)
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./";
     extern const char *crypt(const char *, const char *);
 
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     if (arglist.v.list[0].v.num == 1 || strlen(arglist.v.list[2].v.str) < 2) {
 	salt[0] = saltstuff[RANDOM() % (int) strlen(saltstuff)];
 	salt[1] = saltstuff[RANDOM() % (int) strlen(saltstuff)];
@@ -589,6 +639,10 @@ bf_strcmp(Var arglist, Byte next, void *vdata, Objid progr)
 {				/* (string1, string2) */
     Var r;
 
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r.type = TYPE_INT;
     r.v.num = signum(strcmp(arglist.v.list[1].v.str, arglist.v.list[2].v.str));
     free_var(arglist);
@@ -600,6 +654,10 @@ bf_index(Var arglist, Byte next, void *vdata, Objid progr)
 {				/* (source, what [, case-matters]) */
     Var r;
     int case_matters = 0;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     if (arglist.v.list[0].v.num == 3)
 	case_matters = is_true(arglist.v.list[3]);
@@ -615,6 +673,10 @@ static package
 bf_rindex(Var arglist, Byte next, void *vdata, Objid progr)
 {				/* (source, what [, case-matters]) */
     Var r;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     int case_matters = 0;
 
@@ -632,6 +694,11 @@ static package
 bf_tostr(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r.type = TYPE_STR;
     r.v.str = str_dup(list2str(arglist.v.list));
     free_var(arglist);
@@ -642,6 +709,10 @@ static package
 bf_toliteral(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     r.type = TYPE_STR;
     r.v.str = str_dup(value_to_literal(arglist.v.list[1]));
@@ -771,6 +842,10 @@ bf_match(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var ans;
 
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     ans = do_match(arglist, 0);
     free_var(arglist);
     if (ans.type == TYPE_ERR)
@@ -783,6 +858,10 @@ static package
 bf_rmatch(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var ans;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     ans = do_match(arglist, 1);
     free_var(arglist);
@@ -838,12 +917,16 @@ check_subs_list(Var subs)
 static package
 bf_substitute(Var arglist, Byte next, void *vdata, Objid progr)
 {
-    int template_length, subject_length;
+    int template_length;
     const char *template, *subject;
     Var subs, ans;
     int invarg = 0;
     Stream *s;
     char c = '\0';
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     template = arglist.v.list[1].v.str;
     template_length = strlen(template);
@@ -854,7 +937,6 @@ bf_substitute(Var arglist, Byte next, void *vdata, Objid progr)
 	return make_error_pack(E_INVARG);
     }
     subject = subs.v.list[4].v.str;
-    subject_length = strlen(subject);
 
     s = new_stream(template_length);
     ans.type = TYPE_STR;
@@ -907,6 +989,10 @@ bf_value_bytes(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
 
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r.type = TYPE_INT;
     r.v.num = value_bytes(arglist.v.list[1]);
     free_var(arglist);
@@ -940,6 +1026,10 @@ bf_binary_hash(Var arglist, Byte next, void *vdata, Objid progr)
     int length;
     const char *bytes = binary_to_raw_bytes(arglist.v.list[1].v.str, &length);
 
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     free_var(arglist);
     if (!bytes)
 	return make_error_pack(E_INVARG);
@@ -954,6 +1044,10 @@ bf_string_hash(Var arglist, Byte next, void *vdata, Objid progr)
     Var r;
     const char *str = arglist.v.list[1].v.str;
 
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r.type = TYPE_STR;
     r.v.str = hash_bytes(str, strlen(str));
     free_var(arglist);
@@ -965,6 +1059,10 @@ bf_value_hash(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
     const char *lit = value_to_literal(arglist.v.list[1]);
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     r.type = TYPE_STR;
     r.v.str = hash_bytes(lit, strlen(lit));
@@ -981,6 +1079,10 @@ bf_decode_binary(Var arglist, Byte next, void *vdata, Objid progr)
     int fully = (nargs >= 2 && is_true(arglist.v.list[2]));
     Var r;
     int i;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     free_var(arglist);
     if (!bytes)
@@ -1074,6 +1176,10 @@ bf_encode_binary(Var arglist, Byte next, void *vdata, Objid progr)
     int ok, length;
     Var r;
     const char *bytes;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     if (!s)
 	s = new_stream(100);

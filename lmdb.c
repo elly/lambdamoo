@@ -10,6 +10,7 @@
 #include "lmdb.h"
 #include "parser.h"
 #include "storage.h"
+#include "util.h"
 
 struct lmdb {
 	char errmsg[1024];
@@ -335,7 +336,7 @@ const char *lmdb_verbdefprep(struct Verbdef *vdef) {
 }
 
 struct Propdef *lmdb_propdefbyid(struct lmdb *db, struct Object *obj, int id) {
-	if (id >= obj->propdefs.cur_length) {
+	if (si2ui(id) >= obj->propdefs.cur_length) {
 		struct Object *parent = lmdb_objbyid(db, obj->parent);
 		if (!parent)
 			return NULL;
@@ -360,7 +361,8 @@ const char *lmdb_propdefname(struct Propdef *pdef) {
 }
 
 int lmdb_propdefislocal(struct lmdb *db, struct Object *obj, int idx) {
-	return idx < obj->propdefs.cur_length;
+	unused(db);
+	return si2ui(idx) < obj->propdefs.cur_length;
 }
 
 static int _nprops(struct lmdb *db, Objid id) {
@@ -466,5 +468,7 @@ int lmdb_read(struct lmdb *lmdb, FILE *f) {
 }
 
 int lmdb_write(struct lmdb *lmdb, FILE *f) {
+	unused(lmdb);
+	unused(f);
 	return 0;
 }

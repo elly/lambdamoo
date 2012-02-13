@@ -34,7 +34,7 @@ char **
 parse_into_words(char *input, unsigned int *nwords)
 {
     static char **words = 0;
-    static int max_words = 0;
+    static unsigned int max_words = 0;
     int in_quotes = 0;
     char *ptr = input;
 
@@ -47,9 +47,9 @@ parse_into_words(char *input, unsigned int *nwords)
 
     for (*nwords = 0; *input != '\0'; (*nwords)++) {
 	if (*nwords == max_words) {
-	    int new_max = max_words * 2;
+	    unsigned int new_max = max_words * 2;
 	    char **new = mymalloc(new_max * sizeof(char *), M_STRING_PTRS);
-	    int i;
+	    unsigned int i;
 
 	    for (i = 0; i < max_words; i++)
 		new[i] = words[i];
@@ -108,7 +108,7 @@ build_string(int argc, char *argv[])
 Var
 parse_into_wordlist(const char *command)
 {
-    int argc, i;
+    unsigned int argc, i;
     char **argv;
     Var args;
     char *s = str_dup(command);
@@ -130,10 +130,10 @@ parse_command(const char *command, Objid user)
     const char *argstr;
     char *buf;
     const char *verb;
-    int argc;
+    unsigned int argc;
     char **argv;
     int pstart, pend, dlen;
-    int i;
+    unsigned int i;
 
     while (*command == ' ')
 	command++;

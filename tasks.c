@@ -40,6 +40,7 @@
 #include "structures.h"
 #include "tasks.h"
 #include "utils.h"
+#include "util.h"
 #include "verbs.h"
 #include "version.h"
 
@@ -1221,7 +1222,8 @@ read_task_queue(void)
 	return 0;
     }
     for (; count > 0; count--) {
-	int first_lineno, id, old_size, st;
+	int first_lineno, id, st;
+	unsigned int old_size;
 	char c;
 	time_t start_time;
 	Program *program;
@@ -1370,6 +1372,10 @@ bf_queue_info(Var arglist, Byte next, void *vdata, Objid progr)
     int nargs = arglist.v.list[0].v.num;
     Var res;
 
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     if (nargs == 0) {
 	int count = 0;
 	tqueue *tq;
@@ -1406,6 +1412,11 @@ static package
 bf_task_id(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r.type = TYPE_INT;
     r.v.num = current_task_id;
     free_var(arglist);
@@ -1506,6 +1517,8 @@ counting_closure(vm the_vm, const char *status, void *data)
 {
     struct qcl_data *qdata = data;
 
+    unused(status);
+
     if (qdata->show_all || qdata->progr == progr_of_cur_verb(the_vm))
 	qdata->i++;
 
@@ -1537,6 +1550,9 @@ bf_queued_tasks(Var arglist, Byte next, void *vdata, Objid progr)
     int i, count = 0;
     ext_queue *eq;
     struct qcl_data qdata;
+
+    unused(next);
+    unused(vdata);
 
     for (tq = idle_tqueues; tq; tq = tq->next) {
 	if (tq->reading && (show_all || tq->player == progr))
@@ -1622,6 +1638,8 @@ finding_closure(vm the_vm, const char *status, void *data)
 {
     struct fcl_data *fdata = data;
 
+    unused(status);
+
     if (the_vm->task_id == fdata->id) {
 	fdata->the_vm = the_vm;
 	return TEA_STOP;
@@ -1681,13 +1699,16 @@ killing_closure(vm the_vm, const char *status, void *data)
 {
     struct kcl_data *kdata = data;
 
-    if (the_vm->task_id == kdata->id)
+    unused(status);
+
+    if (the_vm->task_id == kdata->id) {
 	if (is_wizard(kdata->owner)
 	    || progr_of_cur_verb(the_vm) == kdata->owner) {
 	    free_vm(the_vm, 1);
 	    return TEA_KILL;
 	} else
 	    return TEA_STOP;
+    }
 
     return TEA_CONTINUE;
 }
@@ -1787,6 +1808,9 @@ bf_kill_task(Var arglist, Byte next, void *vdata, Objid progr)
 {
     enum error e = kill_task(arglist.v.list[1].v.num, progr);
 
+    unused(next);
+    unused(vdata);
+
     free_var(arglist);
     if (e != E_NONE)
 	return make_error_pack(e);
@@ -1847,6 +1871,9 @@ bf_resume(Var arglist, Byte next, void *vdata, Objid progr)
     Var value;
     enum error e;
 
+    unused(next);
+    unused(vdata);
+
     value = (nargs >= 2 ? var_ref(arglist.v.list[2]) : zero);
     e = do_resume(arglist.v.list[1].v.num, value, progr);
     free_var(arglist);
@@ -1862,6 +1889,9 @@ bf_output_delimiters(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
     Objid player = arglist.v.list[1].v.obj;
+
+    unused(next);
+    unused(vdata);
 
     free_var(arglist);
 
@@ -1901,6 +1931,9 @@ bf_force_input(Var arglist, Byte next, void *vdata, Objid progr)
 		    && is_true(arglist.v.list[3]));
     tqueue *tq;
 
+    unused(next);
+    unused(vdata);
+
     if (!is_wizard(progr) && progr != conn) {
 	free_var(arglist);
 	return make_error_pack(E_PERM);
@@ -1918,6 +1951,9 @@ bf_flush_input(Var arglist, Byte next, void *vdata, Objid progr)
     int show_messages = (arglist.v.list[0].v.num > 1
 			 && is_true(arglist.v.list[2]));
     tqueue *tq;
+
+    unused(next);
+    unused(vdata);
 
     if (!is_wizard(progr) && progr != conn) {
 	free_var(arglist);

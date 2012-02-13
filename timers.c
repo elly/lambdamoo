@@ -23,6 +23,7 @@
 
 #include "config.h"
 #include "timers.h"
+#include "util.h"
 
 #if (defined(MACH) && defined(CMU)) || !defined(SIGVTALRM)
 /* Virtual interval timers are broken on Mach 3.0 */
@@ -72,6 +73,8 @@ wakeup_call(int signo)
     Timer_ID id = this->id;
     Timer_Data data = this->data;
 
+    unused(signo);
+
     active_timers = active_timers->next;
     free_timer(this);
     restart_timers();
@@ -88,6 +91,8 @@ virtual_wakeup_call(int signo)
     Timer_Proc proc = this->proc;
     Timer_ID id = this->id;
     Timer_Data data = this->data;
+
+    unused(signo);
 
     virtual_timer = 0;
     free_timer(this);

@@ -461,11 +461,12 @@ re_compile_pattern(regex, size, bufp)
 	    abort();
 	    /*NOTREACHED */
 	case Rbol:
-	    if (!beginning_context)
+	    if (!beginning_context) {
 		if (regexp_context_indep_ops)
 		    goto op_error;
 		else
 		    goto normal_char;
+	    }
 	    opcode = Cbol;
 	    goto store_opcode;
 	case Reol:
@@ -477,21 +478,23 @@ re_compile_pattern(regex, size, bufp)
 		  ((regexp_syntax & RE_NO_BK_PARENS) ?
 		   (regex[pos] == ')') :
 		   (pos + 1 < size && regex[pos] == '\134' &&
-		    regex[pos + 1] == ')'))))
+		    regex[pos + 1] == ')')))) {
 		if (regexp_context_indep_ops)
 		    goto op_error;
 		else
 		    goto normal_char;
+	    }
 	    opcode = Ceol;
 	    goto store_opcode;
 	    /* NOTREACHED */
 	    break;
 	case Roptional:
-	    if (beginning_context)
+	    if (beginning_context) {
 		if (regexp_context_indep_ops)
 		    goto op_error;
 		else
 		    goto normal_char;
+	    }
 	    if (CURRENT_LEVEL_START == pattern_offset)
 		break;		/* ignore empty patterns for ? */
 	    ALLOC(3);
@@ -500,11 +503,12 @@ re_compile_pattern(regex, size, bufp)
 	    break;
 	case Rstar:
 	case Rplus:
-	    if (beginning_context)
+	    if (beginning_context) {
 		if (regexp_context_indep_ops)
 		    goto op_error;
 		else
 		    goto normal_char;
+	    }
 	    if (CURRENT_LEVEL_START == pattern_offset)
 		break;		/* ignore empty patterns for + and * */
 	    ALLOC(9);
@@ -826,11 +830,10 @@ re_compile_fastmap_aux(code, pos, visited, can_be_null, fastmap)
 	}
 }
 
-static int re_do_compile_fastmap PROTO((char *, int, int, char *, char *));
 static int
 re_do_compile_fastmap(buffer, used, pos, can_be_null, fastmap)
     char *buffer, *fastmap, *can_be_null;
-    int used, pos;
+    unsigned int used, pos;
 {
     char small_visited[512], *visited;
 
@@ -1375,11 +1378,12 @@ re_search_2(bufp, string1, size1, string2, size2, pos, range, regs,
 	range = -range;
     } else
 	dir = 1;
-    if (anchor == 2)
+    if (anchor == 2) {
 	if (pos != 0)
 	    return -1;
 	else
 	    range = 0;
+    }
     for (; range >= 0; range--, pos += dir) {
 	if (fastmap) {
 	    if (dir == 1) {	/* searching forwards */

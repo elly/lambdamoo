@@ -35,6 +35,7 @@ const char *lmdb_verbdefperms(struct Verbdef *vdef);
 const char *lmdb_verbdefprep(struct Verbdef *vdef);
 Program *lmdb_verbdefprog(struct Verbdef *vdef);
 int lmdb_verbdefsize(struct Verbdef *vdef);
+Objid lmdb_verbdefowner(struct Verbdef *vdef);
 
 struct Propdef *lmdb_propdefbyid(struct lmdb *db, struct Object *obj, int idx);
 struct Propdef *lmdb_propdefbyname(struct lmdb *db, struct Object *obj, const char *name);

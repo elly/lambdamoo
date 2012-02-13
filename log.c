@@ -29,6 +29,7 @@
 #include "storage.h"
 #include "streams.h"
 #include "utils.h"
+#include "util.h"
 
 static FILE *log_file = 0;
 
@@ -118,6 +119,9 @@ add_command_to_history(Objid player, const char *command)
     stream_printf(command_history, "%s: #%d: %s\n",
 		  nowstr + 4,	/* skip day of week */
 		  player, command);
+#else
+    unused(player);
+    unused(command);
 #endif				/* LOG_COMMANDS */
 }
 
@@ -126,6 +130,8 @@ add_command_to_history(Objid player, const char *command)
 static package
 bf_server_log(Var arglist, Byte next, void *vdata, Objid progr)
 {
+    unused(next);
+    unused(vdata);
     if (!is_wizard(progr)) {
 	free_var(arglist);
 	return make_error_pack(E_PERM);

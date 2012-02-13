@@ -27,6 +27,7 @@
 #include "streams.h"
 #include "structures.h"
 #include "utils.h"
+#include "util.h"
 
 #ifdef USE_NETPROTO_SINGLE
 
@@ -52,6 +53,7 @@ single_usage_string(void)
 static int
 single_initialize(int argc, char **argv, Var * desc)
 {
+    unused(argv);
     *desc = zero;
     if (argc != 0)
 	return 0;
@@ -63,6 +65,7 @@ static enum error
 single_make_listener(server_listener sl, Var desc, network_listener * nl,
 		      Var * canon, const char **name)
 {
+    unused(desc);
     if (listening)
 	return E_PERM;
 
@@ -77,12 +80,15 @@ single_make_listener(server_listener sl, Var desc, network_listener * nl,
 static int
 single_listen(network_listener nl)
 {
+    unused(nl);
     return 1;
 }
 
 static int
 single_send_line(network_handle nh, const char *line, int flush_ok)
 {
+    unused(nh);
+    unused(flush_ok);
     printf("%s\n", line);
     fflush(stdout);
 
@@ -93,8 +99,10 @@ static int
 single_send_bytes(network_handle nh, const char *buffer, int buflen,
 		   int flush_ok)
 {
+    unused(nh);
+    unused(flush_ok);
     /* Cast to (void *) to discard `const' on some systems */
-    fwrite((void *) buffer, sizeof(char), buflen, stdout);
+    fwrite(buffer, sizeof(char), buflen, stdout);
     fflush(stdout);
 
     return 1;
@@ -103,48 +111,60 @@ single_send_bytes(network_handle nh, const char *buffer, int buflen,
 static int
 single_buffered_output_length(network_handle nh)
 {
+    unused(nh);
     return 0;
 }
 
 static const char *
 single_connection_name(network_handle nh)
 {
+    unused(nh);
     return "standard input";
 }
 
 static void
 single_set_connection_binary(network_handle nh, int do_binary)
 {
+    unused(nh);
     binary = do_binary;
 }
 
 static Var
 single_connection_options(network_handle nh, Var list)
 {
+    unused(nh);
     return list;
 }
 
 static int
 single_connection_option(network_handle nh, const char *option, Var * value)
 {
+    unused(nh);
+    unused(option);
+    unused(value);
     return 0;
 }
 
 static int
 single_set_connection_option(network_handle nh, const char *option, Var value)
 {
+    unused(nh);
+    unused(option);
+    unused(value);
     return 0;
 }
 
 static void
 single_close(network_handle nh)
 {
+    unused(nh);
     state = STATE_CLOSED;
 }
 
 static void
 single_close_listener(network_listener nl)
 {
+    unused(nl);
     listening = 0;
 }
 
@@ -163,12 +183,14 @@ static int input_suspended = 0;
 static void
 single_suspend_input(network_handle nh)
 {
+    unused(nh);
     input_suspended = 1;
 }
 
 static void
 single_resume_input(network_handle nh)
 {
+    unused(nh);
     input_suspended = 0;
 }
 
@@ -265,9 +287,9 @@ char rcsid_net_single[] = "$Id: net_single.c,v 1.2 1997/03/03 04:19:07 nop Exp $
 #endif /* USE_NET_SINGLE */
 
 /* $Log: net_single.c,v $
-/* Revision 1.2  1997/03/03 04:19:07  nop
-/* GNU Indent normalization
-/*
+ * Revision 1.2  1997/03/03 04:19:07  nop
+ * GNU Indent normalization
+ *
  * Revision 1.1.1.1  1997/03/03 03:45:02  nop
  * LambdaMOO 1.8.0p5
  *
