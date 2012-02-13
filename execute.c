@@ -40,11 +40,12 @@
 #include "tasks.h"
 #include "timers.h"
 #include "utils.h"
+#include "util.h"
 #include "version.h"
 
 /* the following globals are the guts of the virtual machine: */
 static activation *activ_stack = 0;
-static int max_stack_size = 0;
+static unsigned int max_stack_size = 0;
 static unsigned top_activ_stack;	/* points to top-of-stack
 					   (last-occupied-slot),
 					   not next-empty-slot */
@@ -124,7 +125,7 @@ print_error_backtrace(const char *msg, void (*output) (const char *))
 	return;
     str = new_stream(100);
     for (t = top_activ_stack; t >= 0; t--) {
-	if (t != top_activ_stack)
+	if (si2ui(t) != top_activ_stack)
 	    stream_printf(str, "... called from ");
 	stream_printf(str, "#%d:%s", activ_stack[t].vloc,
 		      activ_stack[t].verbname);
@@ -136,7 +137,7 @@ print_error_backtrace(const char *msg, void (*output) (const char *))
 				       (t == 0 ? root_activ_vector
 					: MAIN_VECTOR),
 				       activ_stack[t].error_pc));
-	if (t == top_activ_stack)
+	if (si2ui(t) == top_activ_stack)
 	    stream_printf(str, ":  %s", msg);
 	output(reset_stream(str));
 	if (t > 0 && activ_stack[t].bi_func_pc) {
@@ -179,7 +180,7 @@ static enum error
 suspend_task(package p)
 {
     vm the_vm = new_vm(current_task_id, top_activ_stack + 1);
-    int i;
+    unsigned int i;
     enum error e;
 
     the_vm->max_stack_size = max_stack_size;
@@ -209,7 +210,6 @@ unwind_stack(Finally_Reason why, Var value, enum outcome *outcome)
 	void *bi_func_data = 0;
 	int bi_func_pc;
 	unsigned bi_func_id = 0;
-	Objid player;
 	Var v, *goal = a->base_rt_stack;
 
 	if (why == FIN_EXIT)
@@ -261,7 +261,6 @@ unwind_stack(Finally_Reason why, Var value, enum outcome *outcome)
 	    bi_func_id = a->bi_func_id;
 	    bi_func_data = a->bi_func_data;
 	}
-	player = a->player;
 	free_activation(*a, 0);	/* 0 == don't free bi_func_data */
 
 	if (top_activ_stack == 0) {	/* done */
@@ -677,6 +676,12 @@ bi_prop_protected(enum bi_prop prop, Objid progr)
   everything is just an entry point to it
 **/
 
+/* XXX: the way opcodes are structured currently is totally fucked, so this
+ * gigantic switch statement needs to have one case per opcode _value_ that can
+ * appear. This needs to be unscrewed somehow.
+ */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch"
 static enum outcome
 run(char raise, enum error resumption_error, Var * result)
 {				/* runs the_vm */
@@ -1299,7 +1304,7 @@ do {    						    	\
 		    free_var(from);
 		    PUSH_ERROR(E_TYPE);
 		} else {
-		    int len = (base.type == TYPE_STR ? strlen(base.v.str)
+		    int len = (base.type == TYPE_STR ? ui2si(strlen(base.v.str))
 			       : base.v.list[0].v.num);
 		    if (from.v.num <= to.v.num
 			&& (from.v.num <= 0 || from.v.num > len
@@ -1516,7 +1521,7 @@ do {    						    	\
 		    enum error e;
 
 		    e = enqueue_forked_task2(RUN_ACTIV, f_index, time.v.num,
-			op == OP_FORK_WITH_ID ? id : -1);
+			op == OP_FORK_WITH_ID ? ui2si(id) : -1);
 		    if (e != E_NONE)
 			RAISE_ERROR(e);
 		}
@@ -1660,7 +1665,7 @@ do {    						    	\
 			    free_var(value);
 			    PUSH_ERROR(E_TYPE);
 			} else if (rangeset_check(base.type == TYPE_STR
-						  ? strlen(base.v.str)
+						  ? ui2si(strlen(base.v.str))
 						  : base.v.list[0].v.num,
 						  from.v.num, to.v.num)) {
 			    free_var(base);
@@ -1731,8 +1736,8 @@ do {    						    	\
 			    free_var(POP());	/* replace list with error code */
 			    PUSH_ERROR(e);
 			    for (i = 1; i <= nargs; i++) {
-				READ_BYTES(bv, bc.numbytes_var_name);
-				READ_BYTES(bv, bc.numbytes_label);
+				(void)READ_BYTES(bv, bc.numbytes_var_name);
+				(void)READ_BYTES(bv, bc.numbytes_label);
 			    }
 			} else {
 			    nopt_avail = len - nreq;
@@ -1869,7 +1874,7 @@ do {    						    	\
 		    goto do_test;
 
 		case EOP_EXIT_ID:
-		    READ_BYTES(bv, bc.numbytes_var_name);	/* ignore id */
+		    (void)READ_BYTES(bv, bc.numbytes_var_name);	/* ignore id */
 		    /* fall thru */
 		case EOP_EXIT:
 		    {
@@ -2045,6 +2050,7 @@ do {    						    	\
 	}
     }
 }
+#pragma GCC diagnostic pop
 
 
 /**** manipulating data of task ****/
@@ -2055,6 +2061,8 @@ static int timeouts_enabled = 1;	/* set to 0 in debugger to disable
 static void
 task_timeout(Timer_ID id, Timer_Data data)
 {
+    unused(id);
+    unused(data);
     task_timed_out = timeouts_enabled;
 }
 
@@ -2131,7 +2139,7 @@ caller()
 }
 
 static void
-check_activ_stack_size(int max)
+check_activ_stack_size(unsigned int max)
 {
     if (max_stack_size != max) {
 	if (activ_stack)
@@ -2188,7 +2196,7 @@ do_task(Program * prog, int which_vector, Var * result, int do_db_tracebacks)
 enum outcome
 resume_from_previous_vm(vm the_vm, Var v, task_kind kind, Var * result)
 {
-    int i;
+    unsigned int i;
 
     current_task_kind = kind;
     check_activ_stack_size(the_vm->max_stack_size);
@@ -2435,6 +2443,10 @@ bf_raise(Var arglist, Byte next, void *vdata, Objid progr)
 		       : str_dup(value2str(code)));
     Var value;
 
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     value = (nargs >= 3 ? var_ref(arglist.v.list[3]) : zero);
     free_var(arglist);
     p.kind = BI_RAISE;
@@ -2450,6 +2462,10 @@ bf_suspend(Var arglist, Byte next, void *vdata, Objid progr)
 {
     static int seconds;
     int nargs = arglist.v.list[0].v.num;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     if (nargs >= 1)
 	seconds = arglist.v.list[1].v.num;
@@ -2470,6 +2486,9 @@ bf_read(Var arglist, Byte next, void *vdata, Objid progr)
     static Objid connection;
     int non_blocking = (argc >= 2
 			&& is_true(arglist.v.list[2]));
+
+    unused(next);
+    unused(vdata);
 
     if (argc >= 1)
 	connection = arglist.v.list[1].v.obj;
@@ -2505,6 +2524,11 @@ static package
 bf_seconds_left(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r.type = TYPE_INT;
     r.v.num = timer_wakeup_interval(task_alarm_id);
     free_var(arglist);
@@ -2515,6 +2539,11 @@ static package
 bf_ticks_left(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r.type = TYPE_INT;
     r.v.num = ticks_remaining;
     free_var(arglist);
@@ -2525,6 +2554,10 @@ static package
 bf_pass(Var arglist, Byte next, void *vdata, Objid progr)
 {
     enum error e = call_verb(RUN_ACTIV.this, RUN_ACTIV.verb, arglist, 1);
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     if (e == E_NONE)
 	return tail_call_pack();
@@ -2539,6 +2572,9 @@ bf_set_task_perms(Var arglist, Byte next, void *vdata, Objid progr)
     /* warning!!  modifies top activation */
     Objid oid = arglist.v.list[1].v.obj;
 
+    unused(next);
+    unused(vdata);
+
     free_var(arglist);
 
     if (progr != oid && !is_wizard(progr))
@@ -2552,6 +2588,11 @@ static package
 bf_caller_perms(Var arglist, Byte next, void *vdata, Objid progr)
 {				/* () */
     Var r;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
+
     r.type = TYPE_OBJ;
     if (top_activ_stack == 0)
 	r.v.obj = NOTHING;
@@ -2565,6 +2606,10 @@ static package
 bf_callers(Var arglist, Byte next, void *vdata, Objid progr)
 {
     int line_numbers_too = 0;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     if (arglist.v.list[0].v.num >= 1)
 	line_numbers_too = is_true(arglist.v.list[1]);
@@ -2582,6 +2627,9 @@ bf_task_stack(Var arglist, Byte next, void *vdata, Objid progr)
     int line_numbers_too = (nargs >= 2 && is_true(arglist.v.list[2]));
     vm the_vm = find_suspended_task(id);
     Objid owner = (the_vm ? progr_of_cur_verb(the_vm) : NOTHING);
+
+    unused(next);
+    unused(vdata);
 
     free_var(arglist);
     if (!the_vm)
@@ -2680,11 +2728,11 @@ write_rt_env(const char **var_names, Var * rt_env, unsigned size)
 }
 
 int
-read_rt_env(const char ***old_names, Var ** rt_env, int *old_size)
+read_rt_env(const char ***old_names, Var ** rt_env, unsigned int *old_size)
 {
     unsigned i;
 
-    if (dbio_scanf("%d variables\n", old_size) != 1) {
+    if (dbio_scanf("%u variables\n", old_size) != 1) {
 	errlog("READ_RT_ENV: Bad count.\n");
 	return 0;
     }
@@ -2701,7 +2749,7 @@ read_rt_env(const char ***old_names, Var ** rt_env, int *old_size)
 
 Var *
 reorder_rt_env(Var * old_rt_env, const char **old_names,
-	       int old_size, Program * prog)
+	       unsigned int old_size, Program * prog)
 {
     /* reorder old_rt_env, which is aligned according to old_names, 
        to align to prog->var_names -- return the new rt_env
@@ -2710,10 +2758,10 @@ reorder_rt_env(Var * old_rt_env, const char **old_names,
     unsigned size = prog->num_var_names;
     Var *rt_env = new_rt_env(size);
 
-    unsigned i;
+    unsigned int i;
 
     for (i = 0; i < size; i++) {
-	int slot;
+	unsigned int slot;
 
 	for (slot = 0; slot < old_size; slot++) {
 	    if (mystrcasecmp(old_names[slot], prog->var_names[i]) == 0)
@@ -2778,10 +2826,10 @@ read_activ(activation * a, int which_vector)
     DB_Version version;
     Var *old_rt_env;
     const char **old_names;
-    int old_size, stack_in_use;
+    unsigned int old_size, stack_in_use;
     unsigned i;
     const char *func_name;
-    int max_stack;
+    unsigned int max_stack;
     char c;
 
     if (dbio_input_version < DBV_Float)

@@ -41,7 +41,7 @@ typedef struct {
 				   next == 1, 2, 3, ... means the returned value should be
 				   fed to the bi_func (as specified in bi_func_id) 
 				   together with the next code. */
-    Byte bi_func_id;
+    int bi_func_id;
     void *bi_func_data;
     Var temp;			/* VM's temp register */
 
@@ -121,9 +121,9 @@ extern int read_activ_as_pi(activation *);
 void write_rt_env(const char **var_names, Var * rt_env,
 		  unsigned size);
 int read_rt_env(const char ***old_names, Var ** rt_env,
-		int *old_size);
+		unsigned int *old_size);
 Var *reorder_rt_env(Var * old_rt_env, const char **old_names,
-		    int old_size, Program * prog);
+		    unsigned int old_size, Program * prog);
 extern void write_activ(activation a);
 extern int read_activ(activation * a, int which_vector);
 

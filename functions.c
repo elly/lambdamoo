@@ -16,6 +16,7 @@
  *****************************************************************************/
 
 #include <stdarg.h>
+#include <string.h>
 
 #include "bf_register.h"
 #include "config.h"
@@ -29,6 +30,7 @@
 #include "structures.h"
 #include "unparse.h"
 #include "utils.h"
+#include "util.h"
 
 /*****************************************************************************
  * This is the table of procedures that register MOO built-in functions.  To
@@ -398,7 +400,11 @@ static package
 bf_function_info(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
-    int i;
+    unsigned int i;
+
+    unused(next);
+    unused(vdata);
+    unused(progr);
 
     if (arglist.v.list[0].v.num == 1) {
 	i = number_func_by_name(arglist.v.list[1].v.str);
@@ -420,7 +426,7 @@ bf_function_info(Var arglist, Byte next, void *vdata, Objid progr)
 static void
 load_server_protect_flags(void)
 {
-    int i;
+    unsigned int i;
 
     for (i = 0; i < top_bf_table; i++) {
 	bf_table[i].protected = server_flag_option(bf_table[i].protect_str);
@@ -437,6 +443,8 @@ load_server_options(void)
 static package
 bf_load_server_options(Var arglist, Byte next, void *vdata, Objid progr)
 {
+    unused(next);
+    unused(vdata);
     free_var(arglist);
 
     if (!is_wizard(progr)) {

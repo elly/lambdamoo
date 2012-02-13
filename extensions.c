@@ -35,6 +35,7 @@
 #include "bf_register.h"
 #include "functions.h"
 #include "db_tune.h"
+#include "util.h"
 
 #if EXAMPLE
 
@@ -148,6 +149,8 @@ bf_verb_cache_stats(Var arglist, Byte next, void *vdata, Objid progr)
 {
     Var r;
 
+    unused(next);
+    unused(vdata);
     free_var(arglist);
 
     if (!is_wizard(progr)) {
@@ -161,6 +164,8 @@ bf_verb_cache_stats(Var arglist, Byte next, void *vdata, Objid progr)
 static package
 bf_log_cache_stats(Var arglist, Byte next, void *vdata, Objid progr)
 {
+    unused(next);
+    unused(vdata);
     free_var(arglist);
 
     if (!is_wizard(progr)) {

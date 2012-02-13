@@ -18,7 +18,7 @@ CC = gcc -g
 LIBRARIES =  -lm -lcrypt
 YACC = bison -y
 
-CFLAGS = -I. -Wall -Wextra
+CFLAGS = -I. -Wall -Wextra -Werror
 
 YFLAGS = -d
 COMPILE.c = $(CC) $(CFLAGS) $(CPPFLAGS) -c

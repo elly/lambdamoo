@@ -204,7 +204,7 @@ disassemble(Program * prog, Printer p, void *data)
     stream_printf(s, "First line number: %d", prog->first_lineno);
     output(s);
 
-    for (i = -1; i < 0 || i < prog->fork_vectors_size; i++) {
+    for (i = -1; i < 0 || i < ui2si(prog->fork_vectors_size); i++) {
 	output(s);
 	if (i == -1) {
 	    stream_printf(s, "Main code vector:");

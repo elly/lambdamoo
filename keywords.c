@@ -1,6 +1,11 @@
 /* C code produced by gperf version 3.0.3 */
 /* Command-line: gperf --ignore-case -aCptT -k'1,3,$' keywords.gperf  */
 
+/* XXX: gperf generated some slightly bogus code here because it doesn't know
+ * the struct members. We're probably using it wrong.
+ */
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+
 #if !((' ' == 32) && ('!' == 33) && ('"' == 34) && ('#' == 35) \
       && ('%' == 37) && ('&' == 38) && ('\'' == 39) && ('(' == 40) \
       && (')' == 41) && ('*' == 42) && ('+' == 43) && (',' == 44) \
@@ -287,9 +292,9 @@ find_keyword(const char *word)
 char rcsid_keywords[] = "$Id: keywords.gperf,v 1.1.1.1 1997/03/03 03:45:02 nop Exp $";
 
 /* $Log: keywords.gperf,v $
-/* Revision 1.1.1.1  1997/03/03 03:45:02  nop
-/* LambdaMOO 1.8.0p5
-/*
+ * Revision 1.1.1.1  1997/03/03 03:45:02  nop
+ * LambdaMOO 1.8.0p5
+ *
  * Revision 2.2  1996/02/08  06:33:21  pavel
  * Added `break', `continue', and E_FLOAT.  Updated copyright notice for 1996.
  * Release 1.8.0beta1.
