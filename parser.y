@@ -21,11 +21,11 @@
 /*       parser.o dependency line in the Makefile.			 */
 /*************************************************************************/
 
-#include "my-ctype.h"
+#include <ctype.h>
 #include <float.h>
 #include <math.h>
 #define IS_REAL(x)	(-DBL_MAX <= (x) && (x) <= DBL_MAX)
-#include "my-stdlib.h"
+#include <stdlib.h>
 #include "my-string.h"
 
 #include "ast.h"

@@ -26,8 +26,8 @@
 #if NETWORK_PROTOCOL == NP_TCP	/* Skip almost entire file otherwise... */
 
 #include <signal.h>
-#include "my-stdlib.h"
-#include "my-unistd.h"
+#include <stdlib.h>
+#include <unistd.h>
 #include <arpa/inet.h>		/* inet_addr() */
 #include <arpa/inet.h>
 #include <netinet/in.h>
@@ -401,7 +401,7 @@ char rcsid_name_lookup[] = "$Id: name_lookup.c,v 1.3 1998/12/14 13:18:25 nop Exp
  * Release 1.8.0beta1.
  *
  * Revision 2.1  1995/12/11  08:11:45  pavel
- * Added missing #include of "my-stdlib.h".  Release 1.8.0alpha2.
+ * Added missing #include of <stdlib.h>.  Release 1.8.0alpha2.
  *
  * Revision 2.0  1995/11/30  04:28:09  pavel
  * New baseline version, corresponding to release 1.8.0alpha1.

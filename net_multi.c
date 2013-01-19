@@ -17,14 +17,14 @@
 
 #include <sys/ioctl.h>
 
-#include "my-ctype.h"
+#include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <signal.h>
 #include "my-stdio.h"
-#include "my-stdlib.h"
+#include <stdlib.h>
 #include "my-string.h"
-#include "my-unistd.h"
+#include <unistd.h>
 
 #include "config.h"
 #include "exceptions.h"

@@ -19,7 +19,7 @@
 
 #include "my-types.h"
 #include <sys/stat.h>
-#include "my-unistd.h"		/* sleep() */
+#include <unistd.h>		/* sleep() */
 
 #include "net_mplex.h"
 #include "options.h"

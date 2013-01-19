@@ -1,4 +1,4 @@
-#include "my-stdlib.h"
+#include <stdlib.h>
 
 #include "log.h"
 #include "storage.h"

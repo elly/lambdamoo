@@ -20,14 +20,13 @@
 #include <float.h>
 #include <math.h>
 #define IS_REAL(x)	(-DBL_MAX <= (x) && (x) <= DBL_MAX)
-#include "my-stdlib.h"
+#include <stdlib.h>
 #include "my-string.h"
 #include <time.h>
 
 #include "config.h"
 #include "functions.h"
 #include "log.h"
-#include "random.h"
 #include "storage.h"
 #include "structures.h"
 #include "utils.h"
@@ -640,9 +639,9 @@ bf_random(Var arglist, Byte next, void *vdata, Objid progr)
 
 	r.type = TYPE_INT;
 	if (nargs == 0)
-	    r.v.num = RANDOM();
+	    r.v.num = lrand48();
 	else
-	    r.v.num = RANDOM() % num + 1;
+	    r.v.num = lrand48() % num + 1;
 	return make_var_pack(r);
     }
 }

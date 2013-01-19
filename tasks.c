@@ -33,7 +33,7 @@
 #include "options.h"
 #include "parse_cmd.h"
 #include "parser.h"
-#include "random.h"
+#include <stdlib.h>
 #include "server.h"
 #include "storage.h"
 #include "streams.h"
@@ -341,7 +341,7 @@ new_task_id(void)
     int i;
 
     do {
-	i = RANDOM();
+	i = lrand48();
     } while (i == 0);
 
     return i;

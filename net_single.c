@@ -15,10 +15,10 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "my-ctype.h"
+#include <ctype.h>
 #include <fcntl.h>
 #include "my-stdio.h"
-#include "my-unistd.h"
+#include <unistd.h>
 
 #include "config.h"
 #include "log.h"

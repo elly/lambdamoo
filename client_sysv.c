@@ -21,11 +21,11 @@
 #include <fcntl.h>
 #include <signal.h>
 #include "my-stdio.h"
-#include "my-stdlib.h"
+#include <stdlib.h>
 #include "my-string.h"
 #include "my-types.h"
 #include <sys/stat.h>
-#include "my-unistd.h"
+#include <unistd.h>
 
 #include "config.h"
 #include "options.h"

@@ -19,9 +19,9 @@
 #include <signal.h>
 #include <stdarg.h>
 #include "my-stdio.h"
-#include "my-stdlib.h"
+#include <stdlib.h>
 #include "my-string.h"
-#include "my-unistd.h"
+#include <unistd.h>
 #include <sys/wait.h>
 
 #include "config.h"
@@ -35,7 +35,6 @@
 #include "network.h"
 #include "options.h"
 #include "parser.h"
-#include "random.h"
 #include "server.h"
 #include "storage.h"
 #include "streams.h"
@@ -1237,7 +1236,7 @@ main(int argc, char **argv)
 
     load_server_options();
 
-    SRANDOM(time(0));
+    srand48(time(0));
 
     parent_pid = getpid();
     setup_signals();

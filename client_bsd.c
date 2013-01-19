@@ -20,12 +20,12 @@
 #include <errno.h>
 #include <sys/socket.h>
 #include "my-stdio.h"
-#include "my-stdlib.h"
+#include <stdlib.h>
 #include "my-string.h"
 #include <sys/time.h>
 #include <sys/un.h>
 #include "my-types.h"
-#include "my-unistd.h"
+#include <unistd.h>
 
 #include "config.h"
 #include "options.h"

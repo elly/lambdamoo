@@ -25,7 +25,7 @@
 #include "my-stdio.h"		/* remove() */
 #include "my-string.h"		/* strcpy() */
 #include <sys/un.h>		/* struct sockaddr_un */
-#include "my-unistd.h"		/* close() */
+#include <unistd.h>		/* close() */
 
 #include "config.h"
 #include "log.h"

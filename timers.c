@@ -16,10 +16,10 @@
  *****************************************************************************/
 
 #include <signal.h>
-#include "my-stdlib.h"
+#include <stdlib.h>
 #include <sys/time.h>
 #include <time.h>
-#include "my-unistd.h"
+#include <unistd.h>
 
 #include "config.h"
 #include "timers.h"

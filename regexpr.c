@@ -32,7 +32,7 @@
 #include "my-stdio.h"
 #include <assert.h>
 #include "regexpr.h"
-#include "my-stdlib.h"
+#include <stdlib.h>
 #include "my-string.h"
 
 #define MACRO_BEGIN do {

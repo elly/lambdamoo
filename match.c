@@ -15,7 +15,7 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "my-stdlib.h"
+#include <stdlib.h>
 #include "my-string.h"
 
 #include "config.h"
