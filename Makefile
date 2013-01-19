@@ -58,9 +58,9 @@ HDRS =  ast.h bf_register.h code_gen.h db.h db_io.h db_private.h decompile.h \
 	version.h y.tab.h
 
 SYSHDRS =   my-in.h  my-ioctl.h  \
-	my-poll.h    my-stdio.h \
+	my-poll.h     \
 	    \
-	my-types.h  
+	  
 
 CLIENT_SRCS = client_bsd.c client_sysv.c
 
@@ -289,177 +289,177 @@ $(OPT_NET_OBJS):
 
 # DO NOT DELETE THIS LINE -- 'make depend' replaces everything below it.
 ast.o: ast.c  config.h ast.h parser.h program.h structures.h \
- my-stdio.h version.h sym_table.h list.h log.h storage.h ref_count.h \
+  version.h sym_table.h list.h log.h storage.h ref_count.h \
  utils.h execute.h db.h opcode.h options.h parse_cmd.h
 code_gen.o: code_gen.c ast.h config.h parser.h program.h structures.h \
- my-stdio.h version.h sym_table.h exceptions.h opcode.h options.h \
+  version.h sym_table.h exceptions.h opcode.h options.h \
  storage.h ref_count.h str_intern.h utils.h execute.h db.h parse_cmd.h \
  
-db_file.o: db_file.c  config.h my-stdio.h  db.h \
+db_file.o: db_file.c  config.h   db.h \
  program.h structures.h version.h db_io.h db_private.h exceptions.h \
  list.h log.h options.h server.h network.h storage.h ref_count.h \
  streams.h str_intern.h tasks.h execute.h opcode.h parse_cmd.h timers.h \
  
-db_io.o: db_io.c  config.h  my-stdio.h  \
+db_io.o: db_io.c  config.h    \
  db_io.h program.h structures.h version.h db_private.h exceptions.h \
  list.h log.h numbers.h parser.h storage.h ref_count.h streams.h \
  str_intern.h unparse.h
 db_objects.o: db_objects.c config.h db.h program.h structures.h \
- my-stdio.h version.h db_private.h exceptions.h list.h storage.h \
+  version.h db_private.h exceptions.h list.h storage.h \
  ref_count.h utils.h execute.h opcode.h options.h parse_cmd.h
 db_properties.o: db_properties.c config.h db.h program.h structures.h \
- my-stdio.h version.h db_private.h exceptions.h list.h storage.h \
+  version.h db_private.h exceptions.h list.h storage.h \
  ref_count.h utils.h execute.h opcode.h options.h parse_cmd.h
 db_verbs.o: db_verbs.c  config.h  db.h program.h \
- structures.h my-stdio.h version.h db_private.h exceptions.h db_tune.h \
+ structures.h  version.h db_private.h exceptions.h db_tune.h \
  list.h log.h parse_cmd.h storage.h ref_count.h utils.h execute.h \
  opcode.h options.h
 decompile.o: decompile.c ast.h config.h parser.h program.h structures.h \
- my-stdio.h version.h sym_table.h decompile.h exceptions.h opcode.h \
+  version.h sym_table.h decompile.h exceptions.h opcode.h \
  options.h storage.h ref_count.h utils.h execute.h db.h parse_cmd.h
-disassemble.o: disassemble.c my-stdio.h config.h bf_register.h db.h \
+disassemble.o: disassemble.c  config.h bf_register.h db.h \
  program.h structures.h version.h functions.h execute.h opcode.h \
  options.h parse_cmd.h list.h storage.h ref_count.h streams.h unparse.h \
  utils.h verbs.h
-eval_env.o: eval_env.c config.h eval_env.h structures.h my-stdio.h \
+eval_env.o: eval_env.c config.h eval_env.h structures.h  \
  version.h storage.h ref_count.h sym_table.h utils.h execute.h db.h \
  program.h opcode.h options.h parse_cmd.h
-eval_vm.o: eval_vm.c config.h db_io.h program.h structures.h my-stdio.h \
+eval_vm.o: eval_vm.c config.h db_io.h program.h structures.h  \
  version.h decompile.h ast.h parser.h sym_table.h eval_vm.h execute.h \
  db.h opcode.h options.h parse_cmd.h log.h storage.h ref_count.h tasks.h
 exceptions.o: exceptions.c exceptions.h config.h
 execute.o: execute.c  config.h db.h program.h structures.h \
- my-stdio.h version.h db_io.h decompile.h ast.h parser.h sym_table.h \
+  version.h db_io.h decompile.h ast.h parser.h sym_table.h \
  eval_env.h eval_vm.h execute.h opcode.h options.h parse_cmd.h \
  exceptions.h functions.h list.h log.h numbers.h server.h network.h \
  storage.h ref_count.h streams.h tasks.h timers.h  utils.h
-extensions.o: extensions.c bf_register.h functions.h my-stdio.h config.h \
+extensions.o: extensions.c bf_register.h functions.h  config.h \
  execute.h db.h program.h structures.h version.h opcode.h options.h \
  parse_cmd.h db_tune.h utils.h
 functions.o: functions.c  config.h bf_register.h db_io.h \
- program.h structures.h my-stdio.h version.h functions.h execute.h db.h \
+ program.h structures.h  version.h functions.h execute.h db.h \
  opcode.h options.h parse_cmd.h list.h log.h server.h network.h storage.h \
  ref_count.h streams.h unparse.h utils.h
 keywords.o: keywords.c  config.h  keywords.h \
- structures.h my-stdio.h version.h tokens.h ast.h parser.h program.h \
+ structures.h  version.h tokens.h ast.h parser.h program.h \
  sym_table.h y.tab.h utils.h execute.h db.h opcode.h options.h \
  parse_cmd.h
 list.o: list.c  config.h  bf_register.h exceptions.h \
- functions.h my-stdio.h execute.h db.h program.h structures.h version.h \
+ functions.h  execute.h db.h program.h structures.h version.h \
  opcode.h options.h parse_cmd.h list.h log.h md5.h pattern.h  \
  ref_count.h streams.h storage.h unparse.h utils.h
-log.o: log.c  config.h my-stdio.h   \
+log.o: log.c  config.h    \
  bf_register.h functions.h execute.h db.h program.h structures.h \
  version.h opcode.h options.h parse_cmd.h log.h storage.h ref_count.h \
  streams.h utils.h
 malloc.o: malloc.c options.h config.h
 match.o: match.c  config.h  db.h program.h \
- structures.h my-stdio.h version.h exceptions.h match.h parse_cmd.h \
+ structures.h  version.h exceptions.h match.h parse_cmd.h \
  storage.h ref_count.h unparse.h utils.h execute.h opcode.h options.h
 md5.o: md5.c  config.h md5.h
 name_lookup.o: name_lookup.c options.h config.h  \
-      log.h my-stdio.h \
+      log.h  \
  structures.h server.h network.h storage.h ref_count.h timers.h 
 network.o: network.c options.h config.h net_multi.c   \
-  my-stdio.h    exceptions.h \
+      exceptions.h \
  list.h structures.h log.h net_mplex.h net_multi.h net_proto.h network.h \
  server.h streams.h storage.h ref_count.h timers.h  utils.h \
  execute.h db.h program.h version.h opcode.h parse_cmd.h
 net_mplex.o: net_mplex.c options.h config.h net_mp_selct.c  \
-  my-types.h log.h my-stdio.h structures.h net_mplex.h
+   log.h  structures.h net_mplex.h
 net_proto.o: net_proto.c options.h config.h net_bsd_tcp.c  \
      list.h structures.h \
- my-stdio.h log.h name_lookup.h net_proto.h server.h network.h streams.h \
+  log.h name_lookup.h net_proto.h server.h network.h streams.h \
  timers.h  utils.h execute.h db.h program.h version.h opcode.h \
  parse_cmd.h
 numbers.o: numbers.c   config.h   \
- functions.h my-stdio.h execute.h db.h program.h structures.h version.h \
+ functions.h  execute.h db.h program.h structures.h version.h \
  opcode.h options.h parse_cmd.h log.h  storage.h ref_count.h \
  utils.h
-objects.o: objects.c db.h config.h program.h structures.h my-stdio.h \
+objects.o: objects.c db.h config.h program.h structures.h  \
  version.h db_io.h exceptions.h execute.h opcode.h options.h parse_cmd.h \
  functions.h list.h numbers.h quota.h server.h network.h storage.h \
  ref_count.h utils.h
-parse_cmd.o: parse_cmd.c  config.h my-stdio.h  \
+parse_cmd.o: parse_cmd.c  config.h   \
    db.h program.h structures.h version.h list.h \
  match.h parse_cmd.h storage.h ref_count.h utils.h execute.h opcode.h \
  options.h
 pattern.o: pattern.c  config.h   \
- pattern.h regexpr.h storage.h structures.h my-stdio.h ref_count.h \
+ pattern.h regexpr.h storage.h structures.h  ref_count.h \
  streams.h
 program.o: program.c ast.h config.h parser.h program.h structures.h \
- my-stdio.h version.h sym_table.h exceptions.h list.h storage.h \
+  version.h sym_table.h exceptions.h list.h storage.h \
  ref_count.h utils.h execute.h db.h opcode.h options.h parse_cmd.h
-property.o: property.c db.h config.h program.h structures.h my-stdio.h \
+property.o: property.c db.h config.h program.h structures.h  \
  version.h functions.h execute.h opcode.h options.h parse_cmd.h list.h \
  storage.h ref_count.h utils.h
-quota.o: quota.c config.h db.h program.h structures.h my-stdio.h \
+quota.o: quota.c config.h db.h program.h structures.h  \
  version.h quota.h
 ref_count.o: ref_count.c config.h exceptions.h ref_count.h storage.h \
- structures.h my-stdio.h
-regexpr.o: regexpr.c my-stdio.h config.h regexpr.h  \
+ structures.h 
+regexpr.o: regexpr.c  config.h regexpr.h  \
  
-server.o: server.c my-types.h config.h   my-stdio.h \
+server.o: server.c  config.h    \
      db.h program.h \
  structures.h version.h db_io.h disassemble.h execute.h opcode.h \
  options.h parse_cmd.h functions.h list.h log.h network.h server.h \
  parser.h  storage.h ref_count.h streams.h tasks.h timers.h \
   unparse.h utils.h
 storage.o: storage.c  config.h exceptions.h list.h \
- structures.h my-stdio.h options.h ref_count.h storage.h utils.h \
+ structures.h  options.h ref_count.h storage.h utils.h \
  execute.h db.h program.h version.h opcode.h parse_cmd.h
-streams.o: streams.c  config.h  my-stdio.h log.h \
+streams.o: streams.c  config.h   log.h \
  structures.h storage.h ref_count.h streams.h
-str_intern.o: str_intern.c  config.h log.h my-stdio.h \
+str_intern.o: str_intern.c  config.h log.h  \
  structures.h storage.h ref_count.h str_intern.h utils.h execute.h db.h \
  program.h version.h opcode.h options.h parse_cmd.h
-sym_table.o: sym_table.c my-stdio.h config.h ast.h parser.h program.h \
+sym_table.o: sym_table.c  config.h ast.h parser.h program.h \
  structures.h version.h sym_table.h exceptions.h log.h storage.h \
  ref_count.h utils.h execute.h db.h opcode.h options.h parse_cmd.h
 tasks.o: tasks.c  config.h  db.h program.h \
- structures.h my-stdio.h version.h db_io.h decompile.h ast.h parser.h \
+ structures.h  version.h db_io.h decompile.h ast.h parser.h \
  sym_table.h eval_env.h eval_vm.h execute.h opcode.h options.h \
  parse_cmd.h exceptions.h functions.h list.h log.h match.h  \
  server.h network.h storage.h ref_count.h streams.h tasks.h utils.h \
  verbs.h
 timers.o: timers.c  config.h   \
- options.h my-types.h   timers.h
-unparse.o: unparse.c  config.h my-stdio.h ast.h parser.h \
+ options.h    timers.h
+unparse.o: unparse.c  config.h  ast.h parser.h \
  program.h structures.h version.h sym_table.h decompile.h exceptions.h \
  functions.h execute.h db.h opcode.h options.h parse_cmd.h keywords.h \
  list.h log.h unparse.h storage.h ref_count.h streams.h utils.h
-utils.o: utils.c  config.h my-stdio.h  db.h \
+utils.o: utils.c  config.h   db.h \
  program.h structures.h version.h db_io.h exceptions.h list.h log.h \
  match.h numbers.h ref_count.h server.h network.h options.h storage.h \
  streams.h utils.h execute.h opcode.h parse_cmd.h
 verbs.o: verbs.c  config.h db.h program.h structures.h \
- my-stdio.h version.h exceptions.h execute.h opcode.h options.h \
+  version.h exceptions.h execute.h opcode.h options.h \
  parse_cmd.h functions.h list.h log.h match.h parser.h server.h network.h \
  storage.h ref_count.h unparse.h utils.h verbs.h
 version.o: version.c config.h version.h
 gnu-malloc.o: gnu-malloc.c getpagesize.h
-net_single.o: net_single.c  config.h  my-stdio.h \
+net_single.o: net_single.c  config.h   \
   log.h structures.h network.h options.h server.h streams.h \
  utils.h execute.h db.h program.h version.h opcode.h parse_cmd.h
 net_multi.o: net_multi.c  config.h   \
- my-stdio.h    exceptions.h list.h \
+     exceptions.h list.h \
  structures.h log.h net_mplex.h net_multi.h net_proto.h options.h \
  network.h server.h streams.h storage.h ref_count.h timers.h  \
  utils.h execute.h db.h program.h version.h opcode.h parse_cmd.h
 net_mp_selct.o: net_mp_selct.c  config.h  \
- options.h my-types.h log.h my-stdio.h structures.h net_mplex.h
-net_mp_poll.o: net_mp_poll.c log.h my-stdio.h config.h structures.h \
+ options.h  log.h  structures.h net_mplex.h
+net_mp_poll.o: net_mp_poll.c log.h  config.h structures.h \
  net_mplex.h storage.h ref_count.h
 net_bsd_tcp.o: net_bsd_tcp.c  config.h   \
-   list.h structures.h my-stdio.h log.h \
+   list.h structures.h  log.h \
  name_lookup.h net_proto.h options.h server.h network.h streams.h \
  timers.h  utils.h execute.h db.h program.h version.h opcode.h \
  parse_cmd.h
-net_bsd_lcl.o: net_bsd_lcl.c  config.h my-stdio.h  \
+net_bsd_lcl.o: net_bsd_lcl.c  config.h   \
   log.h structures.h net_proto.h options.h storage.h \
  ref_count.h utils.h execute.h db.h program.h version.h opcode.h \
  parse_cmd.h
-client_bsd.o: client_bsd.c  config.h my-stdio.h  \
-   options.h my-types.h 
-client_sysv.o: client_sysv.c  config.h  my-stdio.h \
-   my-types.h   options.h
+client_bsd.o: client_bsd.c  config.h   \
+   options.h  
+client_sysv.o: client_sysv.c  config.h   \
+      options.h

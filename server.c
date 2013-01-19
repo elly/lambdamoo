@@ -15,10 +15,10 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
-#include "my-types.h"		/* must be first on some systems */
+#include <sys/types.h>		/* must be first on some systems */
 #include <signal.h>
 #include <stdarg.h>
-#include "my-stdio.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>

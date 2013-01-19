@@ -29,7 +29,7 @@
 
 #define PROTO(x) x
 
-#include "my-stdio.h"
+#include <stdio.h>
 #include <assert.h>
 #include "regexpr.h"
 #include <stdlib.h>

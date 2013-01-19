@@ -20,7 +20,7 @@
  *****************************************************************************/
 
 #include <sys/stat.h>
-#include "my-stdio.h"
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "config.h"

@@ -16,7 +16,7 @@
  *****************************************************************************/
 
 #include <ctype.h>
-#include "my-stdio.h"
+#include <stdio.h>
 #include <string.h>
 
 #include "config.h"

@@ -20,7 +20,7 @@
 #include <errno.h>		/* errno */
 #include <string.h>		/* bzero() or memset(), used in FD_ZERO */
 #include <sys/time.h>	/* select(), struct timeval */
-#include "my-types.h"		/* fd_set, FD_ZERO(), FD_SET(), FD_ISSET() */
+#include <sys/types.h>		/* fd_set, FD_ZERO(), FD_SET(), FD_ISSET() */
 
 #include "log.h"
 #include "net_mplex.h"

@@ -22,7 +22,7 @@
 #include <sys/socket.h>		/* socket(), AF_UNIX, SOCK_STREAM,
 				   * bind(), struct sockaddr, accept(),
 				   * shutdown(), connect() */
-#include "my-stdio.h"		/* remove() */
+#include <stdio.h>		/* remove() */
 #include <string.h>		/* strcpy() */
 #include <sys/un.h>		/* struct sockaddr_un */
 #include <unistd.h>		/* close() */
