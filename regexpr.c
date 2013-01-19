@@ -1639,24 +1639,3 @@ main()
 /* RCS stuff added for LambdaMOO */
 
 char rcsid_regexpr[] = "$Id";
-
-/* 
- * $Log: regexpr.c,v $
- * Revision 1.3  1998/12/14 13:18:56  nop
- * Merge UNSAFE_OPTS (ref fixups); fix Log tag placement to fit CVS whims
- *
- * Revision 1.2  1997/03/03 04:19:22  nop
- * GNU Indent normalization
- *
- * Revision 1.1.1.1  1997/03/03 03:45:01  nop
- * LambdaMOO 1.8.0p5
- *
- * Revision 2.1  1995/12/28  00:45:35  pavel
- * Fixed memory leak on failure-stack growth.  Release 1.8.0alpha3.
- *
- * Revision 2.0  1995/11/30  05:38:08  pavel
- * New baseline version, corresponding to release 1.8.0alpha1.
- *
- * Revision 1.1  1995/11/30  05:37:55  pavel
- * Initial revision
- */
