@@ -33,7 +33,7 @@ COMPILE.c = $(CC) $(CFLAGS) $(CPPFLAGS) -c
 CSRCS = ast.c code_gen.c db_file.c db_io.c db_objects.c db_properties.c \
 	db_verbs.c decompile.c disassemble.c eval_env.c eval_vm.c \
 	exceptions.c execute.c extensions.c functions.c keywords.c list.c \
-	log.c malloc.c match.c md5.c name_lookup.c network.c net_mplex.c \
+	log.c match.c md5.c name_lookup.c network.c net_mplex.c \
 	net_proto.c numbers.c objects.c parse_cmd.c pattern.c program.c \
 	property.c quota.c ref_count.c regexpr.c server.c storage.c streams.c str_intern.c \
 	sym_table.c tasks.c timers.c unparse.c utils.c verbs.c version.c
@@ -44,7 +44,7 @@ OPT_NET_SRCS = net_single.c net_multi.c \
 
 OPT_NET_OBJS = $(OPT_NET_SRCS:.c=.o)
 
-OPT_CSRCS = gnu-malloc.c $(OPT_NET_SRCS)
+OPT_CSRCS = $(OPT_NET_SRCS)
 
 YSRCS = parser.y
 
@@ -352,7 +352,6 @@ log.o: log.c  config.h    \
  bf_register.h functions.h execute.h db.h program.h structures.h \
  version.h opcode.h options.h parse_cmd.h log.h storage.h ref_count.h \
  streams.h utils.h
-malloc.o: malloc.c options.h config.h
 match.o: match.c  config.h  db.h program.h \
  structures.h  version.h exceptions.h match.h parse_cmd.h \
  storage.h ref_count.h unparse.h utils.h execute.h opcode.h options.h
@@ -437,7 +436,6 @@ verbs.o: verbs.c  config.h db.h program.h structures.h \
  parse_cmd.h functions.h list.h log.h match.h parser.h server.h network.h \
  storage.h ref_count.h unparse.h utils.h verbs.h
 version.o: version.c config.h version.h
-gnu-malloc.o: gnu-malloc.c getpagesize.h
 net_single.o: net_single.c  config.h   \
   log.h structures.h network.h options.h server.h streams.h \
  utils.h execute.h db.h program.h version.h opcode.h parse_cmd.h
