@@ -62,7 +62,7 @@ SYSHDRS =   my-in.h  my-ioctl.h  \
 	    \
 	  
 
-CLIENT_SRCS = client_bsd.c client_sysv.c
+CLIENT_SRCS = client_bsd.c
 
 ALL_CSRCS = $(CSRCS) $(OPT_CSRCS) $(CLIENT_SRCS)
 
@@ -87,9 +87,6 @@ pure_moo: moo
 
 client_bsd: client_bsd.o
 	$(CC) $(CFLAGS) client_bsd.o $(LIBRARIES) -o $@
-
-client_sysv: client_sysv.o
-	$(CC) $(CFLAGS) client_sysv.o $(LIBRARIES) -o $@
 
 # This rule gets around some "make"s' desire to `derive' it from `restart.sh'.
 restart:
@@ -459,5 +456,3 @@ net_bsd_lcl.o: net_bsd_lcl.c  config.h   \
  parse_cmd.h
 client_bsd.o: client_bsd.c  config.h   \
    options.h  
-client_sysv.o: client_sysv.c  config.h   \
-      options.h
