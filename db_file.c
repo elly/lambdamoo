@@ -557,9 +557,6 @@ dump_database(Dump_Reason reason)
 
     oklog("%s on %s ...\n", reason_names[reason], temp_name);
 
-#ifdef UNFORKED_CHECKPOINTS
-    reset_command_history();
-#else
     if (reason == DUMP_CHECKPOINT) {
 	switch (fork_server("checkpointer")) {
 	case FORK_PARENT:
@@ -574,7 +571,6 @@ dump_database(Dump_Reason reason)
 	    break;
 	}
     }
-#endif
 
     success = 1;
     if ((f = fopen(temp_name, "w")) != 0) {

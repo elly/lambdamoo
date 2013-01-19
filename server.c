@@ -453,20 +453,14 @@ main_loop(void)
 	    run_server_task(-1, SYSTEM_OBJECT, "checkpoint_started",
 			    new_list(0), "", 0);
 	    network_process_io(0);
-#ifdef UNFORKED_CHECKPOINTS
-	    call_checkpoint_notifier(db_flush(FLUSH_ALL_NOW));
-#else
 	    if (!db_flush(FLUSH_ALL_NOW))
 		call_checkpoint_notifier(0);
-#endif
 	    set_checkpoint_timer(0);
 	}
-#ifndef UNFORKED_CHECKPOINTS
 	if (checkpoint_finished) {
 	    call_checkpoint_notifier(checkpoint_finished - 1);
 	    checkpoint_finished = 0;
 	}
-#endif
 
 	if (!network_process_io(seconds_left ? 1 : 0) && seconds_left > 1)
 	    db_flush(FLUSH_ONE_SECOND);

@@ -332,9 +332,6 @@ typedef struct vc_entry vc_entry;
 
 struct vc_entry {
     unsigned int hash;
-#ifdef RONG
-    int generation;
-#endif
     Objid oid_key;		/* Note that we proceed up the parent tree
 				   until we hit an object with verbs on it */
     char *verbname;

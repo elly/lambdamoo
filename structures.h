@@ -75,22 +75,6 @@ typedef enum {
 
 typedef struct Var Var;
 
-/* Experimental.  On the Alpha, DEC cc allows us to specify certain
- * pointers to be 32 bits, but only if we compile and link with "-taso
- * -xtaso" in CFLAGS, which limits us to a 31-bit address space.  This
- * could be a win if your server is thrashing.  Running JHM's db, SIZE
- * went from 50M to 42M.  No doubt these pragmas could be applied
- * elsewhere as well, but I know this at least manages to load and run
- * a non-trivial db.
- */
-
-/* #define SHORT_ALPHA_VAR_POINTERS 1 */
-
-#ifdef SHORT_ALPHA_VAR_POINTERS
-#pragma pointer_size save
-#pragma pointer_size short
-#endif
-
 struct Var {
     union {
 	const char *str;	/* STR */
@@ -102,10 +86,6 @@ struct Var {
     } v;
     var_type type;
 };
-
-#ifdef SHORT_ALPHA_VAR_POINTERS
-#pragma pointer_size restore
-#endif
 
 extern Var zero;		/* useful constant */
 

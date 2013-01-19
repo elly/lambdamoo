@@ -886,14 +886,12 @@ re_match_2(bufp, string1, size1, string2, size2, pos, regs, mstop)
 
   continue_matching:
     for (;;) {
-#ifndef TEST_REGEXP
 	{			/* Added for LambdaMOO */
 	    extern int task_timed_out;
 
 	    if (task_timed_out)
 		goto error;
 	}
-#endif
 	switch (*code++) {
 	case Cend:
 	    if (partend != part_2_end)
@@ -1373,184 +1371,6 @@ re_search(bufp, string, size, startpos, range, regs)
     return re_search_2(bufp, string, size, (char *) NULL, 0,
 		       startpos, range, regs, size);
 }
-
-#ifdef UNUSED
-
-static struct re_pattern_buffer re_comp_buf;
-
-char *
-re_comp(s)
-    char *s;
-{
-    if (s == NULL) {
-	if (!re_comp_buf.buffer)
-	    return "Out of memory";
-	return NULL;
-    }
-    if (!re_comp_buf.buffer) {
-	/* the buffer will be allocated automatically */
-	re_comp_buf.fastmap = malloc(256);
-	re_comp_buf.translate = NULL;
-	if (re_comp_buf.fastmap == NULL)
-	    return "Out of memory";
-    }
-    return re_compile_pattern(s, strlen(s), &re_comp_buf);
-}
-
-int
-re_exec(s)
-    char *s;
-{
-    int len = strlen(s);
-
-    return re_search(&re_comp_buf, s, len, 0, len, (regexp_registers_t) NULL) >= 0;
-}
-
-#endif
-
-#ifdef TEST_REGEXP
-
-int
-main()
-{
-    char buf[50000];
-    char *cp;
-    struct re_pattern_buffer exp;
-    struct re_registers regs;
-    int a, pos;
-    char fastmap[256];
-
-    exp.allocated = 0;
-    exp.buffer = 0;
-    exp.translate = NULL;
-    exp.fastmap = fastmap;
-
-    /* re_set_syntax(RE_NO_BK_PARENS|RE_NO_BK_VBAR|RE_ANSI_HEX); */
-
-    while (1) {
-	printf("Enter regexp:\n");
-	gets(buf);
-	cp = re_compile_pattern(buf, strlen(buf), &exp);
-	if (cp) {
-	    printf("Error: %s\n", cp);
-	    continue;
-	}
-	re_compile_fastmap(&exp);
-	printf("dump:\n");
-	for (pos = 0; pos < exp.used;) {
-	    printf("%d: ", pos);
-	    switch (exp.buffer[pos++]) {
-	    case Cend:
-		strcpy(buf, "end");
-		break;
-	    case Cbol:
-		strcpy(buf, "bol");
-		break;
-	    case Ceol:
-		strcpy(buf, "eol");
-		break;
-	    case Cset:
-		strcpy(buf, "set ");
-		for (a = 0; a < 256 / 8; a++)
-		    sprintf(buf + strlen(buf), " %02x",
-			    (unsigned char) exp.buffer[pos++]);
-		break;
-	    case Cexact:
-		sprintf(buf, "exact '%c' 0x%x", exp.buffer[pos],
-			(unsigned char) exp.buffer[pos]);
-		pos++;
-		break;
-	    case Canychar:
-		strcpy(buf, "anychar");
-		break;
-	    case Cstart_memory:
-		sprintf(buf, "start_memory %d", exp.buffer[pos++]);
-		break;
-	    case Cend_memory:
-		sprintf(buf, "end_memory %d", exp.buffer[pos++]);
-		break;
-	    case Cmatch_memory:
-		sprintf(buf, "match_memory %d", exp.buffer[pos++]);
-		break;
-	    case Cjump:
-	    case Cdummy_failure_jump:
-	    case Cstar_jump:
-	    case Cfailure_jump:
-	    case Cupdate_failure_jump:
-		a = (unsigned char) exp.buffer[pos++];
-		a += (unsigned char) exp.buffer[pos++] << 8;
-		a = (int) (short) a;
-		switch (exp.buffer[pos - 3]) {
-		case Cjump:
-		    cp = "jump";
-		    break;
-		case Cstar_jump:
-		    cp = "star_jump";
-		    break;
-		case Cfailure_jump:
-		    cp = "failure_jump";
-		    break;
-		case Cupdate_failure_jump:
-		    cp = "update_failure_jump";
-		    break;
-		case Cdummy_failure_jump:
-		    cp = "dummy_failure_jump";
-		    break;
-		default:
-		    cp = "unknown jump";
-		    break;
-		}
-		sprintf(buf, "%s %d", cp, a + pos);
-		break;
-	    case Cbegbuf:
-		strcpy(buf, "begbuf");
-		break;
-	    case Cendbuf:
-		strcpy(buf, "endbuf");
-		break;
-	    case Cwordbeg:
-		strcpy(buf, "wordbeg");
-		break;
-	    case Cwordend:
-		strcpy(buf, "wordend");
-		break;
-	    case Cwordbound:
-		strcpy(buf, "wordbound");
-		break;
-	    case Cnotwordbound:
-		strcpy(buf, "notwordbound");
-		break;
-	    default:
-		sprintf(buf, "unknown code %d",
-			(unsigned char) exp.buffer[pos - 1]);
-		break;
-	    }
-	    printf("%s\n", buf);
-	}
-	printf("can_be_null = %d uses_registers = %d anchor = %d\n",
-	       exp.can_be_null, exp.uses_registers, exp.anchor);
-
-	printf("fastmap:");
-	for (a = 0; a < 256; a++)
-	    if (exp.fastmap[a])
-		printf(" %d", a);
-	printf("\n");
-	printf("Enter strings.  An empty line terminates.\n");
-	while (fgets(buf, sizeof(buf), stdin)) {
-	    if (buf[0] == '\n')
-		break;
-	    a = re_search(&exp, buf, strlen(buf), 0, strlen(buf), &regs);
-	    printf("search returns %d\n", a);
-	    if (a != -1) {
-		for (a = 0; a < RE_NREGS; a++) {
-		    printf("buf %d: %d to %d\n", a, regs.start[a], regs.end[a]);
-		}
-	    }
-	}
-    }
-}
-
-#endif				/* TEST_REGEXP */
 
 /* RCS stuff added for LambdaMOO */
 
