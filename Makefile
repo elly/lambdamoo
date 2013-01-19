@@ -124,9 +124,6 @@ tags:
 clean:
 	rm -f $(OBJS) core y.tab.c y.output makedep eddep 
 
-distclean:	clean
-	rm -f config.h Makefile config.status
-
 depend: ${ALL_CSRCS}
 	rm -f eddep makedep
 	gcc -MM ${CFLAGS} ${ALL_CSRCS} | sed -e '/:$$/d' > makedep
