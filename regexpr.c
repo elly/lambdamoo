@@ -59,9 +59,6 @@ enum regexp_compiled_ops {	/* opcodes for compiled regexp */
     Cwordend,			/* match at end of word */
     Cwordbound,			/* match if at word boundary */
     Cnotwordbound,		/* match if not at word boundary */
-#ifdef emacs
-    Cemacs_at_dot,		/* emacs only: matches at dot */
-#endif				/* emacs */
     Csyntaxspec,		/* matches syntax code (1 byte follows) */
     Cnotsyntaxspec		/* matches if syntax code does not match (1 byte foll) */
 };
@@ -91,11 +88,6 @@ enum regexp_syntax_op {		/* syntax codes for plain and quoted characters */
     Rwordend,			/* end of word */
     Rwordbound,			/* word bound */
     Rnotwordbound,		/* not word bound */
-#ifdef emacs
-    Remacs_at_dot,		/* emacs: at dot */
-    Remacs_syntaxspec,		/* syntaxspec */
-    Remacs_notsyntaxspec,	/* notsyntaxspec */
-#endif				/* emacs */
     Rnum_ops
 };
 
@@ -111,31 +103,10 @@ static int regexp_ansi_sequences;
 #define NUM_LEVELS  5		/* number of precedence levels in use */
 #define MAX_NESTING 100		/* max nesting level of operators */
 
-#ifdef emacs
-
-/* This code is for emacs compatibility only. */
-
-#include "config.h"
-#include "lisp.h"
-#include "buffer.h"
-#include "syntax.h"
-
-/* emacs defines NULL in some strange way? */
-#undef NULL
-#define NULL 0
-
-#else				/* emacs */
-
 #define SYNTAX(ch) re_syntax_table[(unsigned char)(ch)]
 #define Sword 1
 
-#ifdef SYNTAX_TABLE
-char *re_syntax_table;
-#else
 static char re_syntax_table[256];
-#endif				/* SYNTAX_TABLE */
-
-#endif				/* emacs */
 
 static void re_compile_initialize PROTO((void));
 static void
@@ -143,7 +114,6 @@ re_compile_initialize()
 {
     int a;
 
-#if !defined(emacs) && !defined(SYNTAX_TABLE)
     static int syntax_table_inited = 0;
 
     if (!syntax_table_inited) {
@@ -156,7 +126,6 @@ re_compile_initialize()
 	for (a = '0'; a <= '9'; a++)
 	    re_syntax_table[a] = Sword;
     }
-#endif				/* !emacs && !SYNTAX_TABLE */
     re_compile_initialized = 1;
     for (a = 0; a < 256; a++) {
 	regexp_plain_ops[a] = Rnormal;
@@ -191,11 +160,6 @@ re_compile_initialize()
     regexp_plain_ops['$'] = Reol;
     regexp_plain_ops['.'] = Ranychar;
     if (!(regexp_syntax & RE_NO_GNU_EXTENSIONS)) {
-#ifdef emacs
-	regexp_quoted_ops['='] = Remacs_at_dot;
-	regexp_quoted_ops['s'] = Remacs_syntaxspec;
-	regexp_quoted_ops['S'] = Remacs_notsyntaxspec;
-#endif				/* emacs */
 	regexp_quoted_ops['w'] = Rwordchar;
 	regexp_quoted_ops['W'] = Rnotwordchar;
 	regexp_quoted_ops['<'] = Rwordbeg;
@@ -655,25 +619,6 @@ re_compile_pattern(regex, size, bufp)
 	case Rnotwordbound:
 	    opcode = Cnotwordbound;
 	    goto store_opcode;
-#ifdef emacs
-	case Remacs_at_dot:
-	    opcode = Cemacs_at_dot;
-	    goto store_opcode;
-	case Remacs_syntaxspec:
-	    NEXTCHAR(ch);
-	    if (translate)
-		ch = translate[(unsigned char) ch];
-	    opcode = Csyntaxspec;
-	    ch = syntax_spec_code[(unsigned char) ch];
-	    goto store_opcode_and_arg;
-	case Remacs_notsyntaxspec:
-	    NEXTCHAR(ch);
-	    if (translate)
-		ch = translate[(unsigned char) ch];
-	    opcode = Cnotsyntaxspec;
-	    ch = syntax_spec_code[(unsigned char) ch];
-	    goto store_opcode_and_arg;
-#endif				/* emacs */
 	default:
 	    abort();
 	}
@@ -753,9 +698,6 @@ re_compile_fastmap_aux(code, pos, visited, can_be_null, fastmap)
 	case Cwordend:
 	case Cwordbound:
 	case Cnotwordbound:
-#ifdef emacs
-	case Cemacs_at_dot:
-#endif				/* emacs */
 	    break;
 	case Csyntaxspec:
 	    syntaxcode = code[pos++];
@@ -1094,9 +1036,6 @@ re_match_2(bufp, string1, size1, string2, size2, pos, regs, mstop)
 		case Cwordend:
 		case Cwordbound:
 		case Cnotwordbound:
-#ifdef emacs
-		case Cemacs_at_dot:
-#endif				/* emacs */
 		    goto loop_p1;
 		case Cstart_memory:
 		case Cend_memory:
@@ -1136,9 +1075,6 @@ re_match_2(bufp, string1, size1, string2, size2, pos, regs, mstop)
 		    case Cwordend:
 		    case Cwordbound:
 		    case Cnotwordbound:
-#ifdef emacs
-		    case Cemacs_at_dot:
-#endif				/* emacs */
 			break;
 		    case Cset:
 			p1 += 256 / 8;
@@ -1286,12 +1222,6 @@ re_match_2(bufp, string1, size1, string2, size2, pos, regs, mstop)
 	    if (SYNTAX(ch) != *code++)
 		break;
 	    goto fail;
-#ifdef emacs
-	case Cemacs_at_dot:
-	    if (PTR_CHAR_POS((unsigned char *) text) + 1 != point)
-		goto fail;
-	    break;
-#endif				/* emacs */
 	default:
 	    abort();
 	    /*NOTREACHED */
