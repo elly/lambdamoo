@@ -608,11 +608,9 @@ dump_database(Dump_Reason reason)
 
     free_stream(s);
 
-#ifndef UNFORKED_CHECKPOINTS
     if (reason == DUMP_CHECKPOINT)
 	/* We're a child, so we'd better go away. */
 	exit(!success);
-#endif
 
     return success;
 }

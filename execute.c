@@ -625,52 +625,7 @@ rangeset_check(int end, int from, int to)
     return 0;
 }
 
-#ifdef IGNORE_PROP_PROTECTED
 #define bi_prop_protected(prop, progr) (0)
-#else
-static int
-bi_prop_protected(enum bi_prop prop, Objid progr)
-{
-    const char *pname = 0;	/* silence warning */
-
-    if (is_wizard(progr))
-	return 0;
-
-    switch (prop) {
-    case BP_NAME:
-	pname = "protect_name";
-	break;
-    case BP_OWNER:
-	pname = "protect_owner";
-	break;
-    case BP_PROGRAMMER:
-	pname = "protect_programmer";
-	break;
-    case BP_WIZARD:
-	pname = "protect_wizard";
-	break;
-    case BP_R:
-	pname = "protect_r";
-	break;
-    case BP_W:
-	pname = "protect_w";
-	break;
-    case BP_F:
-	pname = "protect_f";
-	break;
-    case BP_LOCATION:
-	pname = "protect_location";
-	break;
-    case BP_CONTENTS:
-	pname = "protect_contents";
-	break;
-    default:
-	panic("Can't happen in BI_PROP_PROTECTED!");
-    }
-
-    return server_flag_option(pname);
-}
-#endif				/* IGNORE_PROP_PROTECTED */
 
 /** 
   the main interpreter -- run()

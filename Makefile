@@ -35,7 +35,7 @@ CSRCS = ast.c code_gen.c db_file.c db_io.c db_objects.c db_properties.c \
 	exceptions.c execute.c extensions.c functions.c keywords.c list.c \
 	log.c match.c md5.c name_lookup.c network.c net_mplex.c \
 	net_proto.c numbers.c objects.c parse_cmd.c pattern.c program.c \
-	property.c quota.c regexpr.c server.c storage.c streams.c str_intern.c \
+	property.c regexpr.c server.c storage.c streams.c str_intern.c \
 	sym_table.c tasks.c timers.c unparse.c utils.c verbs.c version.c
 
 OPT_NET_SRCS = net_single.c net_multi.c \
@@ -52,7 +52,7 @@ HDRS =  ast.h bf_register.h code_gen.h db.h db_io.h db_private.h decompile.h \
 	disassemble.h eval_env.h eval_vm.h exceptions.h execute.h functions.h \
 	getpagesize.h keywords.h list.h log.h match.h md5.h name_lookup.h \
 	network.h net_mplex.h net_multi.h net_proto.h numbers.h opcode.h \
-	options.h parse_cmd.h parser.h pattern.h program.h quota.h  \
+	options.h parse_cmd.h parser.h pattern.h program.h \
 	ref_count.h regexpr.h server.h storage.h streams.h structures.h  str_intern.h \
 	sym_table.h tasks.h timers.h tokens.h unparse.h utils.h verbs.h \
 	version.h y.tab.h
@@ -235,7 +235,7 @@ numbers.o: numbers.c   config.h   \
  utils.h
 objects.o: objects.c db.h config.h program.h structures.h  \
  version.h db_io.h exceptions.h execute.h opcode.h options.h parse_cmd.h \
- functions.h list.h numbers.h quota.h server.h network.h storage.h \
+ functions.h list.h numbers.h server.h network.h storage.h \
  ref_count.h utils.h
 parse_cmd.o: parse_cmd.c  config.h   \
    db.h program.h structures.h version.h list.h \
@@ -250,8 +250,6 @@ program.o: program.c ast.h config.h parser.h program.h structures.h \
 property.o: property.c db.h config.h program.h structures.h  \
  version.h functions.h execute.h opcode.h options.h parse_cmd.h list.h \
  storage.h ref_count.h utils.h
-quota.o: quota.c config.h db.h program.h structures.h  \
- version.h quota.h
 regexpr.o: regexpr.c  config.h regexpr.h  \
  
 server.o: server.c  config.h    \
