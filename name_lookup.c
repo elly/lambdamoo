@@ -25,15 +25,15 @@
 
 #if NETWORK_PROTOCOL == NP_TCP	/* Skip almost entire file otherwise... */
 
-#include "my-signal.h"
+#include <signal.h>
 #include "my-stdlib.h"
 #include "my-unistd.h"
-#include "my-inet.h"		/* inet_addr() */
+#include <arpa/inet.h>		/* inet_addr() */
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <netdb.h>		/* struct hostent, gethostbyaddr() */
-#include "my-socket.h"		/* AF_INET */
-#include "my-wait.h"
+#include <sys/socket.h>		/* AF_INET */
+#include <sys/wait.h>
 #include "my-string.h"
 #include <errno.h>
 

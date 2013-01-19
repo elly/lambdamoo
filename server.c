@@ -16,13 +16,13 @@
  *****************************************************************************/
 
 #include "my-types.h"		/* must be first on some systems */
-#include "my-signal.h"
+#include <signal.h>
 #include "my-stdarg.h"
 #include "my-stdio.h"
 #include "my-stdlib.h"
 #include "my-string.h"
 #include "my-unistd.h"
-#include "my-wait.h"
+#include <sys/wait.h>
 
 #include "config.h"
 #include "db.h"

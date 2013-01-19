@@ -20,7 +20,7 @@
 #include "my-ctype.h"
 #include <errno.h>
 #include "my-fcntl.h"
-#include "my-signal.h"
+#include <signal.h>
 #include "my-stdio.h"
 #include "my-stdlib.h"
 #include "my-string.h"

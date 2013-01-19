@@ -18,7 +18,7 @@
 /* BSD/LOCAL MUD client */
 
 #include <errno.h>
-#include "my-socket.h"
+#include <sys/socket.h>
 #include "my-stdio.h"
 #include "my-stdlib.h"
 #include "my-string.h"

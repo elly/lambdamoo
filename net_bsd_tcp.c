@@ -17,12 +17,12 @@
 
 /* Multi-user networking protocol implementation for TCP/IP on BSD UNIX */
 
-#include "my-inet.h"		/* inet_addr() */
+#include <arpa/inet.h>		/* inet_addr() */
 #include <errno.h>		/* EMFILE, EADDRNOTAVAIL, ECONNREFUSED,
 				   * ENETUNREACH, ETIMEOUT */
 #include <arpa/inet.h>
 #include <netinet/in.h>
-#include "my-socket.h"		/* socket(), AF_INET, SOCK_STREAM,
+#include <sys/socket.h>		/* socket(), AF_INET, SOCK_STREAM,
 				   * setsockopt(), SOL_SOCKET, SO_REUSEADDR,
 				   * bind(), struct sockaddr, accept(),
 				   * connect() */

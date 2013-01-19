@@ -39,7 +39,7 @@ CSRCS = ast.c code_gen.c db_file.c db_io.c db_objects.c db_properties.c \
 	sym_table.c tasks.c timers.c unparse.c utils.c verbs.c version.c
 
 OPT_NET_SRCS = net_single.c net_multi.c \
-	net_mp_selct.c net_mp_poll.c net_mp_fake.c \
+	net_mp_selct.c net_mp_poll.c \
 	net_bsd_tcp.c net_bsd_lcl.c
 
 OPT_NET_OBJS = $(OPT_NET_SRCS:.c=.o)
@@ -57,10 +57,10 @@ HDRS =  ast.h bf_register.h code_gen.h db.h db_io.h db_private.h decompile.h \
 	sym_table.h tasks.h timers.h tokens.h unparse.h utils.h verbs.h \
 	version.h y.tab.h
 
-SYSHDRS = my-ctype.h my-fcntl.h my-in.h my-inet.h my-ioctl.h my-math.h \
-	my-poll.h my-signal.h my-socket.h my-stat.h my-stdarg.h my-stdio.h \
-	my-stdlib.h my-string.h my-stropts.h my-sys-time.h my-time.h \
-	my-tiuser.h my-types.h my-unistd.h my-wait.h
+SYSHDRS = my-ctype.h my-fcntl.h my-in.h  my-ioctl.h my-math.h \
+	my-poll.h  my-stat.h my-stdarg.h my-stdio.h \
+	my-stdlib.h my-string.h my-sys-time.h my-time.h \
+	my-types.h my-unistd.h 
 
 CLIENT_SRCS = client_bsd.c client_sysv.c
 
@@ -282,7 +282,7 @@ parser.o:	my-ctype.h my-math.h my-stdlib.h my-string.h \
 # Must do these specially, since they depend upon C preprocessor options.
 network.o: 	net_single.o net_multi.o
 net_proto.o:	net_bsd_tcp.o net_bsd_lcl.o
-net_mplex.o:	net_mp_selct.o net_mp_poll.o net_mp_fake.o
+net_mplex.o:	net_mp_selct.o net_mp_poll.o
 
 $(OPT_NET_OBJS):
 	touch $@
@@ -357,18 +357,18 @@ match.o: match.c my-stdlib.h config.h my-string.h db.h program.h \
  structures.h my-stdio.h version.h exceptions.h match.h parse_cmd.h \
  storage.h ref_count.h unparse.h utils.h execute.h opcode.h options.h
 md5.o: md5.c my-string.h config.h md5.h
-name_lookup.o: name_lookup.c options.h config.h my-signal.h my-stdlib.h \
- my-unistd.h my-inet.h my-socket.h my-wait.h my-string.h log.h my-stdio.h \
+name_lookup.o: name_lookup.c options.h config.h my-stdlib.h \
+ my-unistd.h    my-string.h log.h my-stdio.h \
  structures.h server.h network.h storage.h ref_count.h timers.h my-time.h
 network.o: network.c options.h config.h net_multi.c my-ctype.h my-fcntl.h \
- my-signal.h my-stdio.h my-stdlib.h my-string.h my-unistd.h exceptions.h \
+  my-stdio.h my-stdlib.h my-string.h my-unistd.h exceptions.h \
  list.h structures.h log.h net_mplex.h net_multi.h net_proto.h network.h \
  server.h streams.h storage.h ref_count.h timers.h my-time.h utils.h \
  execute.h db.h program.h version.h opcode.h parse_cmd.h
 net_mplex.o: net_mplex.c options.h config.h net_mp_selct.c my-string.h \
  my-sys-time.h my-types.h log.h my-stdio.h structures.h net_mplex.h
-net_proto.o: net_proto.c options.h config.h net_bsd_tcp.c my-inet.h \
- my-socket.h my-stdlib.h my-string.h my-unistd.h list.h structures.h \
+net_proto.o: net_proto.c options.h config.h net_bsd_tcp.c  \
+  my-stdlib.h my-string.h my-unistd.h list.h structures.h \
  my-stdio.h log.h name_lookup.h net_proto.h server.h network.h streams.h \
  timers.h my-time.h utils.h execute.h db.h program.h version.h opcode.h \
  parse_cmd.h
@@ -399,8 +399,8 @@ ref_count.o: ref_count.c config.h exceptions.h ref_count.h storage.h \
  structures.h my-stdio.h
 regexpr.o: regexpr.c my-stdio.h config.h regexpr.h my-stdlib.h \
  my-string.h
-server.o: server.c my-types.h config.h my-signal.h my-stdarg.h my-stdio.h \
- my-stdlib.h my-string.h my-unistd.h my-wait.h db.h program.h \
+server.o: server.c my-types.h config.h  my-stdarg.h my-stdio.h \
+ my-stdlib.h my-string.h my-unistd.h  db.h program.h \
  structures.h version.h db_io.h disassemble.h execute.h opcode.h \
  options.h parse_cmd.h functions.h list.h log.h network.h server.h \
  parser.h random.h storage.h ref_count.h streams.h tasks.h timers.h \
@@ -422,7 +422,7 @@ tasks.o: tasks.c my-string.h config.h my-time.h db.h program.h \
  parse_cmd.h exceptions.h functions.h list.h log.h match.h random.h \
  server.h network.h storage.h ref_count.h streams.h tasks.h utils.h \
  verbs.h
-timers.o: timers.c my-signal.h config.h my-stdlib.h my-sys-time.h \
+timers.o: timers.c  config.h my-stdlib.h my-sys-time.h \
  options.h my-types.h my-time.h my-unistd.h timers.h
 unparse.o: unparse.c my-ctype.h config.h my-stdio.h ast.h parser.h \
  program.h structures.h version.h sym_table.h decompile.h exceptions.h \
@@ -441,7 +441,7 @@ gnu-malloc.o: gnu-malloc.c getpagesize.h
 net_single.o: net_single.c my-ctype.h config.h my-fcntl.h my-stdio.h \
  my-unistd.h log.h structures.h network.h options.h server.h streams.h \
  utils.h execute.h db.h program.h version.h opcode.h parse_cmd.h
-net_multi.o: net_multi.c my-ctype.h config.h my-fcntl.h my-signal.h \
+net_multi.o: net_multi.c my-ctype.h config.h my-fcntl.h  \
  my-stdio.h my-stdlib.h my-string.h my-unistd.h exceptions.h list.h \
  structures.h log.h net_mplex.h net_multi.h net_proto.h options.h \
  network.h server.h streams.h storage.h ref_count.h timers.h my-time.h \
@@ -450,16 +450,16 @@ net_mp_selct.o: net_mp_selct.c my-string.h config.h my-sys-time.h \
  options.h my-types.h log.h my-stdio.h structures.h net_mplex.h
 net_mp_poll.o: net_mp_poll.c log.h my-stdio.h config.h structures.h \
  net_mplex.h storage.h ref_count.h
-net_bsd_tcp.o: net_bsd_tcp.c my-inet.h config.h my-socket.h my-stdlib.h \
+net_bsd_tcp.o: net_bsd_tcp.c  config.h  my-stdlib.h \
  my-string.h my-unistd.h list.h structures.h my-stdio.h log.h \
  name_lookup.h net_proto.h options.h server.h network.h streams.h \
  timers.h my-time.h utils.h execute.h db.h program.h version.h opcode.h \
  parse_cmd.h
-net_bsd_lcl.o: net_bsd_lcl.c my-socket.h config.h my-stdio.h my-string.h \
+net_bsd_lcl.o: net_bsd_lcl.c  config.h my-stdio.h my-string.h \
  my-unistd.h log.h structures.h net_proto.h options.h storage.h \
  ref_count.h utils.h execute.h db.h program.h version.h opcode.h \
  parse_cmd.h
-client_bsd.o: client_bsd.c my-socket.h config.h my-stdio.h my-stdlib.h \
+client_bsd.o: client_bsd.c  config.h my-stdio.h my-stdlib.h \
  my-string.h my-sys-time.h options.h my-types.h my-unistd.h
-client_sysv.o: client_sysv.c my-fcntl.h config.h my-signal.h my-stdio.h \
+client_sysv.o: client_sysv.c my-fcntl.h config.h  my-stdio.h \
  my-stdlib.h my-string.h my-types.h my-stat.h my-unistd.h options.h

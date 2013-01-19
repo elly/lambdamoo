@@ -19,7 +19,7 @@
  */
 
 #include <errno.h>		/* EMFILE */
-#include "my-socket.h"		/* socket(), AF_UNIX, SOCK_STREAM,
+#include <sys/socket.h>		/* socket(), AF_UNIX, SOCK_STREAM,
 				   * bind(), struct sockaddr, accept(),
 				   * shutdown(), connect() */
 #include "my-stdio.h"		/* remove() */
