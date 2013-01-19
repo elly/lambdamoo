@@ -16,7 +16,7 @@
  *****************************************************************************/
 
 #include <float.h>
-#include "my-stdarg.h"
+#include <stdarg.h>
 #include "my-string.h"
 #include "my-stdio.h"
 

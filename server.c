@@ -17,7 +17,7 @@
 
 #include "my-types.h"		/* must be first on some systems */
 #include <signal.h>
-#include "my-stdarg.h"
+#include <stdarg.h>
 #include "my-stdio.h"
 #include "my-stdlib.h"
 #include "my-string.h"

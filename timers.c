@@ -17,7 +17,7 @@
 
 #include <signal.h>
 #include "my-stdlib.h"
-#include "my-sys-time.h"
+#include <sys/time.h>
 #include "my-time.h"
 #include "my-unistd.h"
 

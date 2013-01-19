@@ -18,7 +18,8 @@
 #include <limits.h>
 #include <errno.h>
 #include <float.h>
-#include "my-math.h"
+#include <math.h>
+#define IS_REAL(x)	(-DBL_MAX <= (x) && (x) <= DBL_MAX)
 #include "my-stdlib.h"
 #include "my-string.h"
 #include "my-time.h"

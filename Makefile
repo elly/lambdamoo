@@ -57,9 +57,9 @@ HDRS =  ast.h bf_register.h code_gen.h db.h db_io.h db_private.h decompile.h \
 	sym_table.h tasks.h timers.h tokens.h unparse.h utils.h verbs.h \
 	version.h y.tab.h
 
-SYSHDRS = my-ctype.h my-fcntl.h my-in.h  my-ioctl.h my-math.h \
-	my-poll.h  my-stat.h my-stdarg.h my-stdio.h \
-	my-stdlib.h my-string.h my-sys-time.h my-time.h \
+SYSHDRS = my-ctype.h my-fcntl.h my-in.h  my-ioctl.h  \
+	my-poll.h  my-stat.h  my-stdio.h \
+	my-stdlib.h my-string.h  my-time.h \
 	my-types.h my-unistd.h 
 
 CLIENT_SRCS = client_bsd.c client_sysv.c
@@ -261,7 +261,7 @@ depend: ${ALL_CSRCS}
 # Did a more recent `make depend'...
 #
 # Revision 1.7  1992/08/13  22:48:20  pjames
-# Added my-math.h
+# Added 
 #
 # Revision 1.6  1992/08/13  21:29:58  pjames
 # Added -DMOO to COMPILE.c
@@ -274,7 +274,7 @@ depend: ${ALL_CSRCS}
 ###############################################################################
 	
 # Have to do this one manually, since 'make depend' can't hack yacc files.
-parser.o:	my-ctype.h my-math.h my-stdlib.h my-string.h \
+parser.o:	my-ctype.h  my-stdlib.h my-string.h \
 		ast.h code_gen.h config.h functions.h \
 		keywords.h list.h log.h numbers.h opcode.h parser.h program.h \
 		storage.h streams.h structures.h sym_table.h utils.h version.h
@@ -300,7 +300,7 @@ db_file.o: db_file.c my-stat.h config.h my-stdio.h my-stdlib.h db.h \
  list.h log.h options.h server.h network.h storage.h ref_count.h \
  streams.h str_intern.h tasks.h execute.h opcode.h parse_cmd.h timers.h \
  my-time.h
-db_io.o: db_io.c my-ctype.h config.h my-stdarg.h my-stdio.h my-stdlib.h \
+db_io.o: db_io.c my-ctype.h config.h  my-stdio.h my-stdlib.h \
  db_io.h program.h structures.h version.h db_private.h exceptions.h \
  list.h log.h numbers.h parser.h storage.h ref_count.h streams.h \
  str_intern.h unparse.h
@@ -336,7 +336,7 @@ execute.o: execute.c my-string.h config.h db.h program.h structures.h \
 extensions.o: extensions.c bf_register.h functions.h my-stdio.h config.h \
  execute.h db.h program.h structures.h version.h opcode.h options.h \
  parse_cmd.h db_tune.h utils.h
-functions.o: functions.c my-stdarg.h config.h bf_register.h db_io.h \
+functions.o: functions.c  config.h bf_register.h db_io.h \
  program.h structures.h my-stdio.h version.h functions.h execute.h db.h \
  opcode.h options.h parse_cmd.h list.h log.h server.h network.h storage.h \
  ref_count.h streams.h unparse.h utils.h
@@ -348,7 +348,7 @@ list.o: list.c my-ctype.h config.h my-string.h bf_register.h exceptions.h \
  functions.h my-stdio.h execute.h db.h program.h structures.h version.h \
  opcode.h options.h parse_cmd.h list.h log.h md5.h pattern.h random.h \
  ref_count.h streams.h storage.h unparse.h utils.h
-log.o: log.c my-stdarg.h config.h my-stdio.h my-string.h my-time.h \
+log.o: log.c  config.h my-stdio.h my-string.h my-time.h \
  bf_register.h functions.h execute.h db.h program.h structures.h \
  version.h opcode.h options.h parse_cmd.h log.h storage.h ref_count.h \
  streams.h utils.h
@@ -366,13 +366,13 @@ network.o: network.c options.h config.h net_multi.c my-ctype.h my-fcntl.h \
  server.h streams.h storage.h ref_count.h timers.h my-time.h utils.h \
  execute.h db.h program.h version.h opcode.h parse_cmd.h
 net_mplex.o: net_mplex.c options.h config.h net_mp_selct.c my-string.h \
- my-sys-time.h my-types.h log.h my-stdio.h structures.h net_mplex.h
+  my-types.h log.h my-stdio.h structures.h net_mplex.h
 net_proto.o: net_proto.c options.h config.h net_bsd_tcp.c  \
   my-stdlib.h my-string.h my-unistd.h list.h structures.h \
  my-stdio.h log.h name_lookup.h net_proto.h server.h network.h streams.h \
  timers.h my-time.h utils.h execute.h db.h program.h version.h opcode.h \
  parse_cmd.h
-numbers.o: numbers.c my-math.h my-stdlib.h config.h my-string.h my-time.h \
+numbers.o: numbers.c  my-stdlib.h config.h my-string.h my-time.h \
  functions.h my-stdio.h execute.h db.h program.h structures.h version.h \
  opcode.h options.h parse_cmd.h log.h random.h storage.h ref_count.h \
  utils.h
@@ -399,7 +399,7 @@ ref_count.o: ref_count.c config.h exceptions.h ref_count.h storage.h \
  structures.h my-stdio.h
 regexpr.o: regexpr.c my-stdio.h config.h regexpr.h my-stdlib.h \
  my-string.h
-server.o: server.c my-types.h config.h  my-stdarg.h my-stdio.h \
+server.o: server.c my-types.h config.h   my-stdio.h \
  my-stdlib.h my-string.h my-unistd.h  db.h program.h \
  structures.h version.h db_io.h disassemble.h execute.h opcode.h \
  options.h parse_cmd.h functions.h list.h log.h network.h server.h \
@@ -408,7 +408,7 @@ server.o: server.c my-types.h config.h  my-stdarg.h my-stdio.h \
 storage.o: storage.c my-stdlib.h config.h exceptions.h list.h \
  structures.h my-stdio.h options.h ref_count.h storage.h utils.h \
  execute.h db.h program.h version.h opcode.h parse_cmd.h
-streams.o: streams.c my-stdarg.h config.h my-string.h my-stdio.h log.h \
+streams.o: streams.c  config.h my-string.h my-stdio.h log.h \
  structures.h storage.h ref_count.h streams.h
 str_intern.o: str_intern.c my-stdlib.h config.h log.h my-stdio.h \
  structures.h storage.h ref_count.h str_intern.h utils.h execute.h db.h \
@@ -422,7 +422,7 @@ tasks.o: tasks.c my-string.h config.h my-time.h db.h program.h \
  parse_cmd.h exceptions.h functions.h list.h log.h match.h random.h \
  server.h network.h storage.h ref_count.h streams.h tasks.h utils.h \
  verbs.h
-timers.o: timers.c  config.h my-stdlib.h my-sys-time.h \
+timers.o: timers.c  config.h my-stdlib.h  \
  options.h my-types.h my-time.h my-unistd.h timers.h
 unparse.o: unparse.c my-ctype.h config.h my-stdio.h ast.h parser.h \
  program.h structures.h version.h sym_table.h decompile.h exceptions.h \
@@ -446,7 +446,7 @@ net_multi.o: net_multi.c my-ctype.h config.h my-fcntl.h  \
  structures.h log.h net_mplex.h net_multi.h net_proto.h options.h \
  network.h server.h streams.h storage.h ref_count.h timers.h my-time.h \
  utils.h execute.h db.h program.h version.h opcode.h parse_cmd.h
-net_mp_selct.o: net_mp_selct.c my-string.h config.h my-sys-time.h \
+net_mp_selct.o: net_mp_selct.c my-string.h config.h  \
  options.h my-types.h log.h my-stdio.h structures.h net_mplex.h
 net_mp_poll.o: net_mp_poll.c log.h my-stdio.h config.h structures.h \
  net_mplex.h storage.h ref_count.h
@@ -460,6 +460,6 @@ net_bsd_lcl.o: net_bsd_lcl.c  config.h my-stdio.h my-string.h \
  ref_count.h utils.h execute.h db.h program.h version.h opcode.h \
  parse_cmd.h
 client_bsd.o: client_bsd.c  config.h my-stdio.h my-stdlib.h \
- my-string.h my-sys-time.h options.h my-types.h my-unistd.h
+ my-string.h  options.h my-types.h my-unistd.h
 client_sysv.o: client_sysv.c my-fcntl.h config.h  my-stdio.h \
  my-stdlib.h my-string.h my-types.h my-stat.h my-unistd.h options.h

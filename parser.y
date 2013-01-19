@@ -22,7 +22,9 @@
 /*************************************************************************/
 
 #include "my-ctype.h"
-#include "my-math.h"
+#include <float.h>
+#include <math.h>
+#define IS_REAL(x)	(-DBL_MAX <= (x) && (x) <= DBL_MAX)
 #include "my-stdlib.h"
 #include "my-string.h"
 
