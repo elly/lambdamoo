@@ -942,17 +942,6 @@ re_match_2(bufp, string1, size1, string2, size2, pos, regs, mstop)
     failure_stack_end = initial_failure_stack + INITIAL_FAILURES;
     failure_stack_size = INITIAL_FAILURES;
 
-#if 0
-    /* re_search_2 has already done this, and otherwise we get little benefit
-       from this.  So I'll leave this out. */
-    if (bufp->fastmap_accurate && !bufp->can_be_null &&
-	text != textend &&
-	!bufp->fastmap[translate ?
-		       (unsigned char) translate[(unsigned char) *text] :
-		       (unsigned char) *text])
-	return -1;		/* it can't possibly match */
-#endif
-
   continue_matching:
     for (;;) {
 #ifndef TEST_REGEXP
@@ -1308,9 +1297,6 @@ re_match_2(bufp, string1, size1, string2, size2, pos, regs, mstop)
 	    /*NOTREACHED */
 	}
     }
-#if 0				/* This line is never reached --Guido */
-    abort();
-#endif
     /*NOTREACHED */
 
   fail:
