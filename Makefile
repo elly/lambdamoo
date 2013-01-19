@@ -40,7 +40,7 @@ CSRCS = ast.c code_gen.c db_file.c db_io.c db_objects.c db_properties.c \
 
 OPT_NET_SRCS = net_single.c net_multi.c \
 	net_mp_selct.c net_mp_poll.c net_mp_fake.c \
-	net_bsd_tcp.c net_bsd_lcl.c net_sysv_tcp.c net_sysv_lcl.c
+	net_bsd_tcp.c net_bsd_lcl.c 
 
 OPT_NET_OBJS = $(OPT_NET_SRCS:.c=.o)
 
@@ -55,7 +55,7 @@ HDRS =  ast.h bf_register.h code_gen.h db.h db_io.h db_private.h decompile.h \
 	options.h parse_cmd.h parser.h pattern.h program.h quota.h random.h \
 	ref_count.h regexpr.h server.h storage.h streams.h structures.h  str_intern.h \
 	sym_table.h tasks.h timers.h tokens.h unparse.h utils.h verbs.h \
-	version.h
+	version.h y.tab.h
 
 SYSHDRS = my-ctype.h my-fcntl.h my-in.h my-inet.h my-ioctl.h my-math.h \
 	my-poll.h my-signal.h my-socket.h my-stat.h my-stdarg.h my-stdio.h \
@@ -138,7 +138,7 @@ tags:
 	etags -t $(SRCS)
 
 clean:
-	rm -f $(OBJS) core y.tab.c y.tab.h y.output makedep eddep 
+	rm -f $(OBJS) core y.tab.c y.output makedep eddep 
 
 distclean:	clean
 	rm -f config.h Makefile config.status
@@ -300,7 +300,7 @@ parser.o:	my-ctype.h my-math.h my-stdlib.h my-string.h \
 
 # Must do these specially, since they depend upon C preprocessor options.
 network.o: 	net_single.o net_multi.o
-net_proto.o:	net_bsd_tcp.o net_bsd_lcl.o net_sysv_tcp.o net_sysv_lcl.o
+net_proto.o:	net_bsd_tcp.o net_bsd_lcl.o
 net_mplex.o:	net_mp_selct.o net_mp_poll.o net_mp_fake.o
 
 $(OPT_NET_OBJS):
@@ -359,10 +359,6 @@ functions.o: functions.c my-stdarg.h config.h bf_register.h db_io.h \
  program.h structures.h my-stdio.h version.h functions.h execute.h db.h \
  opcode.h options.h parse_cmd.h list.h log.h server.h network.h storage.h \
  ref_count.h streams.h unparse.h utils.h
-keywords.o: keywords.c my-ctype.h config.h my-string.h keywords.h \
- structures.h my-stdio.h version.h tokens.h ast.h parser.h program.h \
- sym_table.h y.tab.h utils.h execute.h db.h opcode.h options.h \
- parse_cmd.h
 list.o: list.c my-ctype.h config.h my-string.h bf_register.h exceptions.h \
  functions.h my-stdio.h execute.h db.h program.h structures.h version.h \
  opcode.h options.h parse_cmd.h list.h log.h md5.h pattern.h random.h \
@@ -479,10 +475,6 @@ net_bsd_lcl.o: net_bsd_lcl.c my-socket.h config.h my-stdio.h my-string.h \
  my-unistd.h log.h structures.h net_proto.h options.h storage.h \
  ref_count.h utils.h execute.h db.h program.h version.h opcode.h \
  parse_cmd.h
-net_sysv_lcl.o: net_sysv_lcl.c my-fcntl.h config.h my-stat.h my-stdio.h \
- my-stdlib.h my-unistd.h exceptions.h list.h structures.h log.h \
- net_multi.h net_proto.h options.h storage.h ref_count.h streams.h \
- utils.h execute.h db.h program.h version.h opcode.h parse_cmd.h
 client_bsd.o: client_bsd.c my-socket.h config.h my-stdio.h my-stdlib.h \
  my-string.h my-sys-time.h options.h my-types.h my-unistd.h
 client_sysv.o: client_sysv.c my-fcntl.h config.h my-signal.h my-stdio.h \
