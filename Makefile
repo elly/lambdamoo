@@ -40,7 +40,7 @@ CSRCS = ast.c code_gen.c db_file.c db_io.c db_objects.c db_properties.c \
 
 OPT_NET_SRCS = net_single.c net_multi.c \
 	net_mp_selct.c net_mp_poll.c net_mp_fake.c \
-	net_bsd_tcp.c net_bsd_lcl.c 
+	net_bsd_tcp.c net_bsd_lcl.c
 
 OPT_NET_OBJS = $(OPT_NET_SRCS:.c=.o)
 
@@ -359,6 +359,10 @@ functions.o: functions.c my-stdarg.h config.h bf_register.h db_io.h \
  program.h structures.h my-stdio.h version.h functions.h execute.h db.h \
  opcode.h options.h parse_cmd.h list.h log.h server.h network.h storage.h \
  ref_count.h streams.h unparse.h utils.h
+keywords.o: keywords.c my-ctype.h config.h my-string.h keywords.h \
+ structures.h my-stdio.h version.h tokens.h ast.h parser.h program.h \
+ sym_table.h y.tab.h utils.h execute.h db.h opcode.h options.h \
+ parse_cmd.h
 list.o: list.c my-ctype.h config.h my-string.h bf_register.h exceptions.h \
  functions.h my-stdio.h execute.h db.h program.h structures.h version.h \
  opcode.h options.h parse_cmd.h list.h log.h md5.h pattern.h random.h \
@@ -376,11 +380,10 @@ name_lookup.o: name_lookup.c options.h config.h my-signal.h my-stdlib.h \
  my-unistd.h my-inet.h my-socket.h my-wait.h my-string.h log.h my-stdio.h \
  structures.h server.h network.h storage.h ref_count.h timers.h my-time.h
 network.o: network.c options.h config.h net_multi.c my-ctype.h my-fcntl.h \
- my-ioctl.h my-signal.h my-stdio.h my-stdlib.h my-string.h my-unistd.h \
- exceptions.h list.h structures.h log.h net_mplex.h net_multi.h \
- net_proto.h network.h server.h streams.h storage.h ref_count.h timers.h \
- my-time.h utils.h execute.h db.h program.h version.h opcode.h \
- parse_cmd.h
+ my-signal.h my-stdio.h my-stdlib.h my-string.h my-unistd.h exceptions.h \
+ list.h structures.h log.h net_mplex.h net_multi.h net_proto.h network.h \
+ server.h streams.h storage.h ref_count.h timers.h my-time.h utils.h \
+ execute.h db.h program.h version.h opcode.h parse_cmd.h
 net_mplex.o: net_mplex.c options.h config.h net_mp_selct.c my-string.h \
  my-sys-time.h my-types.h log.h my-stdio.h structures.h net_mplex.h
 net_proto.o: net_proto.c options.h config.h net_bsd_tcp.c my-inet.h \
@@ -457,9 +460,9 @@ gnu-malloc.o: gnu-malloc.c getpagesize.h
 net_single.o: net_single.c my-ctype.h config.h my-fcntl.h my-stdio.h \
  my-unistd.h log.h structures.h network.h options.h server.h streams.h \
  utils.h execute.h db.h program.h version.h opcode.h parse_cmd.h
-net_multi.o: net_multi.c my-ctype.h config.h my-fcntl.h my-ioctl.h \
- my-signal.h my-stdio.h my-stdlib.h my-string.h my-unistd.h exceptions.h \
- list.h structures.h log.h net_mplex.h net_multi.h net_proto.h options.h \
+net_multi.o: net_multi.c my-ctype.h config.h my-fcntl.h my-signal.h \
+ my-stdio.h my-stdlib.h my-string.h my-unistd.h exceptions.h list.h \
+ structures.h log.h net_mplex.h net_multi.h net_proto.h options.h \
  network.h server.h streams.h storage.h ref_count.h timers.h my-time.h \
  utils.h execute.h db.h program.h version.h opcode.h parse_cmd.h
 net_mp_selct.o: net_mp_selct.c my-string.h config.h my-sys-time.h \

@@ -15,10 +15,11 @@
     Pavel@Xerox.Com
  *****************************************************************************/
 
+#include <sys/ioctl.h>
+
 #include "my-ctype.h"
 #include <errno.h>
 #include "my-fcntl.h"
-#include "my-ioctl.h"
 #include "my-signal.h"
 #include "my-stdio.h"
 #include "my-stdlib.h"
