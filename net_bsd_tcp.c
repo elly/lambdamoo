@@ -20,8 +20,8 @@
 #include "my-inet.h"		/* inet_addr() */
 #include <errno.h>		/* EMFILE, EADDRNOTAVAIL, ECONNREFUSED,
 				   * ENETUNREACH, ETIMEOUT */
-#include "my-in.h"		/* struct sockaddr_in, INADDR_ANY, htons(),
-				   * htonl(), ntohl(), struct in_addr */
+#include <arpa/inet.h>
+#include <netinet/in.h>
 #include "my-socket.h"		/* socket(), AF_INET, SOCK_STREAM,
 				   * setsockopt(), SOL_SOCKET, SO_REUSEADDR,
 				   * bind(), struct sockaddr, accept(),
