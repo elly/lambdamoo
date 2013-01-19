@@ -35,7 +35,7 @@ CSRCS = ast.c code_gen.c db_file.c db_io.c db_objects.c db_properties.c \
 	exceptions.c execute.c extensions.c functions.c keywords.c list.c \
 	log.c match.c md5.c name_lookup.c network.c net_mplex.c \
 	net_proto.c numbers.c objects.c parse_cmd.c pattern.c program.c \
-	property.c quota.c ref_count.c regexpr.c server.c storage.c streams.c str_intern.c \
+	property.c quota.c regexpr.c server.c storage.c streams.c str_intern.c \
 	sym_table.c tasks.c timers.c unparse.c utils.c verbs.c version.c
 
 OPT_NET_SRCS = net_single.c net_multi.c \
@@ -252,8 +252,6 @@ property.o: property.c db.h config.h program.h structures.h  \
  storage.h ref_count.h utils.h
 quota.o: quota.c config.h db.h program.h structures.h  \
  version.h quota.h
-ref_count.o: ref_count.c config.h exceptions.h ref_count.h storage.h \
- structures.h 
 regexpr.o: regexpr.c  config.h regexpr.h  \
  
 server.o: server.c  config.h    \
