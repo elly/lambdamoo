@@ -18,7 +18,7 @@
 /* Multiplexing wait implementation using the BSD UNIX select() system call */
 
 #include <errno.h>		/* errno */
-#include "my-string.h"		/* bzero() or memset(), used in FD_ZERO */
+#include <string.h>		/* bzero() or memset(), used in FD_ZERO */
 #include <sys/time.h>	/* select(), struct timeval */
 #include "my-types.h"		/* fd_set, FD_ZERO(), FD_SET(), FD_ISSET() */
 

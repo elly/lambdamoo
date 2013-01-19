@@ -33,7 +33,7 @@
 #include <assert.h>
 #include "regexpr.h"
 #include <stdlib.h>
-#include "my-string.h"
+#include <string.h>
 
 #define MACRO_BEGIN do {
 #define MACRO_END } while (0)

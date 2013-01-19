@@ -20,7 +20,7 @@
 #include <stdarg.h>
 #include "my-stdio.h"
 #include <stdlib.h>
-#include "my-string.h"
+#include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
 

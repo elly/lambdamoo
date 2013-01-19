@@ -23,7 +23,7 @@
 				   * bind(), struct sockaddr, accept(),
 				   * shutdown(), connect() */
 #include "my-stdio.h"		/* remove() */
-#include "my-string.h"		/* strcpy() */
+#include <string.h>		/* strcpy() */
 #include <sys/un.h>		/* struct sockaddr_un */
 #include <unistd.h>		/* close() */
 

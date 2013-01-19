@@ -18,7 +18,7 @@
 #include <ctype.h>
 #include "my-stdio.h"
 #include <stdlib.h>
-#include "my-string.h"
+#include <string.h>
 #include <time.h>
 
 #include "config.h"

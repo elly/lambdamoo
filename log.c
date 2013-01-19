@@ -18,7 +18,7 @@
 #include <errno.h>
 #include <stdarg.h>
 #include "my-stdio.h"
-#include "my-string.h"
+#include <string.h>
 #include <time.h>
 
 #include "bf_register.h"

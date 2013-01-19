@@ -27,7 +27,7 @@
 				   * bind(), struct sockaddr, accept(),
 				   * connect() */
 #include <stdlib.h>		/* strtoul() */
-#include "my-string.h"		/* memcpy() */
+#include <string.h>		/* memcpy() */
 #include <unistd.h>		/* close() */
 
 #include "config.h"

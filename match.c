@@ -16,7 +16,7 @@
  *****************************************************************************/
 
 #include <stdlib.h>
-#include "my-string.h"
+#include <string.h>
 
 #include "config.h"
 #include "db.h"

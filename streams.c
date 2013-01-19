@@ -17,7 +17,7 @@
 
 #include <float.h>
 #include <stdarg.h>
-#include "my-string.h"
+#include <string.h>
 #include "my-stdio.h"
 
 #include "config.h"

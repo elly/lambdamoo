@@ -21,7 +21,7 @@
 #include <math.h>
 #define IS_REAL(x)	(-DBL_MAX <= (x) && (x) <= DBL_MAX)
 #include <stdlib.h>
-#include "my-string.h"
+#include <string.h>
 #include <time.h>
 
 #include "config.h"

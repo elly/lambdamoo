@@ -44,7 +44,7 @@
    documentation and/or software.  
  */
 
-#include "my-string.h"
+#include <string.h>
 
 #include "md5.h"
 

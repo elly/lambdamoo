@@ -21,7 +21,7 @@
 #include <sys/socket.h>
 #include "my-stdio.h"
 #include <stdlib.h>
-#include "my-string.h"
+#include <string.h>
 #include <sys/time.h>
 #include <sys/un.h>
 #include "my-types.h"

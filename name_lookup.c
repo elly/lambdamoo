@@ -34,7 +34,7 @@
 #include <netdb.h>		/* struct hostent, gethostbyaddr() */
 #include <sys/socket.h>		/* AF_INET */
 #include <sys/wait.h>
-#include "my-string.h"
+#include <string.h>
 #include <errno.h>
 
 #include "config.h"

@@ -22,7 +22,7 @@
 #include <signal.h>
 #include "my-stdio.h"
 #include <stdlib.h>
-#include "my-string.h"
+#include <string.h>
 #include "my-types.h"
 #include <sys/stat.h>
 #include <unistd.h>

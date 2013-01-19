@@ -26,7 +26,7 @@
 #include <math.h>
 #define IS_REAL(x)	(-DBL_MAX <= (x) && (x) <= DBL_MAX)
 #include <stdlib.h>
-#include "my-string.h"
+#include <string.h>
 
 #include "ast.h"
 #include "code_gen.h" 
@@ -1269,7 +1269,7 @@ char rcsid_parser[] = "$Id: parser.y,v 1.2 1998/12/14 13:18:45 nop Exp $";
  * Add support for scattering assignment.  Release 1.8.0alpha6.
  *
  * Revision 2.4  1996/01/11  07:50:49  pavel
- * Added missing #include "my-string.h".  Release 1.8.0alpha5.
+ * Added missing #include <string.h>.  Release 1.8.0alpha5.
  *
  * Revision 2.3  1995/12/31  00:09:40  pavel
  * Removed unused tokens tRAISE and tFORLIST (huh?).  Added `$' expression.
