@@ -95,22 +95,6 @@ client_sysv: client_sysv.o
 restart:
 	touch restart
 
-configure: configure.in
-	# autoconf
-	@echo "Not running autoconf; you must do this by hand."
-	touch configure
-
-config.status: configure
-	env CC= YACC= ./configure --no-create
-
-Makefile: Makefile.in config.status
-	@echo "[ $@ : $? ]"
-	./config.status
-
-config.h: config.h.in config.status
-	@echo "[ $@ : $? ]"
-	./config.status
-
 y.tab.h: parser.o
 	touch y.tab.h
 
