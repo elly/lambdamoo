@@ -19,7 +19,7 @@
  * Routines for initializing, loading, dumping, and shutting down the database
  *****************************************************************************/
 
-#include "my-stat.h"
+#include <sys/stat.h>
 #include "my-stdio.h"
 #include "my-stdlib.h"
 

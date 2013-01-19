@@ -16,7 +16,7 @@
  *****************************************************************************/
 
 #include "my-ctype.h"
-#include "my-fcntl.h"
+#include <fcntl.h>
 #include "my-stdio.h"
 #include "my-unistd.h"
 

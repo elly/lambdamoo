@@ -22,7 +22,7 @@
 #define IS_REAL(x)	(-DBL_MAX <= (x) && (x) <= DBL_MAX)
 #include "my-stdlib.h"
 #include "my-string.h"
-#include "my-time.h"
+#include <time.h>
 
 #include "config.h"
 #include "functions.h"

@@ -16,7 +16,7 @@
  *****************************************************************************/
 
 #include "my-string.h"
-#include "my-time.h"
+#include <time.h>
 
 #include "config.h"
 #include "db.h"

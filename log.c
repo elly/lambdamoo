@@ -19,7 +19,7 @@
 #include <stdarg.h>
 #include "my-stdio.h"
 #include "my-string.h"
-#include "my-time.h"
+#include <time.h>
 
 #include "bf_register.h"
 #include "config.h"
