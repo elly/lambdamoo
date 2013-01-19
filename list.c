@@ -558,7 +558,6 @@ bf_crypt(Var arglist, Byte next, void *vdata, Objid progr)
 {				/* (string, [salt]) */
     Var r;
 
-#if HAVE_CRYPT
     char salt[3];
     static char saltstuff[] =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./";
@@ -574,10 +573,6 @@ bf_crypt(Var arglist, Byte next, void *vdata, Objid progr)
     salt[2] = '\0';
     r.type = TYPE_STR;
     r.v.str = str_dup(crypt(arglist.v.list[1].v.str, salt));
-#else				/* !HAVE_CRYPT */
-    r.type = TYPE_STR;
-    r.v.str = str_ref(arglist.v.list[1].v.str);
-#endif
 
     free_var(arglist);
     return make_var_pack(r);
